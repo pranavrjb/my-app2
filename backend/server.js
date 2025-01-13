@@ -39,7 +39,7 @@ app.use('/auth', authRoutes);
 app.use('/doctors', doctorRoutes);
 
 //Contact routes
-app.use('/contacts', contactRoutes)
+app.use('/contacts', contactRoutes);
 
 // app.use('/bookings', bookingRoutes)
 
