@@ -7,8 +7,6 @@ import Register from './pages/Register'
 import PatientDashboard from './components/Dashboard/PatientDashboard'
 import DoctorDashboard from './components/Dashboard/DoctorDashboard'
 import HomePage from './pages/HomePage'
-import ManageBooking from './Booking/ManageBooking'
-import ClientBooking from './Booking/ClientBooking'
 import Contact from './pages/Contact'
 import SearchDoctors from './pages/SearchDoctors'
 import Profile from './pages/Profile'
@@ -38,8 +36,6 @@ const App = () => {
           <Route path='/Doctor' element={<DoctorForm />} />
           <Route path='/About' element={<About />} />
           <Route path='/Privacy' element={<PrivacyPolicy />} />
-          <Route path='/manage-bookings' element={<ManageBooking />} />
-          <Route path='/bookings' element={<ClientBooking />} />
           <Route path="/patients-dashboard" element={<PatientDashboard />} />
           <Route path="/doctors-dashboard" element={<DoctorDashboard />} />
           <Route path="/admin" element={<AdminDashboard />} />
