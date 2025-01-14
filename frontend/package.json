@@ -9,7 +9,6 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
-    
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.2.4",
@@ -17,7 +16,9 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^5.16.11",
     "@mui/material": "^5.16.11",
+    "@mui/x-date-pickers": "^7.23.6",
     "axios": "^1.7.8",
+    "dayjs": "^1.11.13",
     "dotenv": "^16.4.7",
     "framer-motion": "^11.13.5",
     "jwt-decode": "^4.0.0",

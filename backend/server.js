@@ -6,7 +6,7 @@ import createHttpError from 'http-errors';
 
 import authRoutes from './routes/auth.js';
 import doctorRoutes from './routes/doctors.js';
-// import bookingRoutes from './routes/bookings.js';
+import bookingRoutes from './routes/bookings.js';
 import contactRoutes from './routes/contacts.js';
 import adminRoutes from './routes/admin.js'
 
@@ -41,7 +41,7 @@ app.use('/doctors', doctorRoutes);
 //Contact routes
 app.use('/contacts', contactRoutes);
 
-// app.use('/bookings', bookingRoutes)
+app.use('/bookings', bookingRoutes)
 
 
 app.use('/admin',adminRoutes)

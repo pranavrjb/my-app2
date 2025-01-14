@@ -18,6 +18,7 @@ import { CssBaseline } from '@mui/material';
 import ProtectedRoute from '../routes/ProtectedRoute'
 import { ThemeContextProvider } from './context/DarkMode/ThemeContext';
 import PrivacyPolicy from './pages/PrivacyPolicy'
+import BookingForm from './pages/BookingForm'
 // import ManageBooking from '../Booking/ManageBooking'
 const App = () => {
 
@@ -41,6 +42,7 @@ const App = () => {
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path='/manageusers' element={<ManageUsers/>} />
           <Route path='/profile' element={<ProtectedRoute><Profile /></ProtectedRoute>}/>
+          <Route path='/bookings' element={<BookingForm/>} />
           
         </Routes>
         <Footer />
