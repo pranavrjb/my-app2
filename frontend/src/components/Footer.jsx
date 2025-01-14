@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Container, Typography, Grid, Link, IconButton, Stack } from '@mui/material';
 import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter'; // Corrected to TwitterIcon
+import XIcon from '@mui/icons-material/X';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
@@ -55,8 +55,8 @@ const Footer = () => {
             <IconButton href="https://facebook.com" target="_blank" color="inherit">
               <FacebookIcon />
             </IconButton>
-            <IconButton href="https://twitter.com" target="_blank" color="inherit">
-              <TwitterIcon /> 
+            <IconButton href="https://x.com" target="_blank" color="inherit">
+              <XIcon /> 
             </IconButton>
             <IconButton href="https://linkedin.com" target="_blank" color="inherit">
               <LinkedInIcon />
