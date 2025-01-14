@@ -18,6 +18,14 @@ const ClientBooking = () => {
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  // const [stateMessage, setStateMessage] = useState({
+  //   success:'',
+  //   error:'',
+  //   warning:''
+  // })
+
+  // setStateMessage.success = "heelo"
+  // console.log(stateMessage.success)
   const [booking, setBooking] = useState({
     doctor: '',
     time: '',
