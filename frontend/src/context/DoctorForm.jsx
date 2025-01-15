@@ -28,7 +28,8 @@ const DoctorForm = () => {
         }
     }
     return (
-        <Box sx={{ maxWidth: 600, margin: 'auto', mt: 5 ,mb:10,p:6}} component={Paper}>
+        <Box sx={{minHeight:"100vh"}}>
+        <Box sx={{maxWidth:500, margin: 'auto', mt: 5 ,mb:10,p:6}} component={Paper}>
             <Typography variant="h4" align="center" gutterBottom>
                 Add New Doctor
             </Typography>
@@ -84,18 +85,19 @@ const DoctorForm = () => {
                             onChange={handleChange}
                             fullWidth
                             required
+                            inputProps={{ min: 1 }}
                         />
                     </Grid>
-                    <Grid item xs={12}>
+                     <Grid item xs={12}>
                         <TextField
                             label="Image "
                             name="image"
-                            // type='file'
                             value={formData.image}
                             onChange={handleChange}
                             fullWidth
                         />
                     </Grid>
+
                     <Grid item xs={12}>
                         <Button type="submit" variant="contained" color="primary" fullWidth>
                             Add Doctor
@@ -103,6 +105,7 @@ const DoctorForm = () => {
                     </Grid>
                 </Grid>
             </form>
+            </Box>
         </Box>
     );
 };

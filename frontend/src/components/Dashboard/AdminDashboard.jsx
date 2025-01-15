@@ -59,7 +59,7 @@ const AdminDashboard = () => {
     // };
 
     return (
-        <Box sx={{ p: 4 }}>
+        <Box sx={{minHeight:"100vh", p: 4 }}>
             <Typography variant="h3" textAlign={'center'} gutterBottom>
                 Admin Dashboard
             </Typography>

@@ -168,7 +168,7 @@ const Navbar = () => {
                 <ListItem onClick={handleLogout}>
                   <LogoutIcon sx={{ marginRight: 1 }} />
                   <ListItemText primary="Log out" />
-                </ListItem>
+                </ListItem> 
               </>
             ) : (
               <ListItem component={Link} to="/login">
