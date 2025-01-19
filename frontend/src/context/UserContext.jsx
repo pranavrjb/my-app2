@@ -19,6 +19,18 @@ export const UserProvider = ({ children }) => {
                 setUser(null)
             }
         }
+        sessionStorage.setItem('isReload', 'true');
+
+        const handleBeforeUnload = (e) => {
+            if (sessionStorage.getItem('isReload')) {
+                localStorage.removeItem('isReload');
+            }
+        }
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload)
+        }
     }, []);
 
     const login = (token) => {
@@ -29,6 +41,7 @@ export const UserProvider = ({ children }) => {
 
     const logout = () => {
         localStorage.removeItem('token');
+        sessionStorage.removeItem('isReload');
         setUser(null);
     };
 

@@ -31,6 +31,7 @@ const Login = () => {
         try {
             const { data } = await API.post('/auth/login', formData);
             login(data.token);
+             sessionStorage.setItem('userToken', data.token);
             setMessage(`Welcome, You are logged in!`)
             setSeverity('success')
             setOpen(true)
@@ -54,8 +55,8 @@ const Login = () => {
         login(token);
         const { data } = await API.post('/auth/login', { email, password });
         localStorage.setItem('userInfo', JSON.stringify(data));
-        const redirectPath = location.state?.from?.pathname || '/';
-        navigate(redirectPath); // Redirect to original path or home
+        // const redirectPath = location.state?.from?.pathname || '/';
+        // navigate(redirectPath); // Redirect to original path or home
     };
     return (
         <Box sx={{
