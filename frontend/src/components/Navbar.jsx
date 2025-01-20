@@ -66,7 +66,7 @@ const Navbar = () => {
           color: theme.palette.text.primary, // Use theme for text color
         }}
       >
-        {/* Mobile Menu Icon */}
+        {/* Mobile Menu Button */}
         <Box sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
           <IconButton color="inherit" edge="start" onClick={handleDrawerOpen}>
             <MenuIcon />

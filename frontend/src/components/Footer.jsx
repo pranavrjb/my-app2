@@ -49,24 +49,6 @@ const Footer = () => {
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <Typography variant="body1" fontWeight={'bold'} ml={5} gutterBottom>
-              Follow Us
-            </Typography>
-            <IconButton href="https://facebook.com" target="_blank" color="inherit">
-              <FacebookIcon />
-            </IconButton>
-            <IconButton href="https://x.com" target="_blank" color="inherit">
-              <XIcon /> 
-            </IconButton>
-            <IconButton href="https://linkedin.com" target="_blank" color="inherit">
-              <LinkedInIcon />
-            </IconButton>
-            <IconButton href="https://instagram.com" target="_blank" color="inherit">
-              <InstagramIcon />
-            </IconButton>
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={3}>
             <Typography variant="body1" fontWeight={'bold'} gutterBottom>
               My-App
             </Typography>
@@ -82,6 +64,23 @@ const Footer = () => {
               <PhoneIcon />
               <Typography variant="body2">(+977) 9812312345</Typography>
             </Stack>
+          </Grid>
+          <Grid item xs={12} sm={6} md={3}>
+            <Typography variant="body1" fontWeight={'bold'} ml={5} gutterBottom>
+              Follow Us
+            </Typography>
+            <IconButton href="https://facebook.com" target="_blank" color="inherit">
+              <FacebookIcon />
+            </IconButton>
+            <IconButton href="https://x.com" target="_blank" color="inherit">
+              <XIcon /> 
+            </IconButton>
+            <IconButton href="https://linkedin.com" target="_blank" color="inherit">
+              <LinkedInIcon />
+            </IconButton>
+            <IconButton href="https://instagram.com" target="_blank" color="inherit">
+              <InstagramIcon />
+            </IconButton>
           </Grid>
         </Grid>
 

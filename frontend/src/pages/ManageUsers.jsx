@@ -75,7 +75,7 @@ const ManageUsers = () => {
 
     return (
         <Box sx={{ minHeight: '100vh',p: 4 }}>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h3" textAlign={'center'} gutterBottom>
                 Manage Users
             </Typography>
             {loading ? (

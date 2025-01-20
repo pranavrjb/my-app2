@@ -40,7 +40,7 @@ const App = () => {
         {/* Protected Routes */}
         <Route
           path="/profile"
-          element={<ProtectedRoute isLoggedin={isLoggedin} component={<Profile />} />}
+          element={<ProtectedRoute component={<Profile />} />}
         />
         <Route
           path="/patients-dashboard"
@@ -54,11 +54,7 @@ const App = () => {
           path="/bookings"
           element={<ProtectedRoute isLoggedin={isLoggedin} component={<BookingForm />} />}
         />
-        <Route
-          path="/doctor"
-          element={<ProtectedRoute isLoggedin={isLoggedin} component={<DoctorForm />} />}
-        />
-
+        
         {/* Admin-Only Routes */}
          <Route
         path="/admin"
@@ -70,8 +66,13 @@ const App = () => {
     />
         <Route
           path="/manageusers"
-          element={<ProtectedRoute isLoggedin={isLoggedin} role="ADMIN" component={<ManageUsers />} />}
+          element={<ProtectedRoute requiredRole="ADMIN"> <ManageUsers /> </ProtectedRoute> }
         />
+        <Route
+          path="/doctor"
+          element={<ProtectedRoute requiredRole="ADMIN"> <DoctorForm /> </ProtectedRoute> }
+        />
+
       </Routes>
       <Footer />
     </ThemeContextProvider>

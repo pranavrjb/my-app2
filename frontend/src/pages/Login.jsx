@@ -11,24 +11,27 @@ import {
 } from '@mui/material';
 import { Email as EmailIcon, Lock as LockIcon } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
-import { useNavigate,useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
 import API from '../api';
 
 const Login = () => {
     const theme = useTheme();
     const navigate = useNavigate()
-    const location= useLocation()
-
+    const {user,login}=useContext(UserContext);
+  
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const { login } = useContext(UserContext)
 
     const [open, setOpen] = useState(false);
     const [message, setMessage] = useState('');
     const [severity, setSeverity] = useState('success');
 
+    if (user) {
+        navigate('/');
+        return null;
+    }
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -42,11 +45,11 @@ const Login = () => {
             const { data } = await API.post('/auth/login', formData);
             window.sessionStorage.setItem('userToken', data.token);
             login(data.token);
-            setMessage(`Welcome, You are logged in!`)
+            setMessage(`Welcome, You are now logged in!`)
             setSeverity('success')
             setOpen(true)
-            const redirectPath = location.state?.from?.pathname || '/';
-      setTimeout(() => navigate(redirectPath), 1500);
+            const redirectPath = '/'
+            setTimeout(() => navigate(redirectPath), 1500);
         } catch(error){
             const errorMessage =
             error.response?.data?.message || 'Login failed. Please try again.';
