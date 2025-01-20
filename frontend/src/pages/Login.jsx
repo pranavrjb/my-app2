@@ -40,11 +40,20 @@ const Login = () => {
 
 
         } catch (error) {
-            setMessage(`Login has been failed!`);
-            setSeverity('error');
-            setOpen(true);
+        if (error.response && error.response.data && error.response.data.message) {
+            setMessage(error.response.data.message); 
+        } else {
+            setMessage('Login failed. Please try again.'); 
         }
-    };
+        setSeverity('error');
+        setOpen(true);
+        console.error('Login Error:', error); 
+        
+    } finally {
+        setLoading(false); 
+    }
+};
+
     const handleClose = (_event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -55,8 +64,8 @@ const Login = () => {
         login(token);
         const { data } = await API.post('/auth/login', { email, password });
         localStorage.setItem('userInfo', JSON.stringify(data));
-        // const redirectPath = location.state?.from?.pathname || '/';
-        // navigate(redirectPath); // Redirect to original path or home
+        const redirectPath = location.state?.from?.pathname || '/';
+        navigate(redirectPath); // Redirect to original path or home
     };
     return (
         <Box sx={{
