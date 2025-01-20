@@ -28,7 +28,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const theme=useTheme()
+  const theme = useTheme();
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -52,17 +52,21 @@ const Navbar = () => {
     setDrawerOpen(false);
   };
 
+  // Check if the user is an admin
+  const isAdmin = user && user.role === 'ADMIN';
+
   return (
-    <AppBar position="static" >
+    <AppBar position="static">
       <Toolbar
         sx={{
           display: 'flex',
           justifyContent: { xs: 'space-between', md: 'space-between' },
           alignItems: 'center',
-           backgroundColor: theme.palette.background.paper, // Use theme for background color
+          backgroundColor: theme.palette.background.paper, // Use theme for background color
           color: theme.palette.text.primary, // Use theme for text color
         }}
       >
+        {/* Mobile Menu Icon */}
         <Box sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
           <IconButton color="inherit" edge="start" onClick={handleDrawerOpen}>
             <MenuIcon />
@@ -86,21 +90,27 @@ const Navbar = () => {
           My-App
         </Typography>
 
+        {/* Desktop Navigation */}
         <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 1 }}>
           <Button color="inherit" component={Link} to="/contact">
             Contact Us
           </Button>
+
           {user ? (
             <>
-              <Button color="inherit" component={Link} to="/admin">
-                Admin
-              </Button>
-              <Button color="inherit" component={Link} to="/manageusers">
-                Manage User
-              </Button>
-              <Button color="inherit" component={Link} to="/Doctor">
-                Add Doctor
-              </Button>
+              {isAdmin && (
+                <>
+                  <Button color="inherit" component={Link} to="/admin">
+                    Admin
+                  </Button>
+                  <Button color="inherit" component={Link} to="/manageusers">
+                    Manage User
+                  </Button>
+                  <Button color="inherit" component={Link} to="/doctor">
+                    Add Doctor
+                  </Button>
+                </>
+              )}
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Tooltip title="View User Profile" arrow>
                   <AccountCircleIcon
@@ -134,9 +144,11 @@ const Navbar = () => {
           <Toggle />
         </Box>
 
+        {/* Placeholder for alignment */}
         <Box sx={{ display: { xs: 'flex', md: 'none' }, width: '48px' }} />
       </Toolbar>
 
+      {/* Mobile Drawer */}
       <Drawer anchor="left" open={drawerOpen} onClose={handleDrawerClose}>
         <Box
           sx={{ width: 250 }}
@@ -153,22 +165,26 @@ const Navbar = () => {
             </ListItem>
             {user ? (
               <>
-                <ListItem component={Link} to="/admin">
-                  <ListItemText primary="Admin" />
-                </ListItem>
-                <ListItem component={Link} to="/manageusers">
-                  <ListItemText primary="Manage User" />
-                </ListItem>
-                <ListItem component={Link} to="/Doctor">
-                  <ListItemText primary="Add Doctor" />
-                </ListItem>
+                {isAdmin && (
+                  <>
+                    <ListItem component={Link} to="/admin">
+                      <ListItemText primary="Admin" />
+                    </ListItem>
+                    <ListItem component={Link} to="/manageusers">
+                      <ListItemText primary="Manage User" />
+                    </ListItem>
+                    <ListItem component={Link} to="/doctor">
+                      <ListItemText primary="Add Doctor" />
+                    </ListItem>
+                  </>
+                )}
                 <ListItem component={Link} to="/profile">
                   <ListItemText primary="Profile" />
                 </ListItem>
                 <ListItem onClick={handleLogout}>
                   <LogoutIcon sx={{ marginRight: 1 }} />
                   <ListItemText primary="Log out" />
-                </ListItem> 
+                </ListItem>
               </>
             ) : (
               <ListItem component={Link} to="/login">

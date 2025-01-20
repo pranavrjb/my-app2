@@ -1,5 +1,14 @@
 import React, { useContext, useState } from 'react';
-import { TextField, Button, Typography, Grid, InputAdornment, Box, Snackbar, Alert } from '@mui/material';
+import {
+  TextField,
+  Button,
+  Typography,
+  Grid,
+  InputAdornment,
+  Box,
+  Snackbar,
+  Alert,
+} from '@mui/material';
 import { Email as EmailIcon, Lock as LockIcon } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate,useLocation } from 'react-router-dom';
@@ -10,6 +19,7 @@ const Login = () => {
     const theme = useTheme();
     const navigate = useNavigate()
     const location= useLocation()
+
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -30,29 +40,23 @@ const Login = () => {
         
         try {
             const { data } = await API.post('/auth/login', formData);
+            window.sessionStorage.setItem('userToken', data.token);
             login(data.token);
-             sessionStorage.setItem('userToken', data.token);
             setMessage(`Welcome, You are logged in!`)
             setSeverity('success')
             setOpen(true)
-            console.log('Login Successful:', data);
-            setTimeout(() => navigate('/profile'), 1500);
-
-
-        } catch (error) {
-        if (error.response && error.response.data && error.response.data.message) {
-            setMessage(error.response.data.message); 
-        } else {
-            setMessage('Login failed. Please try again.'); 
-        }
-        setSeverity('error');
-        setOpen(true);
-        console.error('Login Error:', error); 
-        
+            const redirectPath = location.state?.from?.pathname || '/';
+      setTimeout(() => navigate(redirectPath), 1500);
+        } catch(error){
+            const errorMessage =
+            error.response?.data?.message || 'Login failed. Please try again.';
+            setMessage(errorMessage);
+            setSeverity('error');
+            setOpen(true);
     } finally {
-        setLoading(false); 
+      setLoading(false);
     }
-};
+  };
 
     const handleClose = (_event, reason) => {
         if (reason === 'clickaway') {
@@ -60,13 +64,7 @@ const Login = () => {
         }
         setOpen(false);
     };
-    const handleLogin =async (token) => {
-        login(token);
-        const { data } = await API.post('/auth/login', { email, password });
-        localStorage.setItem('userInfo', JSON.stringify(data));
-        const redirectPath = location.state?.from?.pathname || '/';
-        navigate(redirectPath); // Redirect to original path or home
-    };
+
     return (
         <Box sx={{
             minHeight: '100vh',
