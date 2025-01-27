@@ -19,6 +19,7 @@ import ProtectedRoute from './routes/ProtectedRoute';
 import { ThemeContextProvider } from './context/DarkMode/ThemeContext';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import BookingForm from './pages/BookingForm';
+import ManageDoctors from './pages/ManageDoctors';
 
 const App = () => {
   const isLoggedin = !!window.localStorage.getItem('userToken');
@@ -36,6 +37,7 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/search" element={<SearchDoctors />} />
+         <Route path="/bookings" element={<BookingForm />} />
 
         {/* Protected Routes */}
         <Route
@@ -50,10 +52,7 @@ const App = () => {
           path="/doctors-dashboard"
           element={<ProtectedRoute isLoggedin={isLoggedin} component={<DoctorDashboard />} />}
         />
-        <Route
-          path="/bookings"
-          element={<ProtectedRoute isLoggedin={isLoggedin} component={<BookingForm />} />}
-        />
+       
         
         {/* Admin-Only Routes */}
          <Route
@@ -67,6 +66,10 @@ const App = () => {
         <Route
           path="/manageusers"
           element={<ProtectedRoute requiredRole="ADMIN"> <ManageUsers /> </ProtectedRoute> }
+        />
+        <Route
+          path="/managedoctors"
+          element={<ManageDoctors /> }
         />
         <Route
           path="/doctor"

@@ -39,6 +39,7 @@ const FAQsPage = () => {
         <Box
             sx={{
                 minHeight: '100vh',
+                minWidth: '80vw',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',

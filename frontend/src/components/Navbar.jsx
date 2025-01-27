@@ -92,9 +92,10 @@ const Navbar = () => {
 
         {/* Desktop Navigation */}
         <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 1 }}>
-          <Button color="inherit" component={Link} to="/contact">
+          {/* contact us is mentioned on the footer */}
+          {/* <Button color="inherit" component={Link} to="/contact">
             Contact Us
-          </Button>
+          </Button> */}
 
           {user ? (
             <>

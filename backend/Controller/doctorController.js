@@ -17,6 +17,18 @@ export const getDoctors = async (req, res) => {
         const doctors = await Doctor.find();
         res.status(200).json(doctors);
     } catch (error) {
-        res.status(500).json({ message: 'Failed to fetch doctors', error });
+        res.status(404 ).json({ message: 'Failed to fetch doctors', error });
+    }
+};
+export const deleteDoctors = async (req, res) => {
+    try {
+        const doctor = await Doctor.findById(req.params.id);
+        if (!doctor) {
+            return res.status(404).json({ message: 'doctor not found' });
+        }
+        await user.remove();
+        res.json({ message: 'User deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to delete doctor' });
     }
 };
