@@ -69,7 +69,7 @@ const App = () => {
         />
         <Route
           path="/managedoctors"
-          element={<ManageDoctors /> }
+          element={<ProtectedRoute requiredRole="ADMIN"><ManageDoctors /></ProtectedRoute> }
         />
         <Route
           path="/doctor"

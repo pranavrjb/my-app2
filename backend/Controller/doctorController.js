@@ -1,4 +1,5 @@
 import Doctor from '../models/Doctor.js';
+import mongoose from 'mongoose';
 
 export const addDoctor = async (req, res) => {
     const { name, specialization, location, experience, image } = req.body;
@@ -20,15 +21,22 @@ export const getDoctors = async (req, res) => {
         res.status(404 ).json({ message: 'Failed to fetch doctors', error });
     }
 };
+
 export const deleteDoctors = async (req, res) => {
     try {
-        const doctor = await Doctor.findById(req.params.id);
-        if (!doctor) {
-            return res.status(404).json({ message: 'doctor not found' });
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+            return res.status(400).json({ message: 'Invalid doctor ID format' });
         }
-        await user.remove();
-        res.json({ message: 'User deleted successfully' });
+
+        const doctor = await Doctor.findByIdAndDelete(req.params.id);
+        if (!doctor) {
+            return res.status(404).json({ message: 'Doctor not found' });
+        }
+        res.json({ message: 'Doctor deleted successfully' });
     } catch (error) {
-        res.status(500).json({ message: 'Failed to delete doctor' });
+        res.status(500).json({
+            message: 'Failed to delete doctor',
+            error: error.message
+        });
     }
 };

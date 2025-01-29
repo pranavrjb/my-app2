@@ -10,21 +10,20 @@ import {
     Paper,
     Typography,
     Button,
-    IconButton,
-    Menu,
-    MenuItem,
+    Snackbar,
     Avatar,
-    Tooltip,
     CircularProgress,
 } from '@mui/material';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 import API from '../api';
 
 const ManageDoctors = () => {
     const [doctors, setDoctors] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [selectedDoctor, setSelectedDoctor] = useState(null);
+    const [open, setOpen] = useState(false);
+    const [message, setMessage] = useState('');
+    const [severity, setSeverity] = useState('success');
+    
 
     useEffect(() => {
         fetchDoctors();
@@ -45,13 +44,14 @@ const ManageDoctors = () => {
         if (window.confirm('Are you sure you want to delete this doctor?')) {
             try {
                 await API.delete(`/doctors/${id}`);
-                fetchUsers();
+                // fetchDoctors();
+                setDoctors(doctors.filter((doctor) => doctor._id !== id));
+                setMessage('Doctor deleted successfully');
             } catch (error) {
                 console.error('Failed to delete doctor:', error);
-            }
         }
     };
-
+    }
     return (
         <Box sx={{ minHeight: '100vh',p: 4 }}>
             <Typography variant="h3" textAlign={'center'} gutterBottom>
@@ -60,6 +60,7 @@ const ManageDoctors = () => {
             {loading ? (
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
                     <CircularProgress />
+                   
                 </Box>
             ) : (
                 <TableContainer item xs={15} component={Paper} >
@@ -98,7 +99,7 @@ const ManageDoctors = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-            )}
+             )}
         </Box>
     );
 };

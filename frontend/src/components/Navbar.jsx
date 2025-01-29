@@ -107,6 +107,9 @@ const Navbar = () => {
                   <Button color="inherit" component={Link} to="/manageusers">
                     Manage User
                   </Button>
+                  <Button color="inherit" component={Link} to="/managedoctors">
+                    Manage Doctor
+                  </Button>
                   <Button color="inherit" component={Link} to="/doctor">
                     Add Doctor
                   </Button>
@@ -173,6 +176,9 @@ const Navbar = () => {
                     </ListItem>
                     <ListItem component={Link} to="/manageusers">
                       <ListItemText primary="Manage User" />
+                    </ListItem>
+                    <ListItem component={Link} to="/managedoctors">
+                      <ListItemText primary="Manage Doctor" />
                     </ListItem>
                     <ListItem component={Link} to="/doctor">
                       <ListItemText primary="Add Doctor" />
