@@ -5,7 +5,6 @@ import Footer from './components/Footer';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import PatientDashboard from './components/Dashboard/PatientDashboard';
-import DoctorDashboard from './components/Dashboard/DoctorDashboard';
 import HomePage from './pages/HomePage';
 import Contact from './pages/Contact';
 import SearchDoctors from './pages/SearchDoctors';
@@ -48,11 +47,6 @@ const App = () => {
           path="/patients-dashboard"
           element={<ProtectedRoute isLoggedin={isLoggedin} component={<PatientDashboard />} />}
         />
-        <Route
-          path="/doctors-dashboard"
-          element={<ProtectedRoute isLoggedin={isLoggedin} component={<DoctorDashboard />} />}
-        />
-       
         
         {/* Admin-Only Routes */}
          <Route
