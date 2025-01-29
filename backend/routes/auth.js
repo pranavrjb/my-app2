@@ -55,7 +55,7 @@ router.post('/register', async (req, res) => {
 
         const token = jwt.sign({ id: newUser._id, email: newUser.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
  
-        res.status(200).json({ user: userWithoutPassword, token });
+        res.status(210).json({ user: userWithoutPassword, token });
     } catch (error) {
         console.error("Signup error:", error.message);
         res.status(500).json({ message: "Something Went Wrong!" });
