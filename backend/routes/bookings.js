@@ -1,21 +1,8 @@
 import express from 'express';
 import Booking from '../models/Booking.js';
 import protect from '../middleware/protectMiddleware.js';
-import Notification from '../models/Notification.js';
-import { notifyClient } from '../server.js';
 
 const router = express.Router();
-
-// Helper function to create notifications
-const createNotification = async (userId, message) => {
-    try {
-        const notification = new Notification({ userId, message });
-        await notification.save();
-    } catch (error) {
-        console.error('Failed to create notification:', error.message);
-    }
-};
-
 // Create a new booking
 router.post('/book', protect, async (req, res) => {
     const { doctor, symptoms, time } = req.body;
@@ -28,21 +15,11 @@ router.post('/book', protect, async (req, res) => {
             time,
         });
         await newBooking.save();
-
-        // Emit notification to client
-        notifyClient(req.user._id, `You have a new appointment with Dr. ${newBooking.doctor.name} on ${newBooking.time}`);
-
-        // Create a notification entry in the database
-        const message = `You have a new appointment with Dr. ${newBooking.doctor.name} on ${newBooking.time}`;
-        await createNotification(req.user._id, message);
-
-        // Send success response
         res.status(201).json({
             message: 'Appointment Booked Successfully!',
             booking: newBooking,
         });
     } catch (error) {
-        // Log the error to the console for debugging
         console.error('Error while booking appointment:', error);
         res.status(500).json({ message: 'Something went wrong!', error: error.message });
     }
