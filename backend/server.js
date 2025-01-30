@@ -9,7 +9,6 @@ import doctorRoutes from './routes/doctors.js';
 import bookingRoutes from './routes/bookings.js';
 import contactRoutes from './routes/contacts.js';
 import adminRoutes from './routes/admin.js';
-import notificationRoutes from './routes/notification.js';
 
 const app = express();
 const port = 3001;
@@ -51,6 +50,6 @@ app.use((error, req, res, next) => {
 });
 
 // Listen on the port
-server.listen(port, () => {
+app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
