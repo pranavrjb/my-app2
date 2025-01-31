@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Button, Avatar, CircularProgress,Select, MenuItem} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import API from '../api';
+import API from '../../api';
 
 const ManageBookingsAdmin = () => {
     const [bookings, setBookings] = useState([]);

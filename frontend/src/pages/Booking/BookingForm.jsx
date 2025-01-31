@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useForm, Controller } from 'react-hook-form';
-import API from '../api';
+import API from '../../api';
 import { useNavigate } from 'react-router-dom';
 
 const BookingForm = () => {

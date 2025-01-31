@@ -17,9 +17,9 @@ import { CssBaseline } from '@mui/material';
 import ProtectedRoute from './routes/ProtectedRoute';
 import { ThemeContextProvider } from './context/DarkMode/ThemeContext';
 import PrivacyPolicy from './pages/PrivacyPolicy';
-import BookingForm from './pages/BookingForm';
+import BookingForm from './pages/Booking/BookingForm';
 import ManageDoctors from './pages/ManageDoctors';
-import ManageBookings from './pages/ManageBookings';
+import ManageBookings from './pages/Booking/ManageBookings';
 
 const App = () => {
   const isLoggedin = !!window.localStorage.getItem('userToken');
