@@ -19,6 +19,7 @@ import { ThemeContextProvider } from './context/DarkMode/ThemeContext';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import BookingForm from './pages/BookingForm';
 import ManageDoctors from './pages/ManageDoctors';
+import ManageBookings from './pages/ManageBookings';
 
 const App = () => {
   const isLoggedin = !!window.localStorage.getItem('userToken');
@@ -41,7 +42,7 @@ const App = () => {
         {/* Protected Routes */}
         <Route
           path="/profile"
-          element={<ProtectedRoute component={<Profile />} />}
+          element={<Profile />}
         />
         <Route
           path="/patients-dashboard"
@@ -60,6 +61,8 @@ const App = () => {
         <Route
           path="/manageusers"
           element={<ProtectedRoute requiredRole="ADMIN"> <ManageUsers /> </ProtectedRoute> }
+        />
+        <Route path='/managebookings' element={<ProtectedRoute requiredRole="ADMIN"><ManageBookings/></ProtectedRoute>}
         />
         <Route
           path="/managedoctors"

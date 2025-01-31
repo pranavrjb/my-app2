@@ -10,7 +10,6 @@ import {
     Paper,
     Typography,
     Button,
-    Snackbar,
     Avatar,
     CircularProgress,
 } from '@mui/material';
@@ -20,10 +19,7 @@ import API from '../api';
 const ManageDoctors = () => {
     const [doctors, setDoctors] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [open, setOpen] = useState(false);
     const [message, setMessage] = useState('');
-    const [severity, setSeverity] = useState('success');
-    
 
     useEffect(() => {
         fetchDoctors();

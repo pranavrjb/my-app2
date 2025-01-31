@@ -37,22 +37,57 @@ router.get('/user/:userId', protect, async (req, res) => {
     }
 });
 
+//get all bookings for the admin
+router.get('/', async (req, res) => {
+    try {
+        const bookings = await Booking.find().populate('doctor', 'name specialization image').populate('patient', 'name');
+        res.status(200).json(bookings);
+    } catch (error) {
+        res.status(500).json({ message: 'Something went wrong!', error });
+    }
+});
+
 // Update booking status
 router.put('/:id/status', protect, async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
 
     try {
+        // Check if the user is an admin (only admin can update status)
+        if (!req.user.isAdmin) {
+            return res.status(403).json({ message: 'Access denied. Admins only.' });
+        }
+
+        // Update the status of the booking
         const booking = await Booking.findByIdAndUpdate(id, { status }, { new: true });
 
         if (!booking) {
-            return res.status(404).json({ message: 'Appointment not found!' });
+            return res.status(404).json({ message: 'Booking not found!' });
         }
 
-        res.status(200).json({ message: 'Appointment status updated', booking });
+        res.status(200).json({ message: 'Booking status updated', booking });
     } catch (error) {
-        res.status(500).json({ message: 'Something went wrong!', error });
+        res.status(500).json({ message: 'Something went wrong', error });
     }
 });
 
+// Delete a booking
+router.delete('/:id', async (req, res) => {
+    try {
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+            return res.status(400).json({ message: 'Invalid booking ID format' });
+        }
+
+        const booking = await Booking.findByIdAndDelete(req.params.id);
+        if (!booking) {
+            return res.status(404).json({ message: 'Booking not found' });
+        }
+        res.json({ message: 'Booking deleted successfully' });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Failed to delete',
+            error: error.message
+        });
+    }
+});
 export default router;
