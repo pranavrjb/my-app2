@@ -9,6 +9,7 @@ import doctorRoutes from './routes/doctors.js';
 import bookingRoutes from './routes/bookings.js';
 import contactRoutes from './routes/contacts.js';
 import adminRoutes from './routes/admin.js';
+import userRoutes from './routes/user.js';
 
 const app = express();
 const port = 3001;
@@ -38,6 +39,7 @@ app.use('/doctors', doctorRoutes);
 app.use('/contacts', contactRoutes);
 app.use('/bookings', bookingRoutes);
 app.use('/admin', adminRoutes);
+app.use('/user', userRoutes);
 
 app.use((req, res, next) => {
   next(createHttpError.NotFound());

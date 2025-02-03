@@ -63,14 +63,16 @@ const ManageUsers = () => {
         }
     };
 
-    const handleRoleChange = async (role) => {
-        try {
-            await API.put(`/admin/users/${selectedUser._id}`, { role });
-            fetchUsers();
-        } catch (error) {
-            console.error('Failed to update role:', error);
+    const updateRole = async (newRole) => {
+        if (selectedUser) {
+            try {
+                await API.put(`/user/admin/users/${selectedUser._id}`, {role:newRole});
+                fetchUsers(); // Refetch users to reflect the changes
+            } catch (error) {
+                console.error('Failed to update role:', error);
+            }
+            handleMenuClose(); // Close the menu after role change
         }
-        handleMenuClose();
     };
 
     return (
@@ -132,9 +134,10 @@ const ManageUsers = () => {
                 open={Boolean(anchorEl)}
                 onClose={handleMenuClose}
             >
-                <MenuItem onClick={() => handleRoleChange('user')}>Set as User</MenuItem>
-                <MenuItem onClick={() => handleRoleChange('doctor')}>Set as Doctor</MenuItem>
-                <MenuItem onClick={() => handleRoleChange('admin')}>Set as Admin</MenuItem>
+                <MenuItem onClick={() => updateRole('ADMIN')}>Set as Admin</MenuItem>
+                <MenuItem onClick={() => updateRole('DOCTOR')}>Set as Doctor</MenuItem>
+                <MenuItem onClick={() => updateRole('PATIENT')}>Set as User</MenuItem>
+
             </Menu>
         </Box>
     );
