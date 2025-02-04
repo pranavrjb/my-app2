@@ -90,10 +90,10 @@ const ManageUsers = () => {
                         <TableHead>
                             <TableRow>
                                 {/* <TableCell>Avatar</TableCell> */}
-                                <TableCell>Name</TableCell>
-                                <TableCell>Email</TableCell>
-                                <TableCell>Role</TableCell>
-                                <TableCell sx={{textAlign:'center',ml:-5}}>Actions</TableCell>
+                                <TableCell sx={{fontWeight:700,fontSize:20}}>Name</TableCell>
+                                <TableCell sx={{fontWeight:700,fontSize:20}}>Email</TableCell>
+                                <TableCell sx={{fontWeight:700,fontSize:20}}>Role</TableCell>
+                                <TableCell sx={{fontWeight:700,fontSize:20,textAlign:'center',ml:-5}}>Actions</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>

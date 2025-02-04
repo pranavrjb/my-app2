@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Button, Avatar, CircularProgress,Select, MenuItem} from '@mui/material';
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Button, CircularProgress, Snackbar, Alert, Popover, List, ListItemButton, ListItemText } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'; 
 import API from '../../api';
 
 const ManageBookingsAdmin = () => {
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState('');
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [selectedBookingId, setSelectedBookingId] = useState(null);
 
     useEffect(() => {
         fetchAllBookings();
@@ -23,30 +27,61 @@ const ManageBookingsAdmin = () => {
         }
     };
 
+    const getStatusColor = (status) => {
+        switch (status) {
+            case 'Pending':
+                return 'purple'; 
+            case 'Confirmed':
+                return 'green'; 
+            case 'Completed':
+                return 'blue';
+            case 'Cancelled':
+                return 'red'; 
+            default:
+                return 'white'; 
+        }
+    };
+
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this booking?')) {
             try {
                 await API.delete(`/bookings/${id}`);
                 setBookings(bookings.filter((booking) => booking._id !== id));
                 setMessage('Booking deleted successfully');
+                setOpenSnackbar(true); 
             } catch (error) {
                 console.error('Failed to delete booking:', error);
             }
         }
     };
- const handleStatusChange = async (id, newStatus) => {
+
+    const updateStatus = async (id, newStatus) => {
         try {
-            await API.put(`/bookings/${id}/status`, { status: newStatus });
+            await API.put(`/bookings/${id}`, { status: newStatus });
             setBookings(
                 bookings.map((booking) =>
                     booking._id === id ? { ...booking, status: newStatus } : booking
                 )
             );
             setMessage('Status updated successfully');
+            setOpenSnackbar(true); 
+            handleClosePopover();
         } catch (error) {
             console.error('Failed to update status:', error);
         }
     };
+
+    const handleClickPopover = (event, bookingId) => {
+        setAnchorEl(event.currentTarget);
+        setSelectedBookingId(bookingId);
+    };
+
+    const handleClosePopover = () => {
+        setAnchorEl(null);
+        setSelectedBookingId(null);
+    };
+
+    const open = Boolean(anchorEl);
 
     return (
         <Box sx={{ minHeight: '100vh', p: 4 }}>
@@ -62,37 +97,55 @@ const ManageBookingsAdmin = () => {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                 <TableCell>Avatar</TableCell>
-                                <TableCell>Doctor</TableCell>
-                                <TableCell>Patient</TableCell>
-                                <TableCell>Symptoms</TableCell>
-                                <TableCell>Time</TableCell>
-                                <TableCell>Status</TableCell>
-                                <TableCell>Action</TableCell>
+                                <TableCell sx={{fontWeight:700,fontSize:20}}>Doctor</TableCell>
+                                <TableCell sx={{fontWeight:700,fontSize:20}}>Patient</TableCell>
+                                <TableCell sx={{fontWeight:700,fontSize:20}}>Symptoms</TableCell>
+                                <TableCell sx={{fontWeight:700,fontSize:20}}>Date & Time</TableCell>
+                                <TableCell sx={{fontWeight:700,fontSize:20}}>Status</TableCell>
+                                <TableCell sx={{fontWeight:700,fontSize:20}}>Action</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                             {bookings.map((booking) => (
+                            {bookings.map((booking) => (
                                 <TableRow key={booking._id}>
-                                    <TableCell>
-                                        <Avatar src={booking.doctor.image} alt={booking.doctor.name} />
-                                    </TableCell>
                                     <TableCell>{booking.doctor.name}</TableCell>
                                     <TableCell>{booking.patient.name}</TableCell>
                                     <TableCell>{booking.symptoms}</TableCell>
                                     <TableCell>{new Date(booking.time).toLocaleString()}</TableCell>
                                     <TableCell>
-                                        <Select
-                                            value={booking.status}
-                                            onChange={(e) =>
-                                                handleStatusChange(booking._id, e.target.value)
-                                            }
+                                        <Button
+                                            onClick={(e) => handleClickPopover(e, booking._id)}
+                                            sx={{ 
+                                                backgroundColor: getStatusColor(booking.status), 
+                                                color: '#fff',
+                                                display: 'flex',
+                                                alignItems: 'center'
+                                            }}
                                         >
-                                            <MenuItem value="Pending" >Pending</MenuItem>
-                                            <MenuItem value="Confirmed">Confirmed</MenuItem>
-                                            <MenuItem value="Completed">Completed</MenuItem>
-                                            <MenuItem value="Cancelled">Cancelled</MenuItem>
-                                        </Select>
+                                            {booking.status}
+                                            <ArrowDropDownIcon sx={{ ml: 1 }} />
+                                        </Button>
+                                        <Popover
+                                            open={open && selectedBookingId === booking._id}
+                                            anchorEl={anchorEl}
+                                            onClose={handleClosePopover}
+                                            anchorOrigin={{
+                                                vertical: 'bottom',
+                                                horizontal: 'center',
+                                            }}
+                                        >
+                                            <List>
+                                                {['Pending', 'Confirmed', 'Completed', 'Cancelled'].map((status) => (
+                                                    <ListItemButton
+                                                        key={status}
+                                                        onClick={() => updateStatus(booking._id, status)}
+                                                        sx={{ backgroundColor: getStatusColor(status), color: '#000' }}
+                                                    >
+                                                        <ListItemText primary={status} />
+                                                    </ListItemButton>
+                                                ))}
+                                            </List>
+                                        </Popover>
                                     </TableCell>
                                     <TableCell>
                                         <Button
@@ -111,6 +164,17 @@ const ManageBookingsAdmin = () => {
             ) : (
                 <Typography>No bookings found.</Typography>
             )}
+
+            <Snackbar
+                open={openSnackbar}
+                autoHideDuration={6000} 
+                onClose={() => setOpenSnackbar(false)}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} 
+            >
+                <Alert onClose={() => setOpenSnackbar(false)} severity="success" sx={{ width: '100%' }}>
+                    {message}
+                </Alert>
+            </Snackbar>
         </Box>
     );
 };

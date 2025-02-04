@@ -63,12 +63,12 @@ const ManageDoctors = () => {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>Avatar</TableCell>
-                                <TableCell>Name</TableCell>
-                                <TableCell>Specialization</TableCell>
-                                <TableCell>Location</TableCell>
-                                <TableCell>Experience</TableCell>
-                                <TableCell>Action</TableCell>
+                                <TableCell sx={{fontWeight:700,fontSize:20}}>Avatar</TableCell>
+                                <TableCell sx={{fontWeight:700,fontSize:20}}>Name</TableCell>
+                                <TableCell sx={{fontWeight:700,fontSize:20}}>Specialization</TableCell>
+                                <TableCell sx={{fontWeight:700,fontSize:20}}>Location</TableCell>
+                                <TableCell sx={{fontWeight:700,fontSize:20}}>Experience</TableCell>
+                                <TableCell sx={{fontWeight:700,fontSize:20}}>Action</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
