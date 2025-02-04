@@ -18,7 +18,7 @@ const HomePage = () => {
             }}
         >
             <Typography variant="h2" color="primary" className="mb-4 pt-2">
-                My-App
+                MedPulse
             </Typography>
             <Typography
                 variant="h6"

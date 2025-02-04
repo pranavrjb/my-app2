@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -13,15 +13,15 @@ import {
   List,
   ListItem,
   ListItemText,
-} from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
-import MenuIcon from '@mui/icons-material/Menu';
-import CloseIcon from '@mui/icons-material/Close';
-import LogoutIcon from '@mui/icons-material/Logout';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { UserContext } from '../context/UserContext';
-import { useTheme } from '@mui/material/styles';
-import Toggle from '../context/DarkMode/Toggle';
+} from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
+import LogoutIcon from "@mui/icons-material/Logout";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { UserContext } from "../context/UserContext";
+import { useTheme } from "@mui/material/styles";
+import Toggle from "../context/DarkMode/Toggle";
 
 const Navbar = () => {
   const { user, logout } = useContext(UserContext);
@@ -41,7 +41,7 @@ const Navbar = () => {
   const handleLogout = () => {
     logout();
     setAnchorEl(null);
-    navigate('/login');
+    navigate("/login");
   };
 
   const handleDrawerOpen = () => {
@@ -52,23 +52,32 @@ const Navbar = () => {
     setDrawerOpen(false);
   };
 
-  // Check if the user is an admin
-  const isAdmin = user && user.role === 'ADMIN';
+  const isAdmin = user && user.role === "ADMIN";
 
   return (
     <AppBar position="static">
       <Toolbar
         sx={{
-          display: 'flex',
-          justifyContent: { xs: 'space-between', md: 'space-between' },
-          alignItems: 'center',
-          backgroundColor: theme.palette.background.paper, // Use theme for background color
-          color: theme.palette.text.primary, // Use theme for text color
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          backgroundColor: theme.palette.background.paper,
+          color: theme.palette.text.primary,
+          width: "100%",
         }}
       >
         {/* Mobile Menu Button */}
-        <Box sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
-          <IconButton color="inherit" edge="start" onClick={handleDrawerOpen}>
+        <Box
+          sx={{
+            display: { xs: "flex", md: "none" },
+            alignItems: "center",
+            justifyContent: "flex-end", 
+            position: "absolute", 
+            top: 10,
+            right: 15, 
+          }}
+        >
+          <IconButton color="inherit" edge="end" onClick={handleDrawerOpen}>
             <MenuIcon />
           </IconButton>
         </Box>
@@ -79,24 +88,25 @@ const Navbar = () => {
           component={Link}
           to="/"
           sx={{
-            textDecoration: 'none',
-            color: 'inherit',
-            fontWeight: 'bold',
-            position: { xs: 'absolute', md: 'static' },
-            left: { xs: '50%', md: 'auto' },
-            transform: { xs: 'translateX(-50%)', md: 'none' },
+            textDecoration: "none",
+            color: "inherit",
+            fontWeight: "bold",
+            position: { xs: "absolute", md: "static" },
+            left: { xs: "50%", md: "auto" },
+            transform: { xs: "translateX(-50%)", md: "none" },
           }}
         >
-          My-App
+          MedPulse
         </Typography>
 
         {/* Desktop Navigation */}
-        <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 1 }}>
-          {/* contact us is mentioned on the footer */}
-          {/* <Button color="inherit" component={Link} to="/contact">
-            Contact Us
-          </Button> */}
-
+        <Box
+          sx={{
+            display: { xs: "none", md: "flex" },
+            alignItems: "center",
+            gap: 1,
+          }}
+        >
           {user ? (
             <>
               {isAdmin && (
@@ -118,10 +128,10 @@ const Navbar = () => {
                   </Button>
                 </>
               )}
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Tooltip title="View User Profile" arrow>
                   <AccountCircleIcon
-                    sx={{ cursor: 'pointer', fontSize: 27 }}
+                    sx={{ cursor: "pointer", fontSize: 27 }}
                     onClick={handleMenuOpen}
                   />
                 </Tooltip>
@@ -131,7 +141,7 @@ const Navbar = () => {
                   onClose={handleMenuClose}
                 >
                   <MenuItem>
-                    <Typography>Welcome, {user.name || 'User'}</Typography>
+                    <Typography>Welcome, {user.name || "User"}</Typography>
                   </MenuItem>
                   <MenuItem component={Link} to="/profile">
                     Profile
@@ -152,13 +162,13 @@ const Navbar = () => {
         </Box>
 
         {/* Placeholder for alignment */}
-        <Box sx={{ display: { xs: 'flex', md: 'none' }, width: '48px' }} />
+        <Box sx={{ display: { xs: "flex", md: "none" }, width: "48px" }} />
       </Toolbar>
 
       {/* Mobile Drawer */}
-      <Drawer anchor="left" open={drawerOpen} onClose={handleDrawerClose}>
+      <Drawer anchor="right" open={drawerOpen} onClose={handleDrawerClose}>
         <Box
-          sx={{ width: 250 }}
+          sx={{ width: 230 }}
           role="presentation"
           onClick={handleDrawerClose}
           onKeyDown={handleDrawerClose}
