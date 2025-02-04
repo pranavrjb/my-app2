@@ -85,27 +85,27 @@ const ManageUsers = () => {
                     <CircularProgress />
                 </Box>
             ) : (
-                <TableContainer item xs={15} component={Paper} >
+                <TableContainer item xs={12} component={Paper}>
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>Avatar</TableCell>
+                                {/* <TableCell>Avatar</TableCell> */}
                                 <TableCell>Name</TableCell>
                                 <TableCell>Email</TableCell>
                                 <TableCell>Role</TableCell>
-                                <TableCell>Actions</TableCell>
+                                <TableCell sx={{textAlign:'center',ml:-5}}>Actions</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {users.map((user) => (
                                 <TableRow key={user._id}>
-                                    <TableCell>
+                                    {/* <TableCell>
                                         <Avatar src={user.avatar} alt={user.name} />
-                                    </TableCell>
+                                    </TableCell> */}
                                     <TableCell>{user.name}</TableCell>
                                     <TableCell>{user.email}</TableCell>
                                     <TableCell>{user.role}</TableCell>
-                                        <TableCell sx={{ml:-5}}>
+                                        <TableCell sx={{  whiteSpace: 'nowrap',textAlign:'center' }}>
                                                     <Button
                                                         variant="contained"
                                                         color="error"
@@ -136,7 +136,7 @@ const ManageUsers = () => {
             >
                 <MenuItem onClick={() => updateRole('ADMIN')}>Set as Admin</MenuItem>
                 <MenuItem onClick={() => updateRole('DOCTOR')}>Set as Doctor</MenuItem>
-                <MenuItem onClick={() => updateRole('PATIENT')}>Set as User</MenuItem>
+                <MenuItem onClick={() => updateRole('PATIENT')}>Set as Patient</MenuItem>
 
             </Menu>
         </Box>
