@@ -28,10 +28,10 @@ router.post('/book', protect, async (req, res) => {
 
 
 // Get bookings for a specific user
-router.get('/user/:userId', protect, async (req, res) => {
-    const { userId } = req.params;
+router.get('/:id', async (req, res) => {
+    const { id } = req.params;
     try {
-        const bookings = await Booking.find({ patient: userId }).populate('doctor', 'name');
+        const bookings = await Booking.find({ patient: id }).populate('doctor', 'name');
         res.json(bookings);
     } catch (error) {
         res.status(500).json({ message: 'Something went wrong!', error });
