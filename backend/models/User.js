@@ -8,8 +8,8 @@ const UserSchema=new mongoose.Schema({
     password:String,
     confirmPassword:String,
     role: { type: String, 
-        enum: [roles.admin,roles.doctor,roles.patient], 
-        default:roles.patient },
+        enum: [roles.admin,roles.serviceProvider,roles.client], 
+        default:roles.client },
 });
 UserSchema.pre('save',async function (params) {
     try{

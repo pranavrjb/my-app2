@@ -1,27 +1,28 @@
-import React from 'react';
-import { Route, Routes } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import HomePage from './pages/HomePage';
-import Contact from './pages/Contact';
-import SearchDoctors from './pages/SearchDoctors';
-import Profile from './pages/Profile';
-import DoctorForm from './context/DoctorForm';
-import About from './pages/About';
-import AdminDashboard from './components/Dashboard/AdminDashboard';
-import ManageUsers from './pages/ManageUsers';
-import { CssBaseline } from '@mui/material';
-import ProtectedRoute from './routes/ProtectedRoute';
-import { ThemeContextProvider } from './context/DarkMode/ThemeContext';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import BookingForm from './pages/Booking/BookingForm';
-import ManageDoctors from './pages/ManageDoctors';
-import ManageBookings from './pages/Booking/ManageBookings';
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import HomePage from "./pages/HomePage";
+import Contact from "./pages/Contact";
+import Profile from "./pages/Profile";
+import DoctorForm from "./context/DoctorForm";
+import About from "./pages/About";
+import AdminDashboard from "./components/Dashboard/AdminDashboard";
+import ManageUsers from "./pages/ManageUsers";
+import { CssBaseline } from "@mui/material";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import { ThemeContextProvider } from "./context/DarkMode/ThemeContext";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import BookingForm from "./pages/Booking/BookingForm";
+import ManageBookings from "./pages/Booking/ManageBookings";
+import ServiceProviderDetails from "./pages/Services/ServiceProviderDetails";
+import ServiceProviderForm from "./pages/Services/ServiceProviderForm";
+import SearchServiceProviders from "./pages/Services/SearchServiceProviders";
 
 const App = () => {
-  const isLoggedin = !!window.localStorage.getItem('userToken');
+  const isLoggedin = !!window.localStorage.getItem("userToken");
 
   return (
     <ThemeContextProvider>
@@ -35,38 +36,59 @@ const App = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
-        <Route path="/search" element={<SearchDoctors />} />
-         <Route path="/bookings" element={<BookingForm />} />
+        <Route path="/search" element={<SearchServiceProviders />} />
+        <Route path="/bookings" element={<BookingForm />} />
+        <Route path="/form" element={<ServiceProviderForm />} />
+        <Route
+          path="/serviceProvider/:id"
+          element={<ServiceProviderDetails />}
+        />
 
         {/* Protected Routes */}
-        <Route
-          path="/profile"
-          element={<Profile />}
-        />
+        <Route path="/profile" element={<Profile />} />
         {/* Admin-Only Routes */}
-         <Route
-        path="/admin"
-        element={
+        <Route
+          path="/admin"
+          element={
             <ProtectedRoute requiredRole="ADMIN">
-                <AdminDashboard />
+              <AdminDashboard />
             </ProtectedRoute>
-        }
-    />
+          }
+        />
         <Route
           path="/manageusers"
-          element={<ProtectedRoute requiredRole="ADMIN"> <ManageUsers /> </ProtectedRoute> }
-        />
-        <Route path='/managebookings' element={<ProtectedRoute requiredRole="ADMIN"><ManageBookings/></ProtectedRoute>}
+          element={
+            <ProtectedRoute requiredRole="ADMIN">
+              {" "}
+              <ManageUsers />{" "}
+            </ProtectedRoute>
+          }
         />
         <Route
+          path="/managebookings"
+          element={
+            <ProtectedRoute requiredRole="ADMIN">
+              <ManageBookings />
+            </ProtectedRoute>
+          }
+        />
+        {/* <Route
           path="/managedoctors"
-          element={<ProtectedRoute requiredRole="ADMIN"><ManageDoctors /></ProtectedRoute> }
+          element={
+            <ProtectedRoute requiredRole="ADMIN">
+              <ManageDoctors />
+            </ProtectedRoute>
+          }
         />
         <Route
           path="/doctor"
-          element={<ProtectedRoute requiredRole="ADMIN"> <DoctorForm /> </ProtectedRoute> }
-        />
-
+          element={
+            <ProtectedRoute requiredRole="ADMIN">
+              {" "}
+              <DoctorForm />{" "}
+            </ProtectedRoute>
+          }
+        /> */}
       </Routes>
       <Footer />
     </ThemeContextProvider>

@@ -134,9 +134,9 @@ const ManageUsers = () => {
                 open={Boolean(anchorEl)}
                 onClose={handleMenuClose}
             >
-                <MenuItem onClick={() => updateRole('ADMIN')}>Set as Admin</MenuItem>
-                <MenuItem onClick={() => updateRole('DOCTOR')}>Set as Doctor</MenuItem>
-                <MenuItem onClick={() => updateRole('PATIENT')}>Set as Patient</MenuItem>
+                <MenuItem onClick={() => updateRole('ADMIN')}>Set as ADMIN</MenuItem>
+                <MenuItem onClick={() => updateRole('SERVICE-PROVIDER')}>Set as SERVICE PROVIDER</MenuItem>
+                <MenuItem onClick={() => updateRole('USER')}>Set as USER</MenuItem>
 
             </Menu>
         </Box>
