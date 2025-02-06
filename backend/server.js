@@ -3,7 +3,8 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import morgan from 'morgan';
 import createHttpError from 'http-errors';
-import path from 'path';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 import authRoutes from './routes/auth.js';
 import serviceRoutes from './routes/service.js';
@@ -16,6 +17,9 @@ const app = express();
 const port = 3001;
 const conn = process.env.MONGO_URI;
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 app.use(express.json());
 app.use(cors({
   origin: 'http://localhost:5173', // Frontend origin
@@ -23,6 +27,7 @@ app.use(cors({
   credentials: true,
 }));
 app.use(morgan('dev'));
+app.use('/pubic',express.static(path.join(__dirname,'public')))
 
 // MongoDB connection
 mongoose.connect(conn, { useNewUrlParser: true, useUnifiedTopology: true })
