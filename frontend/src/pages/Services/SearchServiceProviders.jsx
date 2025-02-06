@@ -8,8 +8,6 @@ import {
   Avatar,
   Grid,
   InputAdornment,
-  Modal,
-  Button,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import API from "../../api";
@@ -20,14 +18,6 @@ const SearchServiceProviders = () => {
   const [filteredServiceProviders, setFilteredServiceProviders] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedServiceProvider, setSelectedServiceProvider] = useState(null);
-  const [bookingData, setBookingData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    date: "",
-    time: "",
-    message: "",
-  });
 
   useEffect(() => {
     const fetchServiceProviders = async () => {
@@ -58,17 +48,6 @@ const SearchServiceProviders = () => {
     setSelectedServiceProvider(provider);
     setOpen(true);
   };
-
-  // const handleBookingChange = (e) => {
-  //   setBookingData({ ...bookingData, [e.target.name]: e.target.value });
-  // };
-
-  // const handleBookingSubmit = (e) => {
-  //   e.preventDefault();
-  //   console.log("Booking Data:", bookingData);
-  //   alert(`Appointment booked with ${selectedServiceProvider.name}`);
-  //   setOpen(false);
-  // };
 
   return (
     <Box sx={{ p: 4 }}>
@@ -111,10 +90,15 @@ const SearchServiceProviders = () => {
               }}
             >
               <Avatar
-                src={provider.avatar}
-                alt={provider.name}
-                sx={{ width: 105, height: 115, mr: 4 }}
+                src={`/images/${provider.avatar}`}
+                  alt={provider.name}
+                  sx={{ width: 115, height: 115, mr: 4 }}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "path/to/fallback-image.png";
+                  }}
               />
+
               <CardContent>
                 <Typography variant="h6" fontWeight={"bold"}>
                   {provider.name}
@@ -122,12 +106,12 @@ const SearchServiceProviders = () => {
                 <Typography variant="body2" color="text.secondary">
                   Service: {provider.serviceType}
                 </Typography>
-                {/* <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary">
                   Location: {provider.location}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Experience: {provider.experience} years
-                </Typography> */}
+                </Typography>
               </CardContent>
             </Card>
           </Grid>

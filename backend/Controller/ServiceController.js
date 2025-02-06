@@ -1,20 +1,20 @@
 import ServiceProvider from '../models/ServiceProvider.js';
 
 export const createServiceProvider = async (req, res) => {
-    try {
-        console.log(req.file)
-        const { name, serviceType, specialty, availableSlots, location, experience } = req.body;
-        const avatar=req.file ? req.file.path :null;
+    console.log(req.file)
+    const { name, serviceType, specialty, availableSlots, location, experience } = req.body;
+    const avatar=req.file ? req.file.path :null;
 
-        if (!name || !serviceType || !location || !experience){
-            return res.status(400).json({ message: 'All required fields must be provided.' });
-        }
+    if (!name || !serviceType || !location || !experience){
+        return res.status(400).json({ message: 'All required fields must be provided.' });
+    }
+    try {
         const newServiceProvider = new ServiceProvider({
             name,
             serviceType,
             specialty,
             availableSlots,
-            avatar,
+            avatar:avatar,
             location,  
             experience, 
         });
@@ -28,11 +28,12 @@ export const createServiceProvider = async (req, res) => {
 
 export const getServiceProviders = async (req, res) => {
     try {
-        const { serviceType, specialty } = req.query;
+        const { serviceType, specialty,avatar } = req.query;
         const query = {};
 
         if (serviceType) query.serviceType = serviceType;
         if (specialty) query.specialty = specialty;
+        if (avatar) query.avatar = avatar;
 
         const serviceProviders = await ServiceProvider.find(query);
         res.status(200).json(serviceProviders);
