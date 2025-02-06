@@ -2,14 +2,21 @@ import ServiceProvider from '../models/ServiceProvider.js';
 
 export const createServiceProvider = async (req, res) => {
     try {
-        const { name, serviceType, specialty, availableSlots,avatar } = req.body;
+        console.log(req.file)
+        const { name, serviceType, specialty, availableSlots, location, experience } = req.body;
+        const avatar=req.file ? req.file.path :null;
 
+        if (!name || !serviceType || !location || !experience){
+            return res.status(400).json({ message: 'All required fields must be provided.' });
+        }
         const newServiceProvider = new ServiceProvider({
             name,
             serviceType,
             specialty,
             availableSlots,
-            avatar
+            avatar,
+            location,  
+            experience, 
         });
 
         await newServiceProvider.save();
@@ -30,7 +37,7 @@ export const getServiceProviders = async (req, res) => {
         const serviceProviders = await ServiceProvider.find(query);
         res.status(200).json(serviceProviders);
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching service providers', error });
+        res.status(510).json({ message: 'Error fetching service providers', error });
     }
 };
 
@@ -43,13 +50,13 @@ export const getServiceProviderById = async (req, res) => {
         }
         res.status(200).json(serviceProvider);
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching service provider', error });
+        res.status(501).json({ message: 'Error fetching service provider', error });
     }
 };
 
 export const updateServiceProvider = async (req, res) => {
     try {
-        const { name, serviceType, specialty, availableSlots } = req.body;
+        const { name, serviceType, specialty, availableSlots, avatar, location, experience } = req.body;
 
         const serviceProvider = await ServiceProvider.findById(req.params.id);
         if (!serviceProvider) {
@@ -60,16 +67,17 @@ export const updateServiceProvider = async (req, res) => {
         serviceProvider.serviceType = serviceType || serviceProvider.serviceType;
         serviceProvider.specialty = specialty || serviceProvider.specialty;
         serviceProvider.availableSlots = availableSlots || serviceProvider.availableSlots;
-        serviceProvider.avatar=avatar || serviceProvider.avatar;
+        serviceProvider.avatar = avatar || serviceProvider.avatar;
+        serviceProvider.location = location || serviceProvider.location;  
+        serviceProvider.experience = experience || serviceProvider.experience; 
 
         await serviceProvider.save();
         res.status(200).json(serviceProvider);
     } catch (error) {
-        res.status(500).json({ message: 'Error updating service provider', error });
+        res.status(504).json({ message: 'Error updating service provider', error });
     }
 };
 
-// Delete a service provider by ID
 export const deleteServiceProvider = async (req, res) => {
     try {
         const serviceProvider = await ServiceProvider.findById(req.params.id);
@@ -80,6 +88,6 @@ export const deleteServiceProvider = async (req, res) => {
         await serviceProvider.remove();
         res.status(200).json({ message: 'Service provider deleted' });
     } catch (error) {
-        res.status(500).json({ message: 'Error deleting service provider', error });
+        res.status(503).json({ message: 'Error deleting service provider', error });
     }
 };

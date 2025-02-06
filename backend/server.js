@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import morgan from 'morgan';
 import createHttpError from 'http-errors';
+import path from 'path';
 
 import authRoutes from './routes/auth.js';
 import serviceRoutes from './routes/service.js';
@@ -15,7 +16,6 @@ const app = express();
 const port = 3001;
 const conn = process.env.MONGO_URI;
 
-
 app.use(express.json());
 app.use(cors({
   origin: 'http://localhost:5173', // Frontend origin
@@ -24,6 +24,7 @@ app.use(cors({
 }));
 app.use(morgan('dev'));
 
+// MongoDB connection
 mongoose.connect(conn, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB is connected!'))
   .catch((err) => console.error('Connection Failed!', err.message));
@@ -41,14 +42,15 @@ app.use('/bookings', bookingRoutes);
 app.use('/admin', adminRoutes);
 app.use('/user', userRoutes);
 
+// Error handling for not found routes
 app.use((req, res, next) => {
   next(createHttpError.NotFound());
 });
 
+// Error handling middleware
 app.use((error, req, res, next) => {
   error.status = error.status || 500;
-  res.status(error.status);
-  res.send(error);
+  res.status(error.status).send(error.message || 'Internal Server Error');
 });
 
 // Listen on the port

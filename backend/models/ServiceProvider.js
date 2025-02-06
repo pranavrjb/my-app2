@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { type } from 'os';
 
 const serviceProviderSchema = new mongoose.Schema({
   name: {
@@ -16,8 +17,17 @@ const serviceProviderSchema = new mongoose.Schema({
     type: [String],
   },
   avatar: {
-    type: String,  // Store the URL of the uploaded image
+    type: String,  
   },
+    location: {
+        type: String, 
+        required: true, 
+    },
+    experience: {
+        type: Number, 
+        required: true, 
+        min: [1, 'Experience must be at least 1 year'], 
+    },
   createdAt: {
     type: Date,
     default: Date.now,

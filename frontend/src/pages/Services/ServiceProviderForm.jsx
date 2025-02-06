@@ -29,6 +29,8 @@ const ServiceProviderForm = ({ fetchServiceProviders }) => {
     serviceType: "",
     specialty: "",
     availableSlots: [],
+    location: "",
+    experience: "",
     avatar: null,
   });
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -44,7 +46,7 @@ const ServiceProviderForm = ({ fetchServiceProviders }) => {
   const handleAvatarChange = (e) => {
     setServiceProvider({
       ...serviceProvider,
-      avatar: e.target.files[0], // Storing the avatar file
+      avatar: e.target.files[0],
     });
   };
 
@@ -63,24 +65,35 @@ const ServiceProviderForm = ({ fetchServiceProviders }) => {
       formData.append("serviceType", serviceProvider.serviceType);
       formData.append("specialty", serviceProvider.specialty);
       formData.append("availableSlots", serviceProvider.availableSlots);
+      formData.append("location", serviceProvider.location);
+      formData.append("experience", serviceProvider.experience);
       if (serviceProvider.avatar) {
         formData.append("avatar", serviceProvider.avatar);
       }
 
-      await API.post("/service/add", formData, {
+      console.log([...formData.entries()]); // Debugging the form data
+
+      const response = await API.post("/service/add", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      fetchServiceProviders();
-      setOpenSnackbar(true);
-      setServiceProvider({
-        name: "",
-        serviceType: "",
-        specialty: "",
-        availableSlots: [],
-        avatar: null,
-      });
+      if (response.status === 200) {
+        setOpenSnackbar(true);
+        fetchServiceProviders();
+        setServiceProvider({
+          name: "",
+          serviceType: "",
+          specialty: "",
+          availableSlots: [],
+          location: "",
+          experience: "",
+          avatar: null,
+        });
+      }
     } catch (error) {
-      console.error("Error adding service provider", error);
+      console.error(
+        "Error adding service provider",
+        error.response?.data || error
+      );
     }
   };
 
@@ -116,7 +129,7 @@ const ServiceProviderForm = ({ fetchServiceProviders }) => {
                 >
                   <MenuItem value="Doctor">Doctor</MenuItem>
                   <MenuItem value="Hairdresser">Hairdresser</MenuItem>
-                  <MenuItem value="Trainer">Trainer</MenuItem>
+                  <MenuItem value="Gym Trainer">Gym Trainer</MenuItem>
                   <MenuItem value="Consultant">Consultant</MenuItem>
                   {/* Add other service types */}
                 </Select>
@@ -133,14 +146,49 @@ const ServiceProviderForm = ({ fetchServiceProviders }) => {
                 placeholder="Optional"
               />
             </Grid>
+
+            {/* Location and Experience */}
             <Grid item xs={12} sm={6}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  label="Available Slot"
-                  onChange={handleDateChange}
-                  renderInput={(params) => <TextField fullWidth {...params} />}
-                />
-              </LocalizationProvider>
+              <TextField
+                fullWidth
+                label="Location"
+                name="location"
+                value={serviceProvider.location}
+                onChange={handleChange}
+                variant="outlined"
+                required
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Experience (in years)"
+                name="experience"
+                value={serviceProvider.experience}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value >= 1) {
+                    handleChange(e); // Valid experience
+                  }
+                }}
+                type="number"
+                variant="outlined"
+                required
+                helperText="Experience must be at least 1 year."
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    label="Available Slot"
+                    onChange={handleDateChange}
+                    renderInput={(params) => (
+                      <TextField fullWidth {...params} />
+                    )}
+                  />
+                </LocalizationProvider>
+              </FormControl>
               {serviceProvider.availableSlots.length > 0 && (
                 <Typography variant="body2" color="text.secondary" mt={1}>
                   Available Slots: {serviceProvider.availableSlots.join(", ")}
@@ -148,7 +196,7 @@ const ServiceProviderForm = ({ fetchServiceProviders }) => {
               )}
             </Grid>
             <Grid item xs={12}>
-              <Stack direction="row" alignItems="center" spacing={2}>
+              <Stack direction="row" alignItems="center" spacing={4}>
                 <Avatar
                   alt="Service Provider Avatar"
                   src={
@@ -156,7 +204,7 @@ const ServiceProviderForm = ({ fetchServiceProviders }) => {
                       ? URL.createObjectURL(serviceProvider.avatar)
                       : null
                   }
-                  sx={{ width: 100, height: 100 }}
+                  sx={{ width: 80, height: 80 }}
                 />
                 <Button
                   variant="contained"

@@ -59,16 +59,16 @@ const SearchServiceProviders = () => {
     setOpen(true);
   };
 
-  const handleBookingChange = (e) => {
-    setBookingData({ ...bookingData, [e.target.name]: e.target.value });
-  };
+  // const handleBookingChange = (e) => {
+  //   setBookingData({ ...bookingData, [e.target.name]: e.target.value });
+  // };
 
-  const handleBookingSubmit = (e) => {
-    e.preventDefault();
-    console.log("Booking Data:", bookingData);
-    alert(`Appointment booked with ${selectedServiceProvider.name}`);
-    setOpen(false);
-  };
+  // const handleBookingSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log("Booking Data:", bookingData);
+  //   alert(`Appointment booked with ${selectedServiceProvider.name}`);
+  //   setOpen(false);
+  // };
 
   return (
     <Box sx={{ p: 4 }}>
@@ -111,7 +111,7 @@ const SearchServiceProviders = () => {
               }}
             >
               <Avatar
-                src={provider.image}
+                src={provider.avatar}
                 alt={provider.name}
                 sx={{ width: 105, height: 115, mr: 4 }}
               />
@@ -122,12 +122,12 @@ const SearchServiceProviders = () => {
                 <Typography variant="body2" color="text.secondary">
                   Service: {provider.serviceType}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                {/* <Typography variant="body2" color="text.secondary">
                   Location: {provider.location}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Experience: {provider.experience} years
-                </Typography>
+                </Typography> */}
               </CardContent>
             </Card>
           </Grid>

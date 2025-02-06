@@ -1,6 +1,5 @@
 import React from "react";
 import { Typography, useTheme, Box } from "@mui/material";
-import SearchDoctors from "./Services/SearchServiceProviders";
 import FAQsPage from "./FAQsPage";
 import SearchServiceProviders from "./Services/SearchServiceProviders";
 
