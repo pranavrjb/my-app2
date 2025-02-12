@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import {
   Box,
   Container,
@@ -7,9 +7,6 @@ import {
   Typography,
   Grid,
   Paper,
-  MenuItem,
-  Select,
-  InputLabel,
   FormControl,
   Avatar,
   Stack,
@@ -27,12 +24,15 @@ const ServiceProviderForm = ({ fetchServiceProviders }) => {
   const [serviceProvider, setServiceProvider] = useState({
     name: "",
     serviceType: "",
-    specialty: "",
+    // specialty: "",
     availableSlots: [],
     location: "",
-    experience: "",
+    // experience: "",
     avatar: null,
   });
+
+  const [fromDate, setFromDate] = useState(null); // State for "From" date
+  const [toDate, setToDate] = useState(null); // State for "To" date
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const { user } = useContext(UserContext);
 
@@ -50,44 +50,43 @@ const ServiceProviderForm = ({ fetchServiceProviders }) => {
     });
   };
 
-  const handleDateChange = (date) => {
-    setServiceProvider((prev) => ({
-      ...prev,
-      availableSlots: [...prev.availableSlots, date.format("YYYY-MM-DD")],
-    }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Add the selected date range to availableSlots
+    const dateRange =
+      fromDate && toDate
+        ? `${fromDate.format("YYYY-MM-DD")} - ${toDate.format("YYYY-MM-DD")}`
+        : "";
+
     try {
       const formData = new FormData();
       formData.append("name", serviceProvider.name);
       formData.append("serviceType", serviceProvider.serviceType);
-      formData.append("specialty", serviceProvider.specialty);
-      formData.append("availableSlots", serviceProvider.availableSlots);
+      // formData.append("specialty", serviceProvider.specialty);
+      formData.append("availableSlots", dateRange); // Add the date range as availableSlots
       formData.append("location", serviceProvider.location);
-      formData.append("experience", serviceProvider.experience);
-      if (serviceProvider.avatar) {
-        formData.append("avatar", serviceProvider.avatar);
-      }
-
-      console.log([...formData.entries()]); // Debugging the form data
+      // formData.append("experience", serviceProvider.experience);
+      formData.append("avatar", serviceProvider.avatar);
 
       const response = await API.post("/service/add", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+
       if (response.status === 200) {
         setOpenSnackbar(true);
         fetchServiceProviders();
         setServiceProvider({
           name: "",
           serviceType: "",
-          specialty: "",
+          // specialty: "",
           availableSlots: [],
           location: "",
-          experience: "",
+          // experience: "",
           avatar: null,
         });
+        setFromDate(null);
+        setToDate(null);
       }
     } catch (error) {
       console.error(
@@ -98,14 +97,15 @@ const ServiceProviderForm = ({ fetchServiceProviders }) => {
   };
 
   return (
-    <Container sx={{ minHeight: "100vh", mt: 4 }}>
-      <Paper elevation={3} sx={{ p: 4 }}>
+    <Container sx={{ minHeight: "100vh", mt: 4,display:"flex",justifyContent:"center",alignItems:"center" }}>
+      <Paper elevation={3} sx={{ p: 4,maxWidth: 600, margin: "auto",width: "100%" }}>
         <Typography variant="h4" sx={{ mb: 4, textAlign: "center" }}>
           Add Service Provider
         </Typography>
         <form onSubmit={handleSubmit} encType="multipart/form-data">
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
+            
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 label="Name"
@@ -116,39 +116,20 @@ const ServiceProviderForm = ({ fetchServiceProviders }) => {
                 required
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <FormControl fullWidth variant="outlined">
-                <InputLabel id="serviceType-label">Service Type</InputLabel>
-                <Select
-                  labelId="serviceType-label"
+                <TextField
+                  fullWidth
                   label="Service Type"
                   name="serviceType"
                   value={serviceProvider.serviceType}
                   onChange={handleChange}
+                  variant="outlined"
                   required
-                >
-                  <MenuItem value="Doctor">Doctor</MenuItem>
-                  <MenuItem value="Hairdresser">Hairdresser</MenuItem>
-                  <MenuItem value="Gym Trainer">Gym Trainer</MenuItem>
-                  <MenuItem value="Consultant">Consultant</MenuItem>
-                  {/* Add other service types */}
-                </Select>
+                />
               </FormControl>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Specialty"
-                name="specialty"
-                value={serviceProvider.specialty}
-                onChange={handleChange}
-                variant="outlined"
-                placeholder="Optional"
-              />
-            </Grid>
-
-            {/* Location and Experience */}
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
                 fullWidth
                 label="Location"
@@ -159,39 +140,43 @@ const ServiceProviderForm = ({ fetchServiceProviders }) => {
                 required
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Experience (in years)"
-                name="experience"
-                value={serviceProvider.experience}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  if (value >= 1) {
-                    handleChange(e); // Valid experience
-                  }
-                }}
-                type="number"
-                variant="outlined"
-                required
-                helperText="Experience must be at least 1 year."
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DatePicker
-                    label="Available Slot"
-                    onChange={handleDateChange}
-                    renderInput={(params) => (
-                      <TextField fullWidth {...params} />
-                    )}
-                  />
-                </LocalizationProvider>
-              </FormControl>
-              {serviceProvider.availableSlots.length > 0 && (
+            <Grid item xs={12}>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <FormControl fullWidth>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        label="From"
+                        value={fromDate}
+                        onChange={(newValue) => setFromDate(newValue)}
+                        renderInput={(params) => (
+                          <TextField fullWidth {...params} />
+                        )}
+                      />
+                    </LocalizationProvider>
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <FormControl fullWidth>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        label="To"
+                        value={toDate}
+                        onChange={(newValue) => setToDate(newValue)}
+                        renderInput={(params) => (
+                          <TextField fullWidth {...params} />
+                        )}
+                      />
+                    </LocalizationProvider>
+                  </FormControl>
+                </Grid>
+              </Grid>
+
+              {fromDate && toDate && (
                 <Typography variant="body2" color="text.secondary" mt={1}>
-                  Available Slots: {serviceProvider.availableSlots.join(", ")}
+                  Available Slots: {fromDate.format("MM/DD/YYYY")} -{" "}
+                  {toDate.format("MM/DD/YYYY")}
                 </Typography>
               )}
             </Grid>
@@ -222,7 +207,8 @@ const ServiceProviderForm = ({ fetchServiceProviders }) => {
               </Stack>
             </Grid>
           </Grid>
-          <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
             <Button variant="contained" color="primary" type="submit">
               Submit
             </Button>

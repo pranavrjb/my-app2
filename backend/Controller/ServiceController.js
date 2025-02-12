@@ -5,18 +5,18 @@ export const createServiceProvider = async (req, res) => {
     const { name, serviceType, specialty, availableSlots, location, experience } = req.body;
     const avatar=req.file ? req.file.path :null;
 
-    if (!name || !serviceType || !location || !experience){
+    if (!name || !serviceType || !location ){
         return res.status(400).json({ message: 'All required fields must be provided.' });
     }
     try {
         const newServiceProvider = new ServiceProvider({
             name,
             serviceType,
-            specialty,
+            // specialty,
             availableSlots,
             avatar:avatar,
             location,  
-            experience, 
+            // experience, 
         });
 
         await newServiceProvider.save();
@@ -28,11 +28,11 @@ export const createServiceProvider = async (req, res) => {
 
 export const getServiceProviders = async (req, res) => {
     try {
-        const { serviceType, specialty,avatar } = req.query;
+        const { serviceType, location,avatar } = req.query;
         const query = {};
 
         if (serviceType) query.serviceType = serviceType;
-        if (specialty) query.specialty = specialty;
+        if (location) query.location = location;
         if (avatar) query.avatar = avatar;
 
         const serviceProviders = await ServiceProvider.find(query);
@@ -66,11 +66,11 @@ export const updateServiceProvider = async (req, res) => {
 
         serviceProvider.name = name || serviceProvider.name;
         serviceProvider.serviceType = serviceType || serviceProvider.serviceType;
-        serviceProvider.specialty = specialty || serviceProvider.specialty;
+        // serviceProvider.specialty = specialty || serviceProvider.specialty;
         serviceProvider.availableSlots = availableSlots || serviceProvider.availableSlots;
         serviceProvider.avatar = avatar || serviceProvider.avatar;
         serviceProvider.location = location || serviceProvider.location;  
-        serviceProvider.experience = experience || serviceProvider.experience; 
+        // serviceProvider.experience = experience || serviceProvider.experience; 
 
         await serviceProvider.save();
         res.status(200).json(serviceProvider);

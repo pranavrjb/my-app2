@@ -49,6 +49,12 @@ const SearchServiceProviders = () => {
     setOpen(true);
   };
 
+  function extractPath(path) {
+    if (path.includes("\\")){
+     return path.substring(26);
+      
+      }return path;
+    }
   return (
     <Box sx={{ p: 4 }}>
       <Box
@@ -90,13 +96,15 @@ const SearchServiceProviders = () => {
               }}
             >
               <Avatar
-                src={`/images/${provider.avatar}`}
-                  alt={provider.name}
-                  sx={{ width: 115, height: 115, mr: 4 }}
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = "path/to/fallback-image.png";
-                  }}
+                src={`/images/${extractPath(provider.avatar)}`}
+                alt={provider.name}
+                sx={{ width: 115, height: 115, mr: 4 }}
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "default-avatar.png"; // Use a default avatar if the image doesn't load
+                  console.log(`${extractPath(provider.avatar)}`);
+                  console.log(provider.avatar);
+                }}
               />
 
               <CardContent>
@@ -108,9 +116,6 @@ const SearchServiceProviders = () => {
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Location: {provider.location}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Experience: {provider.experience} years
                 </Typography>
               </CardContent>
             </Card>

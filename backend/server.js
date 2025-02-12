@@ -27,7 +27,7 @@ app.use(cors({
   credentials: true,
 }));
 app.use(morgan('dev'));
-app.use('/images', express.static(path.join(__dirname,'./images')))
+app.use('/images', express.static(path.join(__dirname,'../../frontend/public/images')))
 
 // MongoDB connection
 mongoose.connect(conn, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -35,7 +35,7 @@ mongoose.connect(conn, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch((err) => console.error('Connection Failed!', err.message));
 
 // Init session Routes
-app.get('/', (req, res, next) => {
+app.get('/', (req, res) => {
   res.send('Welcome to appointment booking API!');
 });
 
@@ -49,7 +49,7 @@ app.use('/user', userRoutes);
 
 // Error handling for not found routes
 app.use((req, res, next) => {
-  next(createHttpError.NotFound());
+  next(createHttpError.NotFound());q 
 });
 
 // Error handling middleware
