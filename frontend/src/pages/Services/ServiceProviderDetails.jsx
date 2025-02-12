@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Container, Typography, CircularProgress } from "@mui/material";
-import API from "../../api";
+import API from "../../api"; 
 
 const ServiceProviderDetails = () => {
   const { id } = useParams();
@@ -11,7 +11,7 @@ const ServiceProviderDetails = () => {
   useEffect(() => {
     const fetchServiceProvider = async () => {
       try {
-        const response = await API.get(`/service/${id}`);
+        const response = await API.get(`/service`); 
         setServiceProvider(response.data);
         setLoading(false);
       } catch (error) {
@@ -39,9 +39,9 @@ const ServiceProviderDetails = () => {
         Service: {serviceProvider.serviceType}
       </Typography>
       <Typography>Specialty: {serviceProvider.specialty}</Typography>
-      <Typography>
-        Available Slots: {serviceProvider.availableSlots.join(", ")}
-      </Typography>
+      <Typography>Location: {serviceProvider.location}</Typography>
+      {/* <Typography>Experience: {serviceProvider.experience} years</Typography> */}
+      <Typography>Available Slots: {serviceProvider.availableSlots}</Typography>
     </Container>
   );
 };

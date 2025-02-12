@@ -117,15 +117,15 @@ const Navbar = () => {
                   <Button color="inherit" component={Link} to="/manageusers">
                     Manage User
                   </Button>
-                  <Button color="inherit" component={Link} to="/managedoctors">
-                    Manage Doctor
+                  <Button color="inherit" component={Link} to="/form">
+                    Add Company
                   </Button>
-                  <Button color="inherit" component={Link} to="/managebookings">
+                  <Button color="inherit" component={Link} to="/service/:id">
                     Manage Bookings
                   </Button>
-                  <Button color="inherit" component={Link} to="/doctor">
+                  {/* <Button color="inherit" component={Link} to="/doctor">
                     Add Doctor
-                  </Button>
+                  </Button> */}
                 </>
               )}
               <Box sx={{ display: "flex", alignItems: "center" }}>

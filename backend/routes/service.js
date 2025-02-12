@@ -34,7 +34,7 @@ const upload = multer({
 
 router.post('/add', upload.single('avatar'), createServiceProvider);
 router.get('/', getServiceProviders);
-router.get('/:id', adminOrServiceProvider, getServiceProviderById);
+router.get('/:id', getServiceProviderById);
 router.put('/:id', adminOrServiceProvider, updateServiceProvider); 
 router.delete('/:id', adminOrServiceProvider, deleteServiceProvider);
 

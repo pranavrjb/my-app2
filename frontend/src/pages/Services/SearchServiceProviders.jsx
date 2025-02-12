@@ -10,6 +10,7 @@ import {
   InputAdornment,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { Link } from "react-router-dom"; // Import Link for routing
 import API from "../../api";
 
 const SearchServiceProviders = () => {
@@ -48,13 +49,12 @@ const SearchServiceProviders = () => {
     setSelectedServiceProvider(provider);
     setOpen(true);
   };
-
-  function extractPath(path) {
-    if (path.includes("\\")){
-     return path.substring(26);
-      
-      }return path;
-    }
+function extractPath(path) {
+  if (path.includes("\\")) {
+    return path.substring(26);
+  }
+  return path;
+}
   return (
     <Box sx={{ p: 4 }}>
       <Box
@@ -86,39 +86,41 @@ const SearchServiceProviders = () => {
             onClick={() => handleCardClick(provider)}
             style={{ cursor: "pointer" }}
           >
-            <Card
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                p: 3,
-                transition: "transform 0.3s",
-                "&:hover": { transform: "scale(1.15)" },
-              }}
+            <Link
+              to={`/service/${provider.id}`}
+              style={{ textDecoration: "none" }}
             >
-              <Avatar
-                src={`/images/${extractPath(provider.avatar)}`}
-                alt={provider.name}
-                sx={{ width: 115, height: 115, mr: 4 }}
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = "default-avatar.png"; // Use a default avatar if the image doesn't load
-                  console.log(`${extractPath(provider.avatar)}`);
-                  console.log(provider.avatar);
+              <Card
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  p: 3,
+                  transition: "transform 0.3s",
+                  "&:hover": { transform: "scale(1.15)" },
                 }}
-              />
-
-              <CardContent>
-                <Typography variant="h6" fontWeight={"bold"}>
-                  {provider.name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Service: {provider.serviceType}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Location: {provider.location}
-                </Typography>
-              </CardContent>
-            </Card>
+              >
+                <Avatar
+                  src={`/images/${extractPath(provider.avatar)}`}
+                  alt={provider.name}
+                  sx={{ width: 115, height: 115, mr: 4 }}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "backendimages"; // Default image if there's an error
+                  }}
+                />
+                <CardContent>
+                  <Typography variant="h6" fontWeight={"bold"}>
+                    {provider.name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Service: {provider.serviceType}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Location: {provider.location}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Link>
           </Grid>
         ))}
       </Grid>

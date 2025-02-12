@@ -40,7 +40,7 @@ const App = () => {
         <Route path="/bookings" element={<BookingForm />} />
         <Route path="/form" element={<ServiceProviderForm />} />
         <Route
-          path="/serviceProvider/:id"
+          path="/service/:id"
           element={<ServiceProviderDetails />}
         />
 
