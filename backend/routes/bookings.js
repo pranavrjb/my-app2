@@ -6,23 +6,21 @@ import admin from '../middleware/adminMiddleware.js';
 const router = express.Router();
 // Create a new booking
 router.post('/book', protect, async (req, res) => {
-    const { doctor, symptoms, time } = req.body;
+    const { providerId, clientName, clientEmail, clientPhone, slot } = req.body;
 
     try {
         const newBooking = new Booking({
-            doctor,
-            patient: req.user._id,
-            symptoms,
-            time,
+            providerId,
+            clientName,
+            clientEmail,
+            clientPhone,
+            slot,
         });
+
         await newBooking.save();
-        res.status(201).json({
-            message: 'Appointment Booked Successfully!',
-            booking: newBooking,
-        });
+        res.status(201).json(newBooking);
     } catch (error) {
-        console.error('Error while booking appointment:', error);
-        res.status(500).json({ message: 'Something went wrong!', error: error.message });
+        res.status(400).json({ message: error.message });
     }
 });
 
@@ -31,7 +29,7 @@ router.post('/book', protect, async (req, res) => {
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
-        const bookings = await Booking.find({ patient: id }).populate('doctor', 'name');
+        const bookings = await Booking.find({ patient: id }).populate('clientName clientEmail clientPhone slot');
         res.json(bookings);
     } catch (error) {
         res.status(500).json({ message: 'Something went wrong!', error });
@@ -41,7 +39,7 @@ router.get('/:id', async (req, res) => {
 //get all bookings for the admin
 router.get('/',protect, async (req, res) => {
     try {
-        const bookings = await Booking.find().populate('doctor', 'name specialization image').populate('patient', 'name');
+        const bookings = await Booking.find().populate('providerId').populate('clientName', 'clientEmail');
         res.status(200).json(bookings);
     } catch (error) {
         res.status(500).json({ message: 'Something went wrong!', error });

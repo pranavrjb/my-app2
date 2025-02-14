@@ -146,7 +146,7 @@ const Login = () => {
                   </InputAdornment>
                 ),
               }}
-              inputProps={{ minLength: 6 }}
+              inputProps={{ minLength:2 }}
             />
           </Grid>
 

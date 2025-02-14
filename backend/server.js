@@ -49,7 +49,7 @@ app.use('/user', userRoutes);
 
 // Error handling for not found routes
 app.use((req, res, next) => {
-  next(createHttpError.NotFound());q 
+  next(createHttpError.NotFound());
 });
 
 // Error handling middleware

@@ -129,6 +129,9 @@ const Navbar = () => {
                 </>
               )}
               <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Button color="inherit" component={Link} to="/bookings">
+                Start Booking
+                </Button>
                 <Tooltip title="View User Profile" arrow>
                   <AccountCircleIcon
                     sx={{ cursor: "pointer", fontSize: 27 }}
@@ -198,6 +201,9 @@ const Navbar = () => {
                     </ListItem>
                   </>
                 )}
+                <ListItem component={Link} to="/bookings">
+                  <ListItemText primary="Start Booking" />
+                  </ListItem>
                 <ListItem component={Link} to="/profile">
                   <ListItemText primary="Profile" />
                 </ListItem>
