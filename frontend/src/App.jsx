@@ -7,7 +7,6 @@ import Register from "./pages/Register";
 import HomePage from "./pages/HomePage";
 import Contact from "./pages/Contact";
 import Profile from "./pages/Profile";
-import DoctorForm from "./context/DoctorForm";
 import About from "./pages/About";
 import AdminDashboard from "./components/Dashboard/AdminDashboard";
 import ManageUsers from "./pages/ManageUsers";
@@ -22,7 +21,7 @@ import ServiceProviderForm from "./pages/Services/ServiceProviderForm";
 import SearchServiceProviders from "./pages/Services/SearchServiceProviders";
 
 const App = () => {
-  const isLoggedin = !!window.localStorage.getItem("userToken");
+  // const isLoggedin = !!window.localStorage.getItem("userToken");
 
   return (
     <ThemeContextProvider>
