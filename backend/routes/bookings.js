@@ -2,18 +2,19 @@ import express from 'express';
 import Booking from '../models/Booking.js';
 import protect from '../middleware/protectMiddleware.js';
 import admin from '../middleware/adminMiddleware.js';
+import mongoose from 'mongoose';
 
 const router = express.Router();
 // Create a new booking
 router.post('/book', protect, async (req, res) => {
-    const { providerId, clientName, clientEmail, clientPhone, slot } = req.body;
+    const { providerId, clientName, clientEmail, description, slot } = req.body;
 
     try {
         const newBooking = new Booking({
             providerId,
             clientName,
             clientEmail,
-            clientPhone,
+            description,
             slot,
         });
 
@@ -29,7 +30,7 @@ router.post('/book', protect, async (req, res) => {
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     try {
-        const bookings = await Booking.find({ patient: id }).populate('clientName clientEmail clientPhone slot');
+        const bookings = await Booking.find({ patient: id }).populate('clientName clientEmail description slot');
         res.json(bookings);
     } catch (error) {
         res.status(500).json({ message: 'Something went wrong!', error });

@@ -14,8 +14,12 @@ const bookingSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    clientPhone: {
-        type: String,
+    // clientPhone: {
+    //     type: String,
+    // },
+    description:{
+        type:String,
+        required:true,
     },
     slot: {
         type: String,

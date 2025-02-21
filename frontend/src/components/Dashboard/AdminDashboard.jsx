@@ -35,7 +35,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     fetchBookings();
-    fetchDoctors();
+    // fetchDoctors();
   }, []);
 
   const fetchUsers = async () => {
@@ -61,17 +61,17 @@ const AdminDashboard = () => {
       setLoading(false);
     }
   };
-  const fetchDoctors = async () => {
-    setLoading(true);
-    try {
-      const response = await API.get("/doctors");
-      setDoctors(response.data);
-    } catch (error) {
-      console.error("Error fetching doctors:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const fetchDoctors = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const response = await API.get("/doctors");
+  //     setDoctors(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching doctors:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <Box sx={{ minHeight: "100vh", p: 4 }}>
@@ -94,9 +94,9 @@ const AdminDashboard = () => {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell sx={{ fontWeight: 700, fontSize: 20 }}>
+                      {/* <TableCell sx={{ fontWeight: 700, fontSize: 20 }}>
                         Avatar
-                      </TableCell>
+                      </TableCell> */}
                       <TableCell sx={{ fontWeight: 700, fontSize: 20 }}>
                         Name
                       </TableCell>
@@ -111,9 +111,9 @@ const AdminDashboard = () => {
                   <TableBody>
                     {users.map((user) => (
                       <TableRow key={user._id}>
-                        <TableCell>
+                        {/* <TableCell>
                           <Avatar src={user.avatar} alt={user.name} />
-                        </TableCell>
+                        </TableCell> */}
                         <TableCell>{user.name}</TableCell>
                         <TableCell>{user.email}</TableCell>
                         <TableCell>{user.role}</TableCell>
@@ -126,7 +126,7 @@ const AdminDashboard = () => {
           </Grid>
 
 
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <Paper sx={{ p: 3 }}>
               <Typography variant="h4" textAlign={"center"} gutterBottom>
                 Doctor Details
@@ -168,8 +168,9 @@ const AdminDashboard = () => {
                 </Table>
               </TableContainer>
             </Paper>
-          </Grid>
-          <Grid item xs={12}>
+          </Grid> */}
+
+          {/* <Grid item xs={12}>
             <Paper sx={{ p: 3 }}>
               <Typography variant="h4" textAlign={"center"} gutterBottom>
                 Booking Details
@@ -211,7 +212,7 @@ const AdminDashboard = () => {
                 </Table>
               </TableContainer>
             </Paper>
-          </Grid>
+          </Grid> */}
         </Grid>
       )}
     </Box>

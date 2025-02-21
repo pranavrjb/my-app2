@@ -19,6 +19,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import API from "../../api";
 import { UserContext } from "../../context/UserContext";
+import dayjs from "dayjs";
 
 const ServiceProviderForm = ({ fetchServiceProviders }) => {
   const [serviceProvider, setServiceProvider] = useState({
@@ -97,14 +98,24 @@ const ServiceProviderForm = ({ fetchServiceProviders }) => {
   };
 
   return (
-    <Container sx={{ minHeight: "100vh", mt: 4,display:"flex",justifyContent:"center",alignItems:"center" }}>
-      <Paper elevation={3} sx={{ p: 4,maxWidth: 600, margin: "auto",width: "100%" }}>
+    <Container
+      sx={{
+        minHeight: "100vh",
+        mt: 4,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Paper
+        elevation={3}
+        sx={{ p: 4, maxWidth: 600, margin: "auto", width: "100%" }}
+      >
         <Typography variant="h4" sx={{ mb: 4, textAlign: "center" }}>
           Add Service Provider
         </Typography>
         <form onSubmit={handleSubmit} encType="multipart/form-data">
           <Grid container spacing={3}>
-            
             <Grid item xs={12}>
               <TextField
                 fullWidth
@@ -149,6 +160,9 @@ const ServiceProviderForm = ({ fetchServiceProviders }) => {
                         label="From"
                         value={fromDate}
                         onChange={(newValue) => setFromDate(newValue)}
+                        shouldDisableDate={(date) =>
+                          date.isBefore(dayjs(), "day")
+                        } // Disables past dates
                         renderInput={(params) => (
                           <TextField fullWidth {...params} />
                         )}
@@ -163,7 +177,16 @@ const ServiceProviderForm = ({ fetchServiceProviders }) => {
                       <DatePicker
                         label="To"
                         value={toDate}
-                        onChange={(newValue) => setToDate(newValue)}
+                        onChange={(newValue) => {
+                          if (fromDate && newValue.isBefore(fromDate, "day")) {
+                            alert("To date cannot be earlier than From date.");
+                          } else {
+                            setToDate(newValue);
+                          }
+                        }}
+                        shouldDisableDate={(date) =>
+                          fromDate && date.isBefore(fromDate, "day")
+                        }
                         renderInput={(params) => (
                           <TextField fullWidth {...params} />
                         )}

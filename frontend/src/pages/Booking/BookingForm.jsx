@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import dayjs from "dayjs"; // Import dayjs for date handling
 import {
   TextField,
   Button,
@@ -9,25 +10,29 @@ import {
   Snackbar,
   Alert,
   Paper,
+  FormControl,
 } from "@mui/material";
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import API from "../../api";
 
 const BookingForm = () => {
   const [providers, setProviders] = useState([]);
   const [selectedProvider, setSelectedProvider] = useState("");
+  const [availableDates, setAvailableDates] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState("");
   const [clientName, setClientName] = useState("");
   const [clientEmail, setClientEmail] = useState("");
-  const [clientPhone, setClientPhone] = useState("");
+  const [description, setDescription] = useState("");
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("success");
   const [open, setOpen] = useState(false);
 
-  // Fetch service providers when the component loads
   useEffect(() => {
     const fetchProviders = async () => {
       try {
-        const response = await API.get("/service"); // Fetch all service providers from the API
+        const response = await API.get("/service");
         setProviders(response.data);
       } catch (error) {
         console.error("Error fetching providers:", error);
@@ -38,8 +43,20 @@ const BookingForm = () => {
   }, []);
 
   const handleProviderChange = (event) => {
-    setSelectedProvider(event.target.value);
-    setSelectedSlot(""); // Reset slot selection when provider changes
+    const providerId = event.target.value;
+    setSelectedProvider(providerId);
+    setSelectedSlot("");
+    setSelectedDate(null);
+
+    const provider = providers.find((p) => p._id === providerId);
+    if (provider && provider.availableDates) {
+      setAvailableDates(provider.availableDates.map((date) => dayjs(date))); // Convert dates to dayjs format
+    }
+  };
+
+  const handleDateChange = (newValue) => {
+    setSelectedDate(newValue);
+    setSelectedSlot(""); // Reset slot selection on date change
   };
 
   const handleSlotChange = (event) => {
@@ -49,8 +66,13 @@ const BookingForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Validation checks
-    if (!selectedProvider || !selectedSlot || !clientName || !clientEmail) {
+    if (
+      !selectedProvider ||
+      !selectedDate ||
+      !selectedSlot ||
+      !clientName ||
+      !clientEmail
+    ) {
       setMessage("Please fill all the required fields.");
       setSeverity("error");
       setOpen(true);
@@ -58,25 +80,25 @@ const BookingForm = () => {
     }
 
     try {
-      // Send booking request to backend API
-      const response = await API.post("/bookings/book", {
+      await API.post("/bookings/book", {
         providerId: selectedProvider,
+        date: selectedDate.format("YYYY-MM-DD"),
         slot: selectedSlot,
         clientName,
         clientEmail,
-        clientPhone,
+        description,
       });
 
       setMessage("Booking successful!");
       setSeverity("success");
       setOpen(true);
 
-      // Reset form after submission
       setSelectedProvider("");
+      setSelectedDate(null);
       setSelectedSlot("");
       setClientName("");
       setClientEmail("");
-      setClientPhone("");
+      setDescription("");
     } catch (error) {
       setMessage("Booking failed. Please try again.");
       setSeverity("error");
@@ -103,7 +125,7 @@ const BookingForm = () => {
         elevation={3}
         sx={{ padding: "2rem", maxWidth: "500px", width: "100%" }}
       >
-        <form onSubmit={handleSubmit} className="w-full max-w-md">
+        <form onSubmit={handleSubmit}>
           <Typography variant="h4" align="center" gutterBottom>
             Book a Service
           </Typography>
@@ -127,6 +149,28 @@ const BookingForm = () => {
             </Grid>
 
             {selectedProvider && (
+              <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      label="Select Date"
+                      value={selectedDate}
+                      onChange={handleDateChange}
+                      shouldDisableDate={(date) =>
+                        !availableDates.some((availableDate) =>
+                          availableDate.isSame(date, "day")
+                        )
+                      }
+                      renderInput={(params) => (
+                        <TextField fullWidth {...params} />
+                      )}
+                    />
+                  </LocalizationProvider>
+                </FormControl>
+              </Grid>
+            )}
+
+            {selectedDate && (
               <Grid item xs={12}>
                 <TextField
                   select
@@ -169,10 +213,12 @@ const BookingForm = () => {
 
             <Grid item xs={12}>
               <TextField
-                label="Phone (Optional)"
+                label="Description"
                 fullWidth
-                value={clientPhone}
-                onChange={(e) => setClientPhone(e.target.value)}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                multiline
+                rows={4}
               />
             </Grid>
 
