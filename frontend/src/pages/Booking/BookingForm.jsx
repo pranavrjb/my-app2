@@ -32,8 +32,8 @@ const BookingForm = () => {
   useEffect(() => {
     const fetchProviders = async () => {
       try {
-        const response = await API.get("/service");
-        setProviders(response.data);
+        const res = await API.get("/service");
+        setProviders(res.data);
       } catch (error) {
         console.error("Error fetching providers:", error);
       }
@@ -42,15 +42,23 @@ const BookingForm = () => {
     fetchProviders();
   }, []);
 
-  const handleProviderChange = (event) => {
-    const providerId = event.target.value;
+  const handleProviderChange = (e) => {
+    const providerId = e.target.value;
     setSelectedProvider(providerId);
     setSelectedSlot("");
     setSelectedDate(null);
 
     const provider = providers.find((p) => p._id === providerId);
+
     if (provider && provider.availableDates) {
-      setAvailableDates(provider.availableDates.map((date) => dayjs(date))); // Convert dates to dayjs format
+      console.log("Raw available dates:", provider.availableDates); // Debugging
+      const formattedDates = provider.availableDates.map((date) =>dayjs(date));
+      console.log("Formatted available dates:", formattedDates.map(d=>d.format("YYYY-MM-DD"))); // Debugging
+      setAvailableDates(formattedDates); 
+    }
+    else{
+      console.log("No available dates found for provider:", provider); // Debugging
+      setAvailableDates([]);
     }
   };
 
@@ -156,11 +164,13 @@ const BookingForm = () => {
                       label="Select Date"
                       value={selectedDate}
                       onChange={handleDateChange}
-                      shouldDisableDate={(date) =>
-                        !availableDates.some((availableDate) =>
-                          availableDate.isSame(date, "day")
-                        )
-                      }
+                      shouldDisableDate={(date) => {
+                        if (availableDates.length === 0) return true; // No available dates → disable all
+                        console.log("Checking date:",date.format("YYYY-MM-DD")); // Debugging
+                        console.log("Available dates:",availableDates.map((d) => d.format("YYYY-MM-DD")));
+
+                        return !availableDates.some((availableDate) => dayjs(date).isSame(availableDate, "day"));
+                      }}
                       renderInput={(params) => (
                         <TextField fullWidth {...params} />
                       )}
