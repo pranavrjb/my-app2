@@ -10,15 +10,13 @@ import {
   InputAdornment,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { Link } from "react-router-dom"; // Import Link for routing
+import { Link } from "react-router-dom";
 import API from "../../api";
 
 const SearchServiceProviders = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [serviceProviders, setServiceProviders] = useState([]);
   const [filteredServiceProviders, setFilteredServiceProviders] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [selectedServiceProvider, setSelectedServiceProvider] = useState(null);
 
   useEffect(() => {
     const fetchServiceProviders = async () => {
@@ -45,16 +43,13 @@ const SearchServiceProviders = () => {
     setFilteredServiceProviders(filtered);
   };
 
-  const handleCardClick = (provider) => {
-    setSelectedServiceProvider(provider);
-    setOpen(true);
-  };
-function extractPath(path) {
-  if (path.includes("\\")) {
-    return path.substring(26);
+  function extractPath(path) {
+    if (path.includes("\\")) {
+      return path.substring(26);
+    }
+    return path;
   }
-  return path;
-}
+
   return (
     <Box sx={{ p: 4 }}>
       <Box
@@ -75,47 +70,50 @@ function extractPath(path) {
           }}
         />
       </Box>
-      <Grid container spacing={3}>
+
+      <Grid container spacing={3} justifyContent="center">
         {filteredServiceProviders.map((provider) => (
-          <Grid
-            item
-            xs={12}
-            sm={4}
-            md={4}
-            key={provider.id}
-            onClick={() => handleCardClick(provider)}
-            style={{ cursor: "pointer" }}
-          >
+          <Grid item xs={12} sm={6} md={4} key={provider.id}>
             <Link
-              to={`/service/${provider.id}`}
+              to={`/bookings`}
               style={{ textDecoration: "none" }}
             >
               <Card
                 sx={{
                   display: "flex",
+                  flexDirection: "column",
                   alignItems: "center",
-                  p: 3,
-                  transition: "transform 0.3s",
-                  "&:hover": { transform: "scale(1.15)" },
+                  justifyContent: "center",
+                  width: "370px",
+                  height: "250px",
+                  textAlign: "center",
+                  transition: "all 0.2s ease-in-out",
+                  "&:hover": {
+                    boxShadow: "0px 4px 15px rgba(255, 255, 255, 0.3)",
+                    transform: "scale(1.05)",
+                  },
+                  mx: "auto",
+                  borderRadius: "10px",
                 }}
               >
                 <Avatar
                   src={`/images/${extractPath(provider.avatar)}`}
                   alt={provider.name}
-                  sx={{ width: 115, height: 115, mr: 4 }}
+                  // position="relative"
+                  sx={{ width: 110, height: 110}}
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = "backendimages"; // Default image if there's an error
+                    e.target.src = "backendimages";
                   }}
                 />
                 <CardContent>
-                  <Typography variant="h6" fontWeight={"bold"}>
+                  <Typography variant="h6" fontWeight="bold">
                     {provider.name}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant="body1" color="text.secondary">
                     Service: {provider.serviceType}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant="body1" color="text.secondary">
                     Location: {provider.location}
                   </Typography>
                 </CardContent>
