@@ -22,201 +22,182 @@ import { UserContext } from "../../context/UserContext";
 import dayjs from "dayjs";
 
 const ServiceProviderForm = ({ fetchServiceProviders }) => {
-  const [serviceProvider, setServiceProvider] = useState({
+  const [formState, setFormState] = useState({
     name: "",
     serviceType: "",
-    // specialty: "",
-    availableSlots: [],
     location: "",
-    // experience: "",
     avatar: null,
   });
+  const [dates, setDates] = useState({ from: null, to: null });
+  const [status, setStatus] = useState({
+    loading: false,
+    error: null,
+    success: false,
+  });
 
-  const [fromDate, setFromDate] = useState(null); // State for "From" date
-  const [toDate, setToDate] = useState(null); // State for "To" date
-  const [openSnackbar, setOpenSnackbar] = useState(false);
   const { user } = useContext(UserContext);
 
+  const generateDateRange = (start, end) => {
+    const dates = [];
+    let current = start.clone();
+    while (current.isBefore(end)) {
+      dates.push(current.format("YYYY-MM-DD"));
+      current = current.add(1, "day");
+    }
+    return dates;
+  };
+
   const handleChange = (e) => {
-    setServiceProvider({
-      ...serviceProvider,
-      [e.target.name]: e.target.value,
-    });
+    setFormState({ ...formState, [e.target.name]: e.target.value });
   };
 
   const handleAvatarChange = (e) => {
-    setServiceProvider({
-      ...serviceProvider,
-      avatar: e.target.files[0],
-    });
+    setFormState({ ...formState, avatar: e.target.files[0] });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setStatus({ ...status, loading: true, error: null });
 
-    // Add the selected date range to availableSlots
-    const dateRange =
-      fromDate && toDate
-        ? `${fromDate.format("YYYY-MM-DD")} - ${toDate.format("YYYY-MM-DD")}`
-        : "";
+    if (!dates.from || !dates.to) {
+      setStatus({ ...status, error: "Please select both date ranges" });
+      return;
+    }
 
     try {
       const formData = new FormData();
-      formData.append("name", serviceProvider.name);
-      formData.append("serviceType", serviceProvider.serviceType);
-      // formData.append("specialty", serviceProvider.specialty);
-      formData.append("availableSlots", dateRange); // Add the date range as availableSlots
-      formData.append("location", serviceProvider.location);
-      // formData.append("experience", serviceProvider.experience);
-      formData.append("avatar", serviceProvider.avatar);
+      formData.append("name", formState.name);
+      formData.append("serviceType", formState.serviceType);
+      formData.append("location", formState.location);
+      formData.append("avatar", formState.avatar);
+      
+      // Generate array of dates between from and to
+      const dateArray = generateDateRange(dates.from, dates.to);
+      dateArray.forEach(date => formData.append("availableSlots", date));
 
       const response = await API.post("/service/add", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { 
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${user.token}` 
+        },
       });
 
       if (response.status === 200) {
-        setOpenSnackbar(true);
+        setStatus({ loading: false, success: true, error: null });
         fetchServiceProviders();
-        setServiceProvider({
-          name: "",
-          serviceType: "",
-          // specialty: "",
-          availableSlots: [],
-          location: "",
-          // experience: "",
-          avatar: null,
-        });
-        setFromDate(null);
-        setToDate(null);
+        resetForm();
       }
     } catch (error) {
-      console.error(
-        "Error adding service provider",
-        error.response?.data || error
-      );
+      console.error("Submission error:", error);
+      setStatus({
+        loading: false,
+        success: false,
+        error: error.response?.data?.message || "Failed to add service provider",
+      });
     }
   };
 
+  const resetForm = () => {
+    setFormState({
+      name: "",
+      serviceType: "",
+      location: "",
+      avatar: null,
+    });
+    setDates({ from: null, to: null });
+  };
+
   return (
-    <Container
-      sx={{
-        minHeight: "100vh",
-        mt: 4,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Paper
-        elevation={3}
-        sx={{ p: 4, maxWidth: 600, margin: "auto", width: "100%" }}
-      >
-        <Typography variant="h4" sx={{ mb: 4, textAlign: "center" }}>
+    <Container sx={{ py: 4,minHeight: "100vh" }}>
+      <Paper elevation={3} sx={{ p: 4, maxWidth: 600, mx: "auto" }}>
+        <Typography variant="h4" align="center" gutterBottom>
           Add Service Provider
         </Typography>
+
         <form onSubmit={handleSubmit} encType="multipart/form-data">
           <Grid container spacing={3}>
+            {/* Form Fields */}
             <Grid item xs={12}>
               <TextField
                 fullWidth
                 label="Name"
                 name="name"
-                value={serviceProvider.name}
+                value={formState.name}
                 onChange={handleChange}
-                variant="outlined"
                 required
               />
             </Grid>
+
             <Grid item xs={12}>
-              <FormControl fullWidth variant="outlined">
-                <TextField
-                  fullWidth
-                  label="Service Type"
-                  name="serviceType"
-                  value={serviceProvider.serviceType}
-                  onChange={handleChange}
-                  variant="outlined"
-                  required
-                />
-              </FormControl>
+              <TextField
+                fullWidth
+                label="Service Type"
+                name="serviceType"
+                value={formState.serviceType}
+                onChange={handleChange}
+                required
+              />
             </Grid>
+
             <Grid item xs={12}>
               <TextField
                 fullWidth
                 label="Location"
                 name="location"
-                value={serviceProvider.location}
+                value={formState.location}
                 onChange={handleChange}
-                variant="outlined"
                 required
               />
             </Grid>
+
             <Grid item xs={12}>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
-                  <FormControl fullWidth>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker
-                        label="From"
-                        value={fromDate}
-                        onChange={(newValue) => setFromDate(newValue)}
-                        shouldDisableDate={(date) =>
-                          date.isBefore(dayjs(), "day")
-                        } // Disables past dates
-                        renderInput={(params) => (
-                          <TextField fullWidth {...params} />
-                        )}
-                      />
-                    </LocalizationProvider>
-                  </FormControl>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      label="From"
+                      value={dates.from}
+                      onChange={(newValue) => setDates({ ...dates, from: newValue })}
+                      minDate={dayjs()}
+                      renderInput={(params) => (
+                        <TextField {...params} fullWidth required />
+                      )}
+                    />
+                  </LocalizationProvider>
                 </Grid>
 
                 <Grid item xs={6}>
-                  <FormControl fullWidth>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker
-                        label="To"
-                        value={toDate}
-                        onChange={(newValue) => {
-                          if (fromDate && newValue.isBefore(fromDate, "day")) {
-                            alert("To date cannot be earlier than From date.");
-                          } else {
-                            setToDate(newValue);
-                          }
-                        }}
-                        shouldDisableDate={(date) =>
-                          fromDate && date.isBefore(fromDate, "day")
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      label="To"
+                      value={dates.to}
+                      onChange={(newValue) => {
+                        if (dates.from && newValue.isBefore(dates.from, "day")) {
+                          setStatus({ ...status, error: "End date cannot be before start date" });
+                          return;
                         }
-                        renderInput={(params) => (
-                          <TextField fullWidth {...params} />
-                        )}
-                      />
-                    </LocalizationProvider>
-                  </FormControl>
+                        setDates({ ...dates, to: newValue });
+                      }}
+                      minDate={dates.from || dayjs()}
+                      disabled={!dates.from}
+                      renderInput={(params) => (
+                        <TextField {...params} fullWidth required />
+                      )}
+                    />
+                  </LocalizationProvider>
                 </Grid>
               </Grid>
-
-              {fromDate && toDate && (
-                <Typography variant="body2" color="text.secondary" mt={1}>
-                  Available Slots: {fromDate.format("MM/DD/YYYY")} -{" "}
-                  {toDate.format("MM/DD/YYYY")}
-                </Typography>
-              )}
             </Grid>
+
             <Grid item xs={12}>
-              <Stack direction="row" alignItems="center" spacing={4}>
+              <Stack direction="row" alignItems="center" spacing={2}>
                 <Avatar
-                  alt="Service Provider Avatar"
-                  src={
-                    serviceProvider.avatar
-                      ? URL.createObjectURL(serviceProvider.avatar)
-                      : null
-                  }
+                  src={formState.avatar ? URL.createObjectURL(formState.avatar) : undefined}
                   sx={{ width: 80, height: 80 }}
                 />
                 <Button
-                  variant="contained"
                   component="label"
+                  variant="contained"
                   startIcon={<AddPhotoAlternateIcon />}
                 >
                   Upload Avatar
@@ -225,32 +206,44 @@ const ServiceProviderForm = ({ fetchServiceProviders }) => {
                     hidden
                     accept="image/*"
                     onChange={handleAvatarChange}
+                    required
                   />
                 </Button>
               </Stack>
             </Grid>
-          </Grid>
 
-          <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
-            <Button variant="contained" color="primary" type="submit">
-              Submit
-            </Button>
-          </Box>
+            <Grid item xs={12}>
+              <Box display="flex" justifyContent="center">
+                <Button
+                  type="submit"
+                  variant="contained"
+                  size="large"
+                  disabled={status.loading}
+                >
+                  {status.loading ? "Submitting..." : "Add Service Provider"}
+                </Button>
+              </Box>
+            </Grid>
+          </Grid>
         </form>
       </Paper>
 
       <Snackbar
-        open={openSnackbar}
+        open={status.success}
         autoHideDuration={6000}
-        onClose={() => setOpenSnackbar(false)}
+        onClose={() => setStatus({ ...status, success: false })}
       >
-        <Alert
-          onClose={() => setOpenSnackbar(false)}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-          Service Provider added successfully!
+        <Alert severity="success">
+          Service provider added successfully!
         </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={!!status.error}
+        autoHideDuration={6000}
+        onClose={() => setStatus({ ...status, error: null })}
+      >
+        <Alert severity="error">{status.error}</Alert>
       </Snackbar>
     </Container>
   );

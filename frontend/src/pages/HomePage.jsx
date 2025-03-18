@@ -23,7 +23,7 @@ const HomePage = () => {
           width: "100%",
           textAlign: "center",
           mb: 4,
-          background: "linear-gradient(to right, #0077b6, #0096c7, #00b4d8)",
+          background: "linear-gradient(to right, #0F2027, #203A43, #2C5364)",
           color: "white",
           py: 6,
           borderRadius: "10px",
@@ -65,7 +65,7 @@ const HomePage = () => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <FAQsPage/>
+        <FAQsPage />
       </motion.div>
     </Box>
   );

@@ -10,7 +10,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Avatar,
   CircularProgress,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
