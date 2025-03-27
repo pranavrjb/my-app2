@@ -27,9 +27,9 @@ const Footer = () => {
   const footerLinks = {
     company: [
       { name: "About Us", path: "/about" },
-      { name: "Careers", path: "/careers" },
+      // { name: "Careers", path: "/careers" },
       { name: "Contact", path: "/contact" },
-      { name: "Blog", path: "/blog" },
+      // { name: "Blog", path: "/blog" },
     ],
     services: [
       { name: "Medical Services", path: "/services/medical" },
@@ -39,7 +39,7 @@ const Footer = () => {
     ],
     support: [
       { name: "Help Center", path: "/help" },
-      { name: "FAQs", path: "/faqs" },
+      // { name: "FAQs", path: "/faqs" },
       { name: "Terms of Service", path: "/terms" },
       { name: "Privacy Policy", path: "/privacy" },
     ],

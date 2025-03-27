@@ -21,7 +21,7 @@ import ServiceProviderDetails from "./pages/Services/ServiceProviderDetails";
 import ServiceProviderForm from "./pages/Services/ServiceProviderForm";
 import SearchServiceProviders from "./pages/Services/SearchServiceProviders";
 import HelpCenter from "./pages/HelpCenter";
-
+import Blog from "./pages/Blog";
 const App = () => {
   // const isLoggedin = !!window.localStorage.getItem("userToken");
 
@@ -39,6 +39,7 @@ const App = () => {
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsOfService />} />
         <Route path="/help"element={<HelpCenter/>}/>
+        <Route path="/blog" element={<Blog/>}/>
         <Route path="/search" element={<SearchServiceProviders />} />
         <Route path="/bookings" element={<BookingForm />} />
         <Route path="/form" element={<ServiceProviderForm />} />
