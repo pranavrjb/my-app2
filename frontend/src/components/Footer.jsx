@@ -225,13 +225,13 @@ const Footer = () => {
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                   <PhoneIcon sx={{ color: theme.palette.primary.main }} />
                   <Typography variant="body2" color="text.secondary">
-                    +1 (555) 123-4567
+                    +977 9800800000
                   </Typography>
                 </Box>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                   <LocationOnIcon sx={{ color: theme.palette.primary.main }} />
                   <Typography variant="body2" color="text.secondary">
-                    123 Healthcare Ave, Medical City
+                    Kathmandu, Nepal
                   </Typography>
                 </Box>
               </Box>
@@ -262,7 +262,7 @@ const Footer = () => {
             |
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Made with ❤️ for better healthcare.
+            Made by asdf.
           </Typography>
         </Box>
       </Container>

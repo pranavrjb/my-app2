@@ -67,8 +67,11 @@ const HomePage = () => {
           width: "100%",
           textAlign: "center",
           mb: 8,
-          background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-          color: "white",
+          background:
+            theme.palette.mode === "dark"
+              ? "linear-gradient(135deg, #2C3E50 0%, #3498DB 100%)"
+              : "linear-gradient(135deg, #E3F2FD 0%, #92c9f7 100%)",
+          color: theme.palette.mode === "dark" ? "white" : "#1a1a1a",
           py: { xs: 4, md: 8 },
           position: "relative",
           overflow: "hidden",
@@ -85,7 +88,11 @@ const HomePage = () => {
               fontWeight="bold"
               sx={{
                 mb: 2,
-                textShadow: "2px 2px 4px rgba(0,0,0,0.2)",
+                textShadow:
+                  theme.palette.mode === "dark"
+                    ? "2px 2px 4px rgba(0,0,0,0.2)"
+                    : "none",
+                color: theme.palette.mode === "dark" ? "white" : "#1a1a1a",
               }}
             >
               Find & Book Service Providers Easily
@@ -94,9 +101,10 @@ const HomePage = () => {
               variant="h6"
               sx={{
                 mb: 4,
-                opacity: 0.9,
+                opacity: theme.palette.mode === "dark" ? 0.9 : 0.8,
                 maxWidth: "800px",
                 mx: "auto",
+                color: theme.palette.mode === "dark" ? "white" : "#4a4a4a",
               }}
             >
               Connect with trusted professionals for all your service needs
@@ -105,7 +113,7 @@ const HomePage = () => {
               component={Link}
               to="/bookings"
               variant="contained"
-              color="secondary"
+              color="primary"
               size="large"
               sx={{
                 mt: 2,
@@ -114,10 +122,16 @@ const HomePage = () => {
                 fontSize: "1.1rem",
                 borderRadius: "30px",
                 textTransform: "none",
-                boxShadow: "0 4px 14px rgba(0,0,0,0.2)",
+                boxShadow:
+                  theme.palette.mode === "dark"
+                    ? "0 4px 14px rgba(0,0,0,0.3)"
+                    : "0 4px 14px rgba(0,0,0,0.1)",
                 "&:hover": {
                   transform: "translateY(-2px)",
-                  boxShadow: "0 6px 20px rgba(0,0,0,0.3)",
+                  boxShadow:
+                    theme.palette.mode === "dark"
+                      ? "0 6px 20px rgba(0,0,0,0.4)"
+                      : "0 6px 20px rgba(0,0,0,0.15)",
                 },
                 transition: "all 0.3s ease",
               }}
@@ -225,8 +239,8 @@ const HomePage = () => {
           >
             Frequently Asked Questions
           </Typography> */}
-          <FAQsPage />
-        {/* </motion.div>
+      <FAQsPage />
+      {/* </motion.div>
       </Container> */}
 
       {/* CTA Section */}

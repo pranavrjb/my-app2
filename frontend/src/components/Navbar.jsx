@@ -96,10 +96,10 @@ const Navbar = () => {
             }}
           >
             <IconButton
-              color="inherit"
               edge="end"
               onClick={handleDrawerOpen}
               sx={{
+                color: theme.palette.mode === "dark" ? "white" : "#1a1a1a",
                 "&:hover": {
                   backgroundColor: theme.palette.action.hover,
                 },
@@ -116,16 +116,12 @@ const Navbar = () => {
             to="/"
             sx={{
               textDecoration: "none",
-              color: "inherit",
               fontWeight: 700,
               letterSpacing: "0.5px",
               position: { xs: "absolute", md: "static" },
               left: { xs: "50%", md: "auto" },
               transform: { xs: "translateX(-50%)", md: "none" },
-              background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-              backgroundClip: "text",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
+              color: theme.palette.mode === "dark" ? "white" : "#1a1a1a",
               transition: "transform 0.2s",
               "&:hover": {
                 transform: {
@@ -151,12 +147,13 @@ const Navbar = () => {
                 {isAdmin && (
                   <Box sx={{ display: "flex", gap: 1 }}>
                     <Button
-                      color="inherit"
                       component={Link}
                       to="/admin"
                       sx={{
                         textTransform: "none",
                         fontWeight: 500,
+                        color:
+                          theme.palette.mode === "dark" ? "white" : "#1a1a1a",
                         "&:hover": {
                           backgroundColor: theme.palette.action.hover,
                         },
@@ -165,12 +162,13 @@ const Navbar = () => {
                       Admin
                     </Button>
                     <Button
-                      color="inherit"
                       component={Link}
                       to="/manageusers"
                       sx={{
                         textTransform: "none",
                         fontWeight: 500,
+                        color:
+                          theme.palette.mode === "dark" ? "white" : "#1a1a1a",
                         "&:hover": {
                           backgroundColor: theme.palette.action.hover,
                         },
@@ -179,12 +177,13 @@ const Navbar = () => {
                       Manage User
                     </Button>
                     <Button
-                      color="inherit"
                       component={Link}
                       to="/form"
                       sx={{
                         textTransform: "none",
                         fontWeight: 500,
+                        color:
+                          theme.palette.mode === "dark" ? "white" : "#1a1a1a",
                         "&:hover": {
                           backgroundColor: theme.palette.action.hover,
                         },
@@ -193,12 +192,13 @@ const Navbar = () => {
                       Add Company
                     </Button>
                     <Button
-                      color="inherit"
                       component={Link}
                       to="/managebookings"
                       sx={{
                         textTransform: "none",
                         fontWeight: 500,
+                        color:
+                          theme.palette.mode === "dark" ? "white" : "#1a1a1a",
                         "&:hover": {
                           backgroundColor: theme.palette.action.hover,
                         },
@@ -210,7 +210,6 @@ const Navbar = () => {
                 )}
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                   <Button
-                    color="inherit"
                     component={Link}
                     to="/bookings"
                     variant="outlined"
@@ -219,9 +218,14 @@ const Navbar = () => {
                       fontWeight: 500,
                       borderRadius: "20px",
                       px: 3,
+                      color:
+                        theme.palette.mode === "dark" ? "white" : "#1a1a1a",
+                      borderColor:
+                        theme.palette.mode === "dark" ? "white" : "#1a1a1a",
                       "&:hover": {
                         backgroundColor: theme.palette.primary.main,
                         color: theme.palette.primary.contrastText,
+                        borderColor: theme.palette.primary.main,
                       },
                     }}
                   >
@@ -258,19 +262,49 @@ const Navbar = () => {
                         mt: 1.5,
                         borderRadius: 2,
                         boxShadow: theme.shadows[3],
+                        bgcolor:
+                          theme.palette.mode === "dark" ? "#2d2d2d" : "#ffffff",
                       },
                     }}
                   >
                     <MenuItem sx={{ py: 2 }}>
-                      <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                      <Typography
+                        variant="subtitle1"
+                        sx={{
+                          fontWeight: 600,
+                          color:
+                            theme.palette.mode === "dark" ? "white" : "#1a1a1a",
+                        }}
+                      >
                         Welcome, {user.name || "User"}
                       </Typography>
                     </MenuItem>
                     <Divider />
-                    <MenuItem component={Link} to="/profile" sx={{ py: 1.5 }}>
+                    <MenuItem
+                      component={Link}
+                      to="/profile"
+                      sx={{
+                        py: 1.5,
+                        color:
+                          theme.palette.mode === "dark" ? "white" : "#1a1a1a",
+                        "&:hover": {
+                          bgcolor: theme.palette.action.hover,
+                        },
+                      }}
+                    >
                       Profile
                     </MenuItem>
-                    <MenuItem onClick={handleLogout} sx={{ py: 1.5 }}>
+                    <MenuItem
+                      onClick={handleLogout}
+                      sx={{
+                        py: 1.5,
+                        color:
+                          theme.palette.mode === "dark" ? "white" : "#1a1a1a",
+                        "&:hover": {
+                          bgcolor: theme.palette.action.hover,
+                        },
+                      }}
+                    >
                       <LogoutIcon sx={{ mr: 1 }} />
                       Log out
                     </MenuItem>
@@ -279,7 +313,6 @@ const Navbar = () => {
               </>
             ) : (
               <Button
-                color="inherit"
                 component={Link}
                 to="/login"
                 variant="outlined"
@@ -288,9 +321,13 @@ const Navbar = () => {
                   fontWeight: 500,
                   borderRadius: "20px",
                   px: 3,
+                  color: theme.palette.mode === "dark" ? "white" : "#1a1a1a",
+                  borderColor:
+                    theme.palette.mode === "dark" ? "white" : "#1a1a1a",
                   "&:hover": {
                     backgroundColor: theme.palette.primary.main,
                     color: theme.palette.primary.contrastText,
+                    borderColor: theme.palette.primary.main,
                   },
                 }}
               >
@@ -313,6 +350,7 @@ const Navbar = () => {
             sx: {
               width: 280,
               borderRadius: "16px 0 0 16px",
+              bgcolor: theme.palette.mode === "dark" ? "#2d2d2d" : "#ffffff",
             },
           }}
         >
@@ -325,10 +363,21 @@ const Navbar = () => {
               alignItems: "center",
             }}
           >
-            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 600,
+                color: theme.palette.mode === "dark" ? "white" : "#1a1a1a",
+              }}
+            >
               Menu
             </Typography>
-            <IconButton onClick={handleDrawerClose}>
+            <IconButton
+              onClick={handleDrawerClose}
+              sx={{
+                color: theme.palette.mode === "dark" ? "white" : "#1a1a1a",
+              }}
+            >
               <CloseIcon />
             </IconButton>
           </Box>
@@ -340,6 +389,7 @@ const Navbar = () => {
               sx={{
                 borderRadius: 2,
                 mb: 1,
+                color: theme.palette.mode === "dark" ? "white" : "#1a1a1a",
                 "&:hover": {
                   backgroundColor: theme.palette.action.hover,
                 },
@@ -357,6 +407,8 @@ const Navbar = () => {
                       sx={{
                         borderRadius: 2,
                         mb: 1,
+                        color:
+                          theme.palette.mode === "dark" ? "white" : "#1a1a1a",
                         "&:hover": {
                           backgroundColor: theme.palette.action.hover,
                         },
@@ -370,6 +422,8 @@ const Navbar = () => {
                       sx={{
                         borderRadius: 2,
                         mb: 1,
+                        color:
+                          theme.palette.mode === "dark" ? "white" : "#1a1a1a",
                         "&:hover": {
                           backgroundColor: theme.palette.action.hover,
                         },
@@ -383,6 +437,8 @@ const Navbar = () => {
                       sx={{
                         borderRadius: 2,
                         mb: 1,
+                        color:
+                          theme.palette.mode === "dark" ? "white" : "#1a1a1a",
                         "&:hover": {
                           backgroundColor: theme.palette.action.hover,
                         },
@@ -396,6 +452,8 @@ const Navbar = () => {
                       sx={{
                         borderRadius: 2,
                         mb: 1,
+                        color:
+                          theme.palette.mode === "dark" ? "white" : "#1a1a1a",
                         "&:hover": {
                           backgroundColor: theme.palette.action.hover,
                         },
@@ -411,6 +469,7 @@ const Navbar = () => {
                   sx={{
                     borderRadius: 2,
                     mb: 1,
+                    color: theme.palette.mode === "dark" ? "white" : "#1a1a1a",
                     "&:hover": {
                       backgroundColor: theme.palette.action.hover,
                     },
@@ -424,6 +483,7 @@ const Navbar = () => {
                   sx={{
                     borderRadius: 2,
                     mb: 1,
+                    color: theme.palette.mode === "dark" ? "white" : "#1a1a1a",
                     "&:hover": {
                       backgroundColor: theme.palette.action.hover,
                     },
@@ -436,6 +496,7 @@ const Navbar = () => {
                   sx={{
                     borderRadius: 2,
                     mb: 1,
+                    color: theme.palette.mode === "dark" ? "white" : "#1a1a1a",
                     "&:hover": {
                       backgroundColor: theme.palette.action.hover,
                     },
@@ -452,6 +513,7 @@ const Navbar = () => {
                 sx={{
                   borderRadius: 2,
                   mb: 1,
+                  color: theme.palette.mode === "dark" ? "white" : "#1a1a1a",
                   "&:hover": {
                     backgroundColor: theme.palette.action.hover,
                   },

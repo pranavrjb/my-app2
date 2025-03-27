@@ -92,7 +92,7 @@ const Login = () => {
         justifyContent: "center",
         pt: { xs: 4, md: 0 },
         pb: 4,
-        bgcolor: "#1a1a1a",
+        bgcolor: theme.palette.mode === "dark" ? "#1a1a1a" : "#f5f5f5",
       }}
     >
       <motion.div
@@ -106,8 +106,11 @@ const Login = () => {
             p: { xs: 3, md: 6 },
             borderRadius: 2,
             width: { xs: "90%", sm: "450px" },
-            background: "#2d2d2d",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
+            background: theme.palette.mode === "dark" ? "#2d2d2d" : "#ffffff",
+            boxShadow:
+              theme.palette.mode === "dark"
+                ? "0 2px 8px rgba(0,0,0,0.3)"
+                : "0 2px 8px rgba(0,0,0,0.1)",
           }}
         >
           <Box
@@ -137,7 +140,7 @@ const Login = () => {
               align="center"
               sx={{
                 fontWeight: 600,
-                color: "white",
+                color: theme.palette.mode === "dark" ? "white" : "#1a1a1a",
                 mb: 1,
               }}
             >
@@ -146,7 +149,7 @@ const Login = () => {
             <Typography
               variant="body1"
               sx={{
-                color: "#b3b3b3",
+                color: theme.palette.mode === "dark" ? "#b3b3b3" : "#4a4a4a",
                 mb: 3,
               }}
               align="center"
@@ -176,9 +179,11 @@ const Login = () => {
                   sx={{
                     "& .MuiOutlinedInput-root": {
                       borderRadius: 2,
-                      backgroundColor: "#3d3d3d",
+                      backgroundColor:
+                        theme.palette.mode === "dark" ? "#3d3d3d" : "#f8f9fa",
                       "& fieldset": {
-                        borderColor: "#4d4d4d",
+                        borderColor:
+                          theme.palette.mode === "dark" ? "#4d4d4d" : "#e0e0e0",
                       },
                       "&:hover fieldset": {
                         borderColor: theme.palette.primary.main,
@@ -187,17 +192,26 @@ const Login = () => {
                         borderColor: theme.palette.primary.main,
                       },
                       "& input": {
-                        color: "white",
+                        color:
+                          theme.palette.mode === "dark" ? "white" : "#1a1a1a",
                       },
                       "& label": {
-                        color: "#b3b3b3",
+                        color:
+                          theme.palette.mode === "dark" ? "#b3b3b3" : "#666666",
                       },
                     },
                   }}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <EmailIcon sx={{ color: "#b3b3b3" }} />
+                        <EmailIcon
+                          sx={{
+                            color:
+                              theme.palette.mode === "dark"
+                                ? "#b3b3b3"
+                                : "#666666",
+                          }}
+                        />
                       </InputAdornment>
                     ),
                   }}
@@ -217,9 +231,11 @@ const Login = () => {
                   sx={{
                     "& .MuiOutlinedInput-root": {
                       borderRadius: 2,
-                      backgroundColor: "#3d3d3d",
+                      backgroundColor:
+                        theme.palette.mode === "dark" ? "#3d3d3d" : "#f8f9fa",
                       "& fieldset": {
-                        borderColor: "#4d4d4d",
+                        borderColor:
+                          theme.palette.mode === "dark" ? "#4d4d4d" : "#e0e0e0",
                       },
                       "&:hover fieldset": {
                         borderColor: theme.palette.primary.main,
@@ -228,17 +244,26 @@ const Login = () => {
                         borderColor: theme.palette.primary.main,
                       },
                       "& input": {
-                        color: "white",
+                        color:
+                          theme.palette.mode === "dark" ? "white" : "#1a1a1a",
                       },
                       "& label": {
-                        color: "#b3b3b3",
+                        color:
+                          theme.palette.mode === "dark" ? "#b3b3b3" : "#666666",
                       },
                     },
                   }}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <LockIcon sx={{ color: "#b3b3b3" }} />
+                        <LockIcon
+                          sx={{
+                            color:
+                              theme.palette.mode === "dark"
+                                ? "#b3b3b3"
+                                : "#666666",
+                          }}
+                        />
                       </InputAdornment>
                     ),
                     endAdornment: (
@@ -246,7 +271,12 @@ const Login = () => {
                         <IconButton
                           onClick={togglePasswordVisibility}
                           edge="end"
-                          sx={{ color: "#b3b3b3" }}
+                          sx={{
+                            color:
+                              theme.palette.mode === "dark"
+                                ? "#b3b3b3"
+                                : "#666666",
+                          }}
                         >
                           {showPassword ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
@@ -269,10 +299,16 @@ const Login = () => {
                     borderRadius: 2,
                     textTransform: "none",
                     fontSize: "1.1rem",
-                    boxShadow: "0 4px 14px rgba(0,0,0,0.3)",
+                    boxShadow:
+                      theme.palette.mode === "dark"
+                        ? "0 4px 14px rgba(0,0,0,0.3)"
+                        : "0 4px 14px rgba(0,0,0,0.1)",
                     "&:hover": {
                       transform: "translateY(-2px)",
-                      boxShadow: "0 6px 20px rgba(0,0,0,0.4)",
+                      boxShadow:
+                        theme.palette.mode === "dark"
+                          ? "0 6px 20px rgba(0,0,0,0.4)"
+                          : "0 6px 20px rgba(0,0,0,0.15)",
                     },
                     transition: "all 0.3s ease",
                   }}
@@ -285,7 +321,10 @@ const Login = () => {
                 <Typography
                   variant="body2"
                   align="center"
-                  sx={{ color: "#b3b3b3" }}
+                  sx={{
+                    color:
+                      theme.palette.mode === "dark" ? "#b3b3b3" : "#4a4a4a",
+                  }}
                 >
                   Don't have an account?{" "}
                   <Button
