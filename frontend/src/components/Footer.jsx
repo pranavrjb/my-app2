@@ -1,96 +1,269 @@
-import React from 'react';
-import { Box, Container, Typography, Grid, Link, IconButton, Stack } from '@mui/material';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import XIcon from '@mui/icons-material/X';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import PhoneIcon from '@mui/icons-material/Phone';
+import React from "react";
+import {
+  Box,
+  Container,
+  Grid,
+  Typography,
+  Link,
+  IconButton,
+  useTheme,
+  useMediaQuery,
+  Divider,
+} from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import XIcon from "@mui/icons-material/X";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import EmailIcon from "@mui/icons-material/Email";
+import PhoneIcon from "@mui/icons-material/Phone";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { motion } from "framer-motion";
 
 const Footer = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const footerLinks = {
+    company: [
+      { name: "About Us", path: "/about" },
+      { name: "Careers", path: "/careers" },
+      { name: "Contact", path: "/contact" },
+      { name: "Blog", path: "/blog" },
+    ],
+    services: [
+      { name: "Medical Services", path: "/services/medical" },
+      { name: "Fitness & Wellness", path: "/services/fitness" },
+      { name: "Beauty Services", path: "/services/beauty" },
+      { name: "Consulting", path: "/services/consulting" },
+    ],
+    support: [
+      { name: "Help Center", path: "/help" },
+      { name: "FAQs", path: "/faqs" },
+      { name: "Terms of Service", path: "/terms" },
+      { name: "Privacy Policy", path: "/privacy" },
+    ],
+  };
+
+  const socialLinks = [
+    { icon: <FacebookIcon />, url: "https://facebook.com" },
+    { icon: <XIcon />, url: "https://x.com" },
+    { icon: <InstagramIcon />, url: "https://instagram.com" },
+    { icon: <LinkedInIcon />, url: "https://linkedin.com" },
+  ];
+
   return (
     <Box
-      component="footer" 
-      sx={{ 
-        py: 4, 
-        mt: 'auto',
-        bgcolor: 'background.paper',
+      component="footer"
+      sx={{
+        bgcolor: theme.palette.background.paper,
+        pt: 6,
+        pb: 3,
+        mt: "auto",
+        borderTop: `1px solid ${theme.palette.divider}`,
       }}
     >
-      <Container maxWidth="lg" >
-        <Grid container spacing={5}>
-          <Grid item xs={12} sm={6} md={3}>
-            <Typography variant="body1" fontWeight={'bold'} gutterBottom>
-              About Us
-            </Typography>
-            <Typography variant="body2">
-              We help patients connect with the best doctors around the country. 
-              Book appointments easily and manage your health better.
-            </Typography>
+      <Container maxWidth="lg">
+        <Grid container spacing={4}>
+          {/* Company Info */}
+          <Grid item xs={12} md={4}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 700,
+                  mb: 2,
+                  background: `linear-gradient(45deg, #6396c7, #23a4fa)`,
+                  backgroundClip: "text",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                MedPulse
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                Your trusted platform for finding and booking professional
+                service providers.
+              </Typography>
+              <Box sx={{ display: "flex", gap: 1, mb: 3 }}>
+                {socialLinks.map((social, index) => (
+                  <IconButton
+                    key={index}
+                    component="a"
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={{
+                      color: theme.palette.text.secondary,
+                      "&:hover": {
+                        color: theme.palette.primary.main,
+                        backgroundColor: `${theme.palette.primary.main}15`,
+                      },
+                    }}
+                  >
+                    {social.icon}
+                  </IconButton>
+                ))}
+              </Box>
+            </motion.div>
           </Grid>
 
-          <Grid item xs={12} sm={6} md={3}>
-            <Typography variant="body1" fontWeight={'bold'} gutterBottom>
-              Support
-            </Typography>
-            <Link href="/" variant='body2' color="inherit" underline="hover" display="block">
-              Home
-            </Link>
-            <Link href="/contact" variant='body2' color="inherit" underline="hover" display="block">
-              Contact Us
-            </Link>
-            <Link href="/about" variant='body2' color="inherit" underline="hover" display="block">
-              About
-            </Link>
-            <Link href="/privacy" variant='body2' color="inherit" underline="hover" display="block">
-              Privacy Policy
-            </Link>
+          {/* Quick Links */}
+          <Grid item xs={12} sm={6} md={2}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+                Company
+              </Typography>
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                {footerLinks.company.map((link, index) => (
+                  <Link
+                    key={index}
+                    component={RouterLink}
+                    to={link.path}
+                    sx={{
+                      color: "text.secondary",
+                      textDecoration: "none",
+                      "&:hover": {
+                        color: theme.palette.primary.main,
+                      },
+                    }}
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+              </Box>
+            </motion.div>
           </Grid>
 
-          <Grid item xs={12} sm={6} md={3}>
-            <Typography variant="body1" fontWeight={'bold'} gutterBottom>
-              My-App
-            </Typography>
-            <Stack direction="row" alignItems="center" spacing={1}>
-              <EmailOutlinedIcon />
-              <Typography variant="body2">contact@myappsupport.com</Typography>
-            </Stack>
-            <Stack direction="row" alignItems="center" spacing={1}>
-              <LocationOnIcon />
-              <Typography variant="body2">Kathmandu, Nepal</Typography>
-            </Stack>
-            <Stack direction="row" alignItems="center" spacing={1}>
-              <PhoneIcon />
-              <Typography variant="body2">(+977) 9812312345</Typography>
-            </Stack>
+          {/* Services */}
+          <Grid item xs={12} sm={6} md={2}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+                Services
+              </Typography>
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                {footerLinks.services.map((link, index) => (
+                  <Link
+                    key={index}
+                    component={RouterLink}
+                    to={link.path}
+                    sx={{
+                      color: "text.secondary",
+                      textDecoration: "none",
+                      "&:hover": {
+                        color: theme.palette.primary.main,
+                      },
+                    }}
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+              </Box>
+            </motion.div>
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Typography variant="body1" fontWeight={'bold'} ml={5} gutterBottom>
-              Follow Us
-            </Typography>
-            <IconButton href="https://facebook.com" target="_blank" color="inherit">
-              <FacebookIcon />
-            </IconButton>
-            <IconButton href="https://x.com" target="_blank" color="inherit">
-              <XIcon /> 
-            </IconButton>
-            <IconButton href="https://linkedin.com" target="_blank" color="inherit">
-              <LinkedInIcon />
-            </IconButton>
-            <IconButton href="https://instagram.com" target="_blank" color="inherit">
-              <InstagramIcon />
-            </IconButton>
+
+          {/* Support */}
+          <Grid item xs={12} sm={6} md={2}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+                Support
+              </Typography>
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                {footerLinks.support.map((link, index) => (
+                  <Link
+                    key={index}
+                    component={RouterLink}
+                    to={link.path}
+                    sx={{
+                      color: "text.secondary",
+                      textDecoration: "none",
+                      "&:hover": {
+                        color: theme.palette.primary.main,
+                      },
+                    }}
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+              </Box>
+            </motion.div>
+          </Grid>
+
+          {/* Contact Info */}
+          <Grid item xs={12} sm={6} md={2}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
+              <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+                Contact Us
+              </Typography>
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <EmailIcon sx={{ color: theme.palette.primary.main }} />
+                  <Typography variant="body2" color="text.secondary">
+                    support@medpulse.com
+                  </Typography>
+                </Box>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <PhoneIcon sx={{ color: theme.palette.primary.main }} />
+                  <Typography variant="body2" color="text.secondary">
+                    +(977) 9812312312
+                  </Typography>
+                </Box>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <LocationOnIcon sx={{ color: theme.palette.primary.main }} />
+                  <Typography variant="body2" color="text.secondary">
+                    123 MedPulse, Kathmandu
+                  </Typography>
+                </Box>
+              </Box>
+            </motion.div>
           </Grid>
         </Grid>
 
-        <Box sx={{ textAlign: 'center', mt: 4 }}> 
-          <Typography variant="body1" color="text.secondary">
-            &copy; {new Date().getFullYear()} My-App. All Rights Reserved. <Link href="/privacy" variant="body2" color="inherit" underline="hover">
-            Privacy Policy
-          </Link>
+        <Divider sx={{ my: 4 }} />
+
+        {/* Copyright */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: isMobile ? "column" : "row",
+            gap: 1,
+          }}
+        >
+          <Typography variant="body2" color="text.secondary">
+            © {new Date().getFullYear()} MedPulse. All rights reserved.
           </Typography>
-          
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ display: isMobile ? "none" : "block" }}
+          >
+            |
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Made by adf.
+          </Typography>
         </Box>
       </Container>
     </Box>

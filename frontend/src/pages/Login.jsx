@@ -8,24 +8,24 @@ import {
   Box,
   Snackbar,
   Alert,
+  Paper,
+  IconButton,
+  InputAdornment as MuiInputAdornment,
 } from "@mui/material";
 import {
   Email as EmailIcon,
   Lock as LockIcon,
-  // Google as GoogleIcon,
-} from "@mui/icons-material"; // Added Google icon
+  Visibility,
+  VisibilityOff,
+} from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
-// import {
-//   doSignInWithEmailAndPassword,
-//   doSignInWithGoogle,
-// } from "../firebase/auth"; // Import Google login function
-// import { useAuth } from "../context/authContext";
 import API from "../api";
+import { motion } from "framer-motion";
+import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 
 const Login = () => {
-  // const { userLogin } = useAuth();
   const theme = useTheme();
   const navigate = useNavigate();
   const { user, login } = useContext(UserContext);
@@ -33,7 +33,7 @@ const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const [showPassword, setShowPassword] = useState(false);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState("success");
@@ -78,6 +78,10 @@ const Login = () => {
     setOpen(false);
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <Box
       sx={{
@@ -85,138 +89,243 @@ const Login = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        pt: 8,
-        bgcolor: theme.palette.background.default,
+        justifyContent: "center",
+        pt: { xs: 4, md: 0 },
+        pb: 4,
+        bgcolor: "#1a1a1a",
       }}
     >
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-md p-6 rounded-lg shadow-lg"
-        style={{ backgroundColor: theme.palette.background.paper }}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
       >
-        <Typography
-          variant="h4"
-          align="center"
-          fontWeight={700}
-          sx={{ color: theme.palette.text.primary }}
-          gutterBottom
+        <Paper
+          elevation={2}
+          sx={{
+            p: { xs: 3, md: 6 },
+            borderRadius: 2,
+            width: { xs: "90%", sm: "450px" },
+            background: "#2d2d2d",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
+          }}
         >
-          LOGIN
-        </Typography>
-
-        {error && (
-          <Alert severity="error" sx={{ mb: 3 }}>
-            {error}
-          </Alert>
-        )}
-
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <TextField
-              label="Email"
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleChange}
-              fullWidth
-              required
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <EmailIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <TextField
-              label="Password"
-              name="password"
-              type="password"
-              value={formData.password}
-              onChange={handleChange}
-              fullWidth
-              required
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <LockIcon />
-                  </InputAdornment>
-                ),
-              }}
-              inputProps={{ minLength:2 }}
-            />
-          </Grid>
-
-          <Grid item xs={12}>
-            <Button
-              variant="contained"
-              color="primary"
-              type="submit"
-              fullWidth
-              disabled={loading}
-            >
-              Log in
-            </Button>
-          </Grid>
-
-          {/* <Grid item xs={12}>
-            <Button
-              variant="contained"
-              color="secondary"
-              fullWidth
-              startIcon={<GoogleIcon />}
-              onClick={async () => {
-                try {
-                  await doSignInWithGoogle();
-                  setMessage("Welcome, You are now logged in with Google!");
-                  setSeverity("success");
-                  setOpen(true);
-                  setTimeout(() => navigate("/"), 1500); // Navigate to home page after login
-                } catch (error) {
-                  setMessage("Google login failed. Please try again.");
-                  setSeverity("error");
-                  setOpen(true);
-                }
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              mb: 4,
+            }}
+          >
+            <Box
+              sx={{
+                width: 50,
+                height: 50,
+                borderRadius: "50%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                mb: 2,
+                bgcolor: theme.palette.primary.main,
               }}
             >
-              Log in with Google
-            </Button>
-          </Grid> */}
-
-          <Grid item xs={12}>
+              <LocalHospitalIcon sx={{ fontSize: 25, color: "white" }} />
+            </Box>
             <Typography
-              variant="body2"
+              variant="h4"
               align="center"
-              sx={{ color: theme.palette.text.primary }}
+              sx={{
+                fontWeight: 600,
+                color: "white",
+                mb: 1,
+              }}
             >
-              Don't have an account?{" "}
-              <a
-                href="/register"
-                style={{
-                  color: theme.palette.primary.main,
-                  textDecoration: "none",
-                }}
-              >
-                Register
-              </a>
+              Welcome
             </Typography>
-
-            <Snackbar
-              open={open}
-              autoHideDuration={6000}
-              onClose={handleClose}
-              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            <Typography
+              variant="body1"
+              sx={{
+                color: "#b3b3b3",
+                mb: 3,
+              }}
+              align="center"
             >
-              <Alert onClose={handleClose} severity={severity} variant="filled">
-                {message}
-              </Alert>
-            </Snackbar>
-          </Grid>
-        </Grid>
-      </form>
+              Sign in to continue to MedPulse
+            </Typography>
+          </Box>
+
+          {error && (
+            <Alert severity="error" sx={{ mb: 3, borderRadius: 2 }}>
+              {error}
+            </Alert>
+          )}
+
+          <form onSubmit={handleSubmit}>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <TextField
+                  label="Email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  fullWidth
+                  required
+                  variant="outlined"
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: 2,
+                      backgroundColor: "#3d3d3d",
+                      "& fieldset": {
+                        borderColor: "#4d4d4d",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: theme.palette.primary.main,
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: theme.palette.primary.main,
+                      },
+                      "& input": {
+                        color: "white",
+                      },
+                      "& label": {
+                        color: "#b3b3b3",
+                      },
+                    },
+                  }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <EmailIcon sx={{ color: "#b3b3b3" }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  label="Password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  value={formData.password}
+                  onChange={handleChange}
+                  fullWidth
+                  required
+                  variant="outlined"
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: 2,
+                      backgroundColor: "#3d3d3d",
+                      "& fieldset": {
+                        borderColor: "#4d4d4d",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: theme.palette.primary.main,
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: theme.palette.primary.main,
+                      },
+                      "& input": {
+                        color: "white",
+                      },
+                      "& label": {
+                        color: "#b3b3b3",
+                      },
+                    },
+                  }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <LockIcon sx={{ color: "#b3b3b3" }} />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <MuiInputAdornment position="end">
+                        <IconButton
+                          onClick={togglePasswordVisibility}
+                          edge="end"
+                          sx={{ color: "#b3b3b3" }}
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </MuiInputAdornment>
+                    ),
+                  }}
+                  inputProps={{ minLength: 2 }}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                  fullWidth
+                  disabled={loading}
+                  sx={{
+                    py: 1.5,
+                    borderRadius: 2,
+                    textTransform: "none",
+                    fontSize: "1.1rem",
+                    boxShadow: "0 4px 14px rgba(0,0,0,0.3)",
+                    "&:hover": {
+                      transform: "translateY(-2px)",
+                      boxShadow: "0 6px 20px rgba(0,0,0,0.4)",
+                    },
+                    transition: "all 0.3s ease",
+                  }}
+                >
+                  {loading ? "Signing in..." : "Sign In"}
+                </Button>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography
+                  variant="body2"
+                  align="center"
+                  sx={{ color: "#b3b3b3" }}
+                >
+                  Don't have an account?{" "}
+                  <Button
+                    component={Link}
+                    to="/register"
+                    sx={{
+                      color: theme.palette.primary.main,
+                      textTransform: "none",
+                      p: 0,
+                      minWidth: "auto",
+                      "&:hover": {
+                        background: "transparent",
+                        textDecoration: "underline",
+                      },
+                    }}
+                  >
+                    Register
+                  </Button>
+                </Typography>
+              </Grid>
+            </Grid>
+          </form>
+        </Paper>
+      </motion.div>
+
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleClose}
+          severity={severity}
+          variant="filled"
+          sx={{ borderRadius: 2 }}
+        >
+          {message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
