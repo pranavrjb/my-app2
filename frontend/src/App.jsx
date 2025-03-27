@@ -18,9 +18,10 @@ import BookingForm from "./pages/Booking/BookingForm";
 import ManageBookings from "./pages/Booking/ManageBookings";
 import TermsOfService from "./pages/TermsOfService";
 import ServiceProviderDetails from "./pages/Services/ServiceProviderDetails";
-import ServiceProviderForm from "./pages/Services/ServiceProviderForm";
+import ServiceProviderForm from "./pages/ServiceProviderForm";
 import SearchServiceProviders from "./pages/Services/SearchServiceProviders";
 import HelpCenter from "./pages/HelpCenter";
+import MedicalServices from "./pages/MedicalServices";
 const App = () => {
   // const isLoggedin = !!window.localStorage.getItem("userToken");
 
@@ -34,6 +35,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/medicalservices" element={<MedicalServices />} />
         <Route path="/about" element={<About />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsOfService />} />
