@@ -21,34 +21,29 @@ const FAQsPage = () => {
 
   const faqs = [
     {
-      question: "How does MedPulse work?",
+      question: "How do I book a service?",
       answer:
-        "MedPulse allows you to search for various service providers such as doctors, consultants, gym trainers, hairdressers, and more. You can view their profiles, check availability, and book appointments online.",
+        "To book a service, simply browse our service providers, select the service you need, choose your preferred date and time, and follow the booking process. You can pay securely through our platform.",
     },
     {
-      question: "Is MedPulse free to use?",
+      question: "Can I cancel or reschedule my booking?",
       answer:
-        "Yes, MedPulse is completely free for users. You can browse service providers, view their profiles, and book appointments without any charges.",
+        "Yes, you can cancel or reschedule your booking up to 24 hours before the scheduled time. Log into your account, go to your bookings, and select the option to modify or cancel.",
     },
     {
-      question: "How can I cancel or reschedule an appointment?",
+      question: "How do I contact customer support?",
       answer:
-        "You can cancel or reschedule an appointment by logging into your account, navigating to your bookings, and selecting the relevant option for the appointment you wish to modify.",
+        "You can reach our customer support team through multiple channels: email, phone, or live chat. Our support team is available Monday through Friday, 9 AM to 6 PM.",
     },
     {
-      question: "Are the service providers on MedPulse verified?",
+      question: "What payment methods do you accept?",
       answer:
-        "Yes, all service providers listed on MedPulse are verified professionals. We ensure they have the necessary credentials and experience to offer quality services.",
+        "We accept all major credit cards, debit cards, and digital payment methods. All payments are processed securely through our payment partners.",
     },
     {
-      question: "Can I book an appointment for someone else?",
+      question: "How do I become a service provider?",
       answer:
-        "Yes, you can book an appointment for a family member or friend. Just provide their details while filling out the booking form.",
-    },
-    {
-      question: "What types of professionals can I book through MedPulse?",
-      answer:
-        "You can find and book a wide range of service providers, including doctors, consultants, gym trainers, hairdressers, and many more professionals offering various services.",
+        "To become a service provider, register on our platform, complete your profile, and submit your business documentation. Our team will review your application and get back to you within 2-3 business days.",
     },
   ];
 
