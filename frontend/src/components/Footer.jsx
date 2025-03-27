@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import FacebookIcon from "@mui/icons-material/Facebook";
-import XIcon from "@mui/icons-material/X";
+import TwitterIcon from "@mui/icons-material/Twitter";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import EmailIcon from "@mui/icons-material/Email";
@@ -47,7 +47,7 @@ const Footer = () => {
 
   const socialLinks = [
     { icon: <FacebookIcon />, url: "https://facebook.com" },
-    { icon: <XIcon />, url: "https://x.com" },
+    { icon: <TwitterIcon />, url: "https://twitter.com" },
     { icon: <InstagramIcon />, url: "https://instagram.com" },
     { icon: <LinkedInIcon />, url: "https://linkedin.com" },
   ];
@@ -225,13 +225,13 @@ const Footer = () => {
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                   <PhoneIcon sx={{ color: theme.palette.primary.main }} />
                   <Typography variant="body2" color="text.secondary">
-                    +(977) 9812312312
+                    +1 (555) 123-4567
                   </Typography>
                 </Box>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                   <LocationOnIcon sx={{ color: theme.palette.primary.main }} />
                   <Typography variant="body2" color="text.secondary">
-                    123 MedPulse, Kathmandu
+                    123 Healthcare Ave, Medical City
                   </Typography>
                 </Box>
               </Box>
@@ -262,7 +262,7 @@ const Footer = () => {
             |
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Made by adf.
+            Made with ❤️ for better healthcare.
           </Typography>
         </Box>
       </Container>
