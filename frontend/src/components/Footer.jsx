@@ -32,10 +32,10 @@ const Footer = () => {
     //   // { name: "Blog", path: "/blog" },
     // ],
     services: [
-      { name: "Medical Services", path: "/services/medical" },
-      { name: "Fitness & Wellness", path: "/services/fitness" },
-      { name: "Beauty Services", path: "/services/beauty" },
-      { name: "Consulting", path: "/services/consulting" },
+      { name: "Medical Services", path: "/medicalservices" },
+      { name: "Fitness & Wellness", path: "/fitness" },
+      { name: "Beauty Services", path: "/beauty" },
+      { name: "Consulting", path: "/consulting" },
     ],
     support: [
       { name: "Help Center", path: "/help" },
