@@ -9,6 +9,7 @@ const About = () => {
           variant="h2"
           component="h1"
           textAlign={"center"}
+          sx={{ fontWeight: "bold" }}
           gutterBottom
         >
           About Us

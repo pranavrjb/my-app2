@@ -25,12 +25,12 @@ const Footer = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const footerLinks = {
-    company: [
-      { name: "About Us", path: "/about" },
-      // { name: "Careers", path: "/careers" },
-      { name: "Contact", path: "/contact" },
-      // { name: "Blog", path: "/blog" },
-    ],
+    // company: [
+    //   { name: "About Us", path: "/about" },
+    //   // { name: "Careers", path: "/careers" },
+    //   { name: "Contact", path: "/contact" },
+    //   // { name: "Blog", path: "/blog" },
+    // ],
     services: [
       { name: "Medical Services", path: "/services/medical" },
       { name: "Fitness & Wellness", path: "/services/fitness" },
@@ -113,7 +113,7 @@ const Footer = () => {
           </Grid>
 
           {/* Quick Links */}
-          <Grid item xs={12} sm={6} md={2}>
+          {/* <Grid item xs={12} sm={6} md={2}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -141,7 +141,7 @@ const Footer = () => {
                 ))}
               </Box>
             </motion.div>
-          </Grid>
+          </Grid> */}
 
           {/* Services */}
           <Grid item xs={12} sm={6} md={2}>

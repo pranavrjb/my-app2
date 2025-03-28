@@ -66,7 +66,7 @@ const Navbar = () => {
   return (
     <Slide appear={false} direction="down" in={!trigger}>
       <AppBar
-        position="fixed"
+        position="static"
         elevation={trigger ? 4 : 0}
         sx={{
           background:
@@ -109,7 +109,6 @@ const Navbar = () => {
             </IconButton>
           </Box>
 
-          {/* Logo */}
           <Typography
             variant="h5"
             component={Link}
@@ -142,6 +141,34 @@ const Navbar = () => {
               gap: 2,
             }}
           >
+            <Button
+              component={Link}
+              to="/about"
+              sx={{
+                textTransform: "none",
+                fontWeight: 500,
+                color: theme.palette.mode === "dark" ? "white" : "#1a1a1a",
+                "&:hover": {
+                  backgroundColor: theme.palette.action.hover,
+                },
+              }}
+            >
+              About Us
+            </Button>
+            <Button
+              component={Link}
+              to="/contact"
+              sx={{
+                textTransform: "none",
+                fontWeight: 500,
+                color: theme.palette.mode === "dark" ? "white" : "#1a1a1a",
+                "&:hover": {
+                  backgroundColor: theme.palette.action.hover,
+                },
+              }}
+            >
+              Contact Us
+            </Button>
             {user ? (
               <>
                 {isAdmin && (
