@@ -1,185 +1,229 @@
 import React from "react";
-import { Container, Typography, Box, Button, Grid } from "@mui/material";
+import {
+  Container,
+  Typography,
+  Box,
+  Button,
+  Grid,
+  Card,
+  CardContent,
+  Avatar,
+  Divider,
+} from "@mui/material";
+import {
+  MedicalServices as MedicalIcon,
+  Spa as WellnessIcon,
+  Psychology as MentalHealthIcon,
+  Business as ConsultingIcon,
+  Speed as EfficiencyIcon,
+  Security as TrustIcon,
+  Support as SupportIcon,
+  CalendarToday as BookingIcon,
+} from "@mui/icons-material";
 
 const About = () => {
+  const services = [
+    {
+      icon: <MedicalIcon fontSize="large" color="primary" />,
+      title: "Medical Services",
+      description:
+        "Access qualified healthcare professionals for your medical needs, from general practitioners to specialists.",
+    },
+    {
+      icon: <WellnessIcon fontSize="large" color="primary" />,
+      title: "Wellness Services",
+      description:
+        "Connect with wellness experts including fitness trainers, nutritionists, and wellness coaches.",
+    },
+    {
+      icon: <MentalHealthIcon fontSize="large" color="primary" />,
+      title: "Mental Health Services",
+      description:
+        "Find professional counselors, therapists, and mental health specialists for your well-being.",
+    },
+    {
+      icon: <ConsultingIcon fontSize="large" color="primary" />,
+      title: "Consulting Services",
+      description:
+        "Book appointments with business consultants, career coaches, and professional advisors.",
+    },
+  ];
+
+  const features = [
+    {
+      icon: <BookingIcon fontSize="large" color="secondary" />,
+      title: "Easy Booking",
+      description:
+        "Schedule appointments with just a few clicks through our intuitive booking system.",
+    },
+    {
+      icon: <EfficiencyIcon fontSize="large" color="secondary" />,
+      title: "Quick Access",
+      description:
+        "Find and connect with service providers instantly based on your specific needs.",
+    },
+    {
+      icon: <TrustIcon fontSize="large" color="secondary" />,
+      title: "Verified Providers",
+      description:
+        "All service providers are verified and vetted to ensure quality service.",
+    },
+    {
+      icon: <SupportIcon fontSize="large" color="secondary" />,
+      title: "24/7 Support",
+      description:
+        "Get assistance anytime with our dedicated customer support team.",
+    },
+  ];
+
   return (
     <Container>
       <Box sx={{ my: 4, minHeight: "100vh" }}>
-        <Typography
-          variant="h2"
-          component="h1"
-          textAlign={"center"}
-          sx={{ fontWeight: "bold" }}
-          gutterBottom
-        >
-          About Us
-        </Typography>
+        {/* Hero Section */}
+        <Box sx={{ textAlign: "center", mb: 6 }}>
+          <Typography
+            variant="h2"
+            component="h1"
+            sx={{
+              fontWeight: "bold",
+              background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
+              backgroundClip: "text",
+              textFillColor: "transparent",
+              mb: 2,
+            }}
+          >
+            About Us
+          </Typography>
+          <Typography variant="h5" color="text.secondary" sx={{ mb: 4 }}>
+            Your One-Stop Platform for Professional Services
+          </Typography>
+        </Box>
 
         {/* Introduction Section */}
-        <Typography variant="body1" paragraph>
-          Welcome to our all-in-one booking platform, your go-to resource for
-          finding and scheduling appointments with the professionals you need.
-          Whether you're looking for a doctor, consultant, gym trainer,
-          hairdresser, personal coach, or any other service provider, we help
-          connect you with the right professionals quickly and effortlessly.
-        </Typography>
+        <Box sx={{ mb: 6 }}>
+          <Typography variant="body1" paragraph sx={{ fontSize: "1.1rem" }}>
+            Welcome to our comprehensive booking platform, where we connect you
+            with qualified professionals across various service categories. Our
+            platform streamlines the process of finding and booking appointments
+            with the right service providers for your specific needs.
+          </Typography>
+        </Box>
 
-        <Typography variant="body1" paragraph>
-          Our platform makes it easy to search, compare, and book
-          appointments based on your specific needs. With just a few clicks, you
-          can schedule a consultation with the perfect professional, ensuring
-          convenience and efficiency at your fingertips.
-        </Typography>
-
-        {/* Mission Section */}
+        {/* Services Section */}
         <Typography
           variant="h4"
           component="h2"
-          sx={{ my: 2 }}
-          textAlign={"center"}
-          fontWeight={"bold"}
+          sx={{ mb: 4, textAlign: "center", fontWeight: "bold" }}
         >
-          Our Mission
+          Our Services
         </Typography>
-        <Typography variant="body1" paragraph>
-          Our mission is to empower people by providing an easy and efficient
-          way to connect with service providers in various industries. We
-          understand that finding the right professional for your needs can be
-          time-consuming, so we aim to simplify the process and give you access
-          to a wide range of skilled professionals in one place.
-        </Typography>
+        <Grid container spacing={3} sx={{ mb: 6 }}>
+          {services.map((service, index) => (
+            <Grid item xs={12} sm={6} md={3} key={index}>
+              <Card
+                sx={{
+                  height: "100%",
+                  transition: "transform 0.3s",
+                  "&:hover": {
+                    transform: "translateY(-5px)",
+                  },
+                }}
+              >
+                <CardContent sx={{ textAlign: "center" }}>
+                  <Box sx={{ mb: 2 }}>{service.icon}</Box>
+                  <Typography variant="h6" gutterBottom>
+                    {service.title}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {service.description}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+
+        <Divider sx={{ my: 6 }} />
 
         {/* Features Section */}
         <Typography
           variant="h4"
           component="h2"
-          sx={{ my: 2 }}
-          textAlign={"center"}
-          fontWeight={"bold"}
+          sx={{ mb: 4, textAlign: "center", fontWeight: "bold" }}
         >
-          Key Features
+          Why Choose Us
         </Typography>
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={6}>
-            <Box
-              sx={{
-                padding: 2,
-                border: "1px solid",
-                borderColor: "grey.300",
-                borderRadius: 2,
-              }}
-            >
-              <Typography variant="h6" fontWeight={"bold"}>
-                Find the Right Professional
-              </Typography>
-              <Typography variant="body1">
-                Whether it's a doctor for your health, a consultant for your
-                business, a trainer for your fitness, or a stylist for your
-                grooming needs, we help you find the best professionals in
-                your area with ease.
-              </Typography>
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Box
-              sx={{
-                padding: 2,
-                border: "1px solid",
-                borderColor: "grey.300",
-                borderRadius: 2,
-              }}
-            >
-              <Typography variant="h6" fontWeight={"bold"}>
-                Instant Booking
-              </Typography>
-              <Typography variant="body1">
-                Book your appointment instantly by selecting an available
-                time slot. No more waiting in line or making endless phone
-                calls—just pick a time and confirm your appointment within
-                seconds.
-              </Typography>
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Box
-              sx={{
-                padding: 2,
-                border: "1px solid",
-                borderColor: "grey.300",
-                borderRadius: 2,
-              }}
-            >
-              <Typography variant="h6" fontWeight={"bold"}>
-                Verified Reviews
-              </Typography>
-              <Typography variant="body1">
-                Make informed decisions with genuine reviews and ratings
-                from other users. See what people have to say about
-                professionals before making your booking.
-              </Typography>
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Box
-              sx={{
-                padding: 2,
-                border: "1px solid",
-                borderColor: "grey.300",
-                borderRadius: 2,
-              }}
-            >
-              <Typography variant="h6" fontWeight={"bold"}>
-                Convenient and Reliable
-              </Typography>
-              <Typography variant="body1">
-                Say goodbye to long waiting times and unreliable contacts. Our
-                platform gives you instant access to skilled professionals,
-                ensuring a smooth and hassle-free booking experience.
-              </Typography>
-            </Box>
-          </Grid>
+        <Grid container spacing={3} sx={{ mb: 6 }}>
+          {features.map((feature, index) => (
+            <Grid item xs={12} sm={6} md={3} key={index}>
+              <Card
+                sx={{
+                  height: "100%",
+                  transition: "transform 0.3s",
+                  "&:hover": {
+                    transform: "translateY(-5px)",
+                  },
+                }}
+              >
+                <CardContent sx={{ textAlign: "center" }}>
+                  <Box sx={{ mb: 2 }}>{feature.icon}</Box>
+                  <Typography variant="h6" gutterBottom>
+                    {feature.title}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {feature.description}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
         </Grid>
 
-        {/* Vision Section */}
-        <Typography
-          variant="h4"
-          component="h2"
-          sx={{ my: 2 }}
-          textAlign={"center"}
-          fontWeight={"bold"}
-        >
-          Our Vision
-        </Typography>
-        <Typography variant="body1" paragraph>
-          We envision a world where booking services is seamless and
-          accessible to everyone. By constantly expanding our network of
-          professionals and enhancing our technology, we aim to become the
-          leading platform for **connecting individuals with the experts they
-          need—anytime, anywhere**.
-        </Typography>
+        {/* Mission Section */}
+        <Box sx={{ mb: 6, textAlign: "center" }}>
+          <Typography
+            variant="h4"
+            component="h2"
+            sx={{ mb: 3, fontWeight: "bold" }}
+          >
+            Our Mission
+          </Typography>
+          <Typography variant="body1" sx={{ fontSize: "1.1rem" }}>
+            We strive to revolutionize the way people connect with professional
+            service providers. Our mission is to make quality services
+            accessible to everyone through a seamless, efficient, and reliable
+            booking platform.
+          </Typography>
+        </Box>
 
         {/* Call to Action Section */}
-        <Box sx={{ textAlign: "center", mt: 4 }}>
-          <Typography variant="h5" paragraph>
-            Ready to book your next appointment? Find the perfect professional
-            today!
+        <Box
+          sx={{
+            textAlign: "center",
+            py: 6,
+            background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
+            borderRadius: 2,
+            color: "white",
+          }}
+        >
+          <Typography variant="h5" sx={{ mb: 3 }}>
+            Ready to Book Your Next Appointment?
           </Typography>
           <Button
             variant="contained"
-            color="primary"
             size="large"
+            sx={{
+              bgcolor: "white",
+              color: "primary.main",
+              "&:hover": {
+                bgcolor: "grey.100",
+              },
+            }}
             href="/bookings"
           >
-            Start Booking
+            Book Now
           </Button>
         </Box>
-
-        {/* Thank You Section */}
-        <Typography variant="body1" paragraph sx={{ mt: 4 }}>
-          Thank you for choosing our platform to connect with professionals.
-          Our team is committed to providing the best experience for you. If you
-          have any questions or need assistance, feel free to reach out.
-        </Typography>
       </Box>
     </Container>
   );
