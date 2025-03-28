@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import FacebookIcon from "@mui/icons-material/Facebook";
-import TwitterIcon from "@mui/icons-material/Twitter";
+import XIcon from "@mui/icons-material/X";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import EmailIcon from "@mui/icons-material/Email";
@@ -47,7 +47,7 @@ const Footer = () => {
 
   const socialLinks = [
     { icon: <FacebookIcon />, url: "https://facebook.com" },
-    { icon: <TwitterIcon />, url: "https://twitter.com" },
+    { icon: <XIcon />, url: "https://x.com" },
     { icon: <InstagramIcon />, url: "https://instagram.com" },
     { icon: <LinkedInIcon />, url: "https://linkedin.com" },
   ];
