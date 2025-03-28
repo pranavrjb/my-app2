@@ -25,6 +25,7 @@ import MedicalServices from "./pages/MedicalServices";
 import FitnessAndWellness from "./pages/FitnessAndWellness";
 import BeautyServices from "./pages/BeautyServices";
 import ConsultingServices from "./pages/ConsultingServices";
+import ServiceAbout from "./pages/Services/ServiceAbout";
 
 const App = () => {
   // const isLoggedin = !!window.localStorage.getItem("userToken");
@@ -51,6 +52,10 @@ const App = () => {
         <Route path="/bookings" element={<BookingForm />} />
         <Route path="/form" element={<ServiceProviderForm />} />
         <Route path="/service/:id" element={<ServiceProviderDetails />} />
+        <Route path="/medicalservices/about" element={<ServiceAbout />} />
+        <Route path="/fitness/about" element={<ServiceAbout />} />
+        <Route path="/beauty/about" element={<ServiceAbout />} />
+        <Route path="/consulting/about" element={<ServiceAbout />} />
 
         {/* Protected Routes */}
         <Route path="/profile" element={<Profile />} />
