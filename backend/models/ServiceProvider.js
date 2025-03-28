@@ -1,37 +1,64 @@
-import mongoose from 'mongoose'
+const mongoose = require("mongoose");
 
-const serviceProviderSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  serviceType: {
-    type: String,
-    required: true,
-  },
-  // specialty: {
-  //   type: String,
-  // },
-  availableSlots: {
-    type: [String],
-  },
-  avatar: {
-    type: String,  
-  },
-    location: {
-        type: String, 
-        required: true, 
+const serviceProviderSchema = new mongoose.Schema(
+  {
+    businessName: {
+      type: String,
+      required: true,
+      trim: true,
     },
-    // experience: {
-    //     type: Number, 
-    //     required: true, 
-    //     min: [1, 'Experience must be at least 1 year'], 
-    // },
-  createdAt: {
-    type: Date,
-    default: Date.now,
+    serviceCategory: {
+      type: String,
+      required: true,
+      enum: ["Medical Services", "Fitness & Wellness", "Beauty Services", "Consulting Services"],
+    },
+    description: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    address: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    phone: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      lowercase: true,
+    },
+    image: {
+      type: String,
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "pending",
+    },
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
-});
+  {
+    timestamps: true,
+  }
+);
 
-const ServiceProvider = mongoose.model('ServiceProvider', serviceProviderSchema);
-export default ServiceProvider
+// Add indexes for better query performance
+serviceProviderSchema.index({ email: 1 });
+serviceProviderSchema.index({ serviceCategory: 1 });
+serviceProviderSchema.index({ status: 1 });
+
+const ServiceProvider = mongoose.model("ServiceProvider", serviceProviderSchema);
+
+module.exports = ServiceProvider;

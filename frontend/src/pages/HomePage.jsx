@@ -28,24 +28,28 @@ const HomePage = () => {
       title: "Medical Services",
       description: "Find qualified doctors and medical specialists",
       color: "#2196f3",
+      path: "/medicalservices",
     },
     {
       icon: <FitnessCenterIcon sx={{ fontSize: 40 }} />,
       title: "Fitness & Wellness",
       description: "Connect with personal trainers and wellness experts",
       color: "#4caf50",
+      path: "/fitness",
     },
     {
       icon: <ContentCutIcon sx={{ fontSize: 40 }} />,
       title: "Beauty Services",
       description: "Book appointments with beauty professionals",
       color: "#f44336",
+      path: "/beauty",
     },
     {
       icon: <PsychologyIcon sx={{ fontSize: 40 }} />,
       title: "Consulting",
       description: "Get expert advice from various consultants",
       color: "#9c27b0",
+      path: "/consulting",
     },
   ];
 
@@ -160,6 +164,8 @@ const HomePage = () => {
             {services.map((service, index) => (
               <Grid item xs={12} sm={6} md={3} key={index}>
                 <Card
+                  component={Link}
+                  to={service.path}
                   sx={{
                     height: "100%",
                     display: "flex",
@@ -226,22 +232,7 @@ const HomePage = () => {
       </Container>
 
       {/* FAQs Section */}
-      {/* <Container maxWidth="lg" sx={{ mb: 8 }}>
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
-          <Typography
-            variant="h4"
-            align="center"
-            sx={{ mb: 4, fontWeight: 600 }}
-          >
-            Frequently Asked Questions
-          </Typography> */}
       <FAQsPage />
-      {/* </motion.div>
-      </Container> */}
 
       {/* CTA Section */}
       {/* <Box

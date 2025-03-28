@@ -22,6 +22,10 @@ import ServiceProviderForm from "./pages/ServiceProviderForm";
 import SearchServiceProviders from "./pages/Services/SearchServiceProviders";
 import HelpCenter from "./pages/HelpCenter";
 import MedicalServices from "./pages/MedicalServices";
+import FitnessAndWellness from "./pages/FitnessAndWellness";
+import BeautyServices from "./pages/BeautyServices";
+import ConsultingServices from "./pages/ConsultingServices";
+
 const App = () => {
   // const isLoggedin = !!window.localStorage.getItem("userToken");
 
@@ -36,17 +40,17 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/medicalservices" element={<MedicalServices />} />
+        <Route path="/fitness" element={<FitnessAndWellness />} />
+        <Route path="/beauty" element={<BeautyServices />} />
+        <Route path="/consulting" element={<ConsultingServices />} />
         <Route path="/about" element={<About />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsOfService />} />
-        <Route path="/help"element={<HelpCenter/>}/>
+        <Route path="/help" element={<HelpCenter />} />
         <Route path="/search" element={<SearchServiceProviders />} />
         <Route path="/bookings" element={<BookingForm />} />
         <Route path="/form" element={<ServiceProviderForm />} />
-        <Route
-          path="/service/:id"
-          element={<ServiceProviderDetails />}
-        />
+        <Route path="/service/:id" element={<ServiceProviderDetails />} />
 
         {/* Protected Routes */}
         <Route path="/profile" element={<Profile />} />

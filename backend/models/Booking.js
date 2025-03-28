@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const bookingSchema = new mongoose.Schema({
     providerId: {
@@ -17,9 +17,9 @@ const bookingSchema = new mongoose.Schema({
     // clientPhone: {
     //     type: String,
     // },
-    description:{
-        type:String,
-        required:true,
+    description: {
+        type: String,
+        required: true,
     },
     slot: {
         type: String,
@@ -32,4 +32,5 @@ const bookingSchema = new mongoose.Schema({
 });
 
 const Booking = mongoose.model('Booking', bookingSchema);
-export default Booking;
+
+module.exports = Booking;

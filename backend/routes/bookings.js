@@ -1,8 +1,7 @@
-import express from 'express';
-import Booking from '../models/Booking.js';
-import protect from '../middleware/protectMiddleware.js';
-import admin from '../middleware/adminMiddleware.js';
-import mongoose from 'mongoose';
+const express = require('express');
+const Booking = require('../models/Booking.js');
+const { protect, isAdmin } = require('../middleware/auth');
+const mongoose = require('mongoose');
 
 const router = express.Router();
 // Create a new booking
@@ -38,7 +37,7 @@ router.get('/:id', async (req, res) => {
 });
 
 //get all bookings for the admin
-router.get('/',protect, async (req, res) => {
+router.get('/', protect, async (req, res) => {
     try {
         const bookings = await Booking.find().populate('providerId').populate('clientName', 'clientEmail');
         res.status(200).json(bookings);
@@ -48,13 +47,13 @@ router.get('/',protect, async (req, res) => {
 });
 
 // Update booking status
-router.put('/:id',protect,admin, async (req, res) => {
+router.put('/:id', protect, isAdmin, async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
 
     try {
-        if(!status){
-            return res.status(403).json({message:"Status is required!"});
+        if (!status) {
+            return res.status(403).json({ message: "Status is required!" });
         }
         const booking = await Booking.findByIdAndUpdate(id, { status }, { new: true });
 
@@ -69,7 +68,7 @@ router.put('/:id',protect,admin, async (req, res) => {
 });
 
 // Delete a booking
-router.delete('/:id',protect,admin, async (req, res) => {
+router.delete('/:id', protect, isAdmin, async (req, res) => {
     try {
         if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
             return res.status(400).json({ message: 'Invalid booking ID format' });
@@ -87,4 +86,4 @@ router.delete('/:id',protect,admin, async (req, res) => {
         });
     }
 });
-export default router;
+module.exports = router;

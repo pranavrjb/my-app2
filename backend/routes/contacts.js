@@ -1,7 +1,6 @@
-import express from 'express';
-// import nodemailer from 'nodemailer';
-import Contact from '../models/Contact.js';
-import dotenv from 'dotenv';
+const express = require('express');
+const Contact = require('../models/Contact.js');
+const dotenv = require('dotenv');
 
 dotenv.config();
 
@@ -38,4 +37,4 @@ router.post('/userContacts', async (req, res) => {
     }
 });
 
-export default router;
+module.exports = router;

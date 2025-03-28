@@ -34,6 +34,7 @@ import {
   Category as CategoryIcon,
 } from "@mui/icons-material";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const MedicalServices = () => {
   const theme = useTheme();
@@ -90,6 +91,8 @@ const MedicalServices = () => {
     "Emergency Care",
   ];
 
+  const navigate = useNavigate();
+
   const handleOpenDialog = () => {
     setOpenDialog(true);
   };
@@ -123,6 +126,7 @@ const MedicalServices = () => {
     };
     setServices((prev) => [...prev, newService]);
     handleCloseDialog();
+    navigate("/dashboard");
   };
 
   const handleDelete = (id) => {

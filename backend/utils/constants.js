@@ -1,5 +1,7 @@
-export const roles = {
-    admin: "ADMIN",
-    serviceProvider: "SERVICE-PROVIDER",
-    client: "USER",
+module.exports = {
+    roles: {
+        admin: "ADMIN",
+        serviceProvider: "SERVICE-PROVIDER",
+        client: "USER",
+    },
 };

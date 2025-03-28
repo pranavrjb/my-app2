@@ -1,13 +1,12 @@
-import express from 'express';
-import protect  from '../middleware/protectMiddleware.js';
-import admin from '../middleware/adminMiddleware.js';
-import User from '../models/User.js';
+const express = require('express');
+const { protect, isAdmin } = require('../middleware/auth');
+const User = require('../models/User.js');
 // import Booking from '../models/Booking.js';
 
 const router = express.Router();
 
 // GET all users (Admin Only)
-router.get('/users', protect, admin, async (req, res) => {
+router.get('/users', protect, isAdmin, async (req, res) => {
     try {
         const users = await User.find({});
         res.json(users);
@@ -17,7 +16,7 @@ router.get('/users', protect, admin, async (req, res) => {
 });
 
 // DELETE user by ID (Admin Only)
-router.delete('/users/:id', protect, admin, async (req, res) => {
+router.delete('/users/:id', protect, isAdmin, async (req, res) => {
     try {
         const user = await User.findByIdAndDelete(req.params.id);
 
@@ -33,7 +32,7 @@ router.delete('/users/:id', protect, admin, async (req, res) => {
 });
 
 // GET all bookings (Admin Only)
-// router.get('/bookings', protect, admin, async (req, res) => {
+// router.get('/bookings', protect, isAdmin, async (req, res) => {
 //     try {
 //         const bookings = await Booking.find({}).populate('doctorId patientId', 'name email');
 //         res.json(bookings);
@@ -43,7 +42,7 @@ router.delete('/users/:id', protect, admin, async (req, res) => {
 // });
 
 // // UPDATE booking status (Admin Only)
-// router.put('/bookings/:id', protect, admin, async (req, res) => {
+// router.put('/bookings/:id', protect, isAdmin, async (req, res) => {
 //     const { status } = req.body;
 //     try {
 //         const booking = await Booking.findById(req.params.id);
@@ -60,4 +59,4 @@ router.delete('/users/:id', protect, admin, async (req, res) => {
 //     }
 // });
 
-export default router;
+module.exports = router;

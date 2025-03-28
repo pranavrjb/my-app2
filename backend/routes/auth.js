@@ -1,8 +1,8 @@
-import express from 'express';
-import * as bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
-import dotenv from 'dotenv';
+const express = require('express');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const User = require('../models/User.js');
+const dotenv = require('dotenv');
 
 dotenv.config();
 
@@ -66,4 +66,4 @@ router.get('/logout', async (req, res, next) => {
     res.send('logout')
     res.redirect('/')
 })
-export default router;
+module.exports = router;
