@@ -42,8 +42,8 @@ router.get("/:id", getServiceProviderById);
 
 // Protected routes
 router.use(protect);
-router.post( "/register",upload.single("images"),registerServiceProvider);
-router.put("/:id",isAdminOrServiceProvider,upload.single("images"),updateServiceProvider);
+router.post( "/register",registerServiceProvider);
+router.put("/:id",isAdminOrServiceProvider,updateServiceProvider);
 router.delete("/:id",isAdminOrServiceProvider,deleteServiceProvider);
 
 // Admin only routes

@@ -34,10 +34,10 @@ const serviceProviderSchema = new mongoose.Schema(
       trim: true,
       lowercase: true,
     },
-    image: {
-      type: String,
-      required: true,
-    },
+    // image: {
+    //   type: String,
+    //   required: true,
+    // },
     status: {
       type: String,
       enum: ["pending", "approved", "rejected"],

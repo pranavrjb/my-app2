@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -22,6 +22,7 @@ import {
   FormControl,
   InputLabel,
   Select,
+  CircularProgress,
 } from "@mui/material";
 import {
   Add as AddIcon,
@@ -32,44 +33,21 @@ import {
   AttachMoney as MoneyIcon,
   Description as DescriptionIcon,
   Category as CategoryIcon,
+  Phone as PhoneIcon,
+  Email as EmailIcon,
+  LocationOn as LocationIcon,
 } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import API from "../api";
 
 const MedicalServices = () => {
   const theme = useTheme();
   const [openDialog, setOpenDialog] = useState(false);
-  const [services, setServices] = useState([
-    {
-      id: 1,
-      name: "General Check-up",
-      category: "Primary Care",
-      description:
-        "Comprehensive health examination including vital signs, physical assessment, and basic lab tests.",
-      duration: "60 minutes",
-      price: 150,
-      image: "https://source.unsplash.com/random/800x600?medical-checkup",
-    },
-    {
-      id: 2,
-      name: "Dental Cleaning",
-      category: "Dental Care",
-      description: "Professional dental cleaning and oral health assessment.",
-      duration: "45 minutes",
-      price: 120,
-      image: "https://source.unsplash.com/random/800x600?dental",
-    },
-    {
-      id: 3,
-      name: "Physical Therapy",
-      category: "Rehabilitation",
-      description:
-        "Therapeutic exercises and treatments for injury recovery and physical rehabilitation.",
-      duration: "45 minutes",
-      price: 100,
-      image: "https://source.unsplash.com/random/800x600?physical-therapy",
-    },
-  ]);
+  const [services, setServices] = useState([]);
+  const [serviceProviders, setServiceProviders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -92,6 +70,28 @@ const MedicalServices = () => {
   ];
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchServiceProviders = async () => {
+      try {
+        const response = await API.get(
+          "/serviceProviders?category=Medical Services"
+        );
+        // Ensure we have an array of providers
+        const providers = response.data?.providers || response.data || [];
+        console.log("Medical Services providers:", providers); // For debugging
+        setServiceProviders(Array.isArray(providers) ? providers : []);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching service providers:", err);
+        setError("Failed to load service providers");
+        setLoading(false);
+        setServiceProviders([]); // Ensure we set an empty array on error
+      }
+    };
+
+    fetchServiceProviders();
+  }, []);
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -190,7 +190,7 @@ const MedicalServices = () => {
                 mb: 4,
               }}
             >
-              Manage and add medical services to your healthcare facility.
+              Browse through our trusted medical service providers
             </Typography>
             <Button
               variant="contained"
@@ -218,6 +218,93 @@ const MedicalServices = () => {
               Add New Service
             </Button>
           </Box>
+
+          {/* Service Providers Grid */}
+          {loading ? (
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <CircularProgress />
+            </Box>
+          ) : error ? (
+            <Typography color="error" align="center">
+              {error}
+            </Typography>
+          ) : (
+            <Grid container spacing={3}>
+              {serviceProviders.map((provider) => (
+                <Grid item xs={12} md={4} key={provider._id}>
+                  <Card
+                    sx={{
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      borderRadius: 2,
+                      background:
+                        theme.palette.mode === "dark" ? "#2d2d2d" : "#ffffff",
+                      boxShadow:
+                        theme.palette.mode === "dark"
+                          ? "0 2px 8px rgba(0,0,0,0.3)"
+                          : "0 2px 8px rgba(0,0,0,0.1)",
+                      transition: "transform 0.2s",
+                      "&:hover": {
+                        transform: "translateY(-4px)",
+                      },
+                    }}
+                  >
+                    <CardMedia
+                      component="img"
+                      height="200"
+                      image={
+                        provider.logo ||
+                        "https://source.unsplash.com/random/800x600?medical"
+                      }
+                      alt={provider.businessName}
+                    />
+                    <CardContent>
+                      <Typography
+                        gutterBottom
+                        variant="h6"
+                        component="div"
+                        sx={{ fontWeight: 600 }}
+                      >
+                        {provider.businessName}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ mb: 2 }}
+                      >
+                        {provider.description}
+                      </Typography>
+                      <Box sx={{ mt: 2 }}>
+                        <Box
+                          sx={{ display: "flex", alignItems: "center", mb: 1 }}
+                        >
+                          <LocationIcon sx={{ mr: 1, fontSize: 20 }} />
+                          <Typography variant="body2">
+                            {provider.address}
+                          </Typography>
+                        </Box>
+                        <Box
+                          sx={{ display: "flex", alignItems: "center", mb: 1 }}
+                        >
+                          <PhoneIcon sx={{ mr: 1, fontSize: 20 }} />
+                          <Typography variant="body2">
+                            {provider.phone}
+                          </Typography>
+                        </Box>
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                          <EmailIcon sx={{ mr: 1, fontSize: 20 }} />
+                          <Typography variant="body2">
+                            {provider.email}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          )}
 
           {/* Services Grid */}
           <Grid container spacing={3}>

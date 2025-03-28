@@ -1,5 +1,4 @@
 const ServiceProvider = require("../models/ServiceProvider");
-const { uploadToCloudinary } = require("../utils/cloudinary");
 const { validateEmail } = require("../utils/validators");
 
 // Register a new service provider
@@ -31,11 +30,11 @@ const registerServiceProvider = async (req, res) => {
             });
         }
 
-        let images = "";
-        if (req.file) {
-            const uploadResult = await uploadToCloudinary(req.file, "service-providers");
-            images = uploadResult.secure_url;
-        }
+        // let imagePath = "";
+        // if (req.file) {
+        //     // Use the file path from multer
+        //     imagePath = `/images/${req.file.filename}`;
+        // }
 
         // Create new service provider
         const serviceProvider = new ServiceProvider({
@@ -45,8 +44,8 @@ const registerServiceProvider = async (req, res) => {
             address,
             phone,
             email,
-            images,
-            owner: req.user._id, // Assuming user info is added by auth middleware
+            // image: imagePath,
+            owner: req.user?._id, // Make owner optional for now
         });
 
         await serviceProvider.save();
@@ -69,19 +68,9 @@ const registerServiceProvider = async (req, res) => {
 // Get all service providers
 const getAllServiceProviders = async (req, res) => {
     try {
-        const { category, status } = req.query;
-        const query = {};
-
-        if (category) query.serviceCategory = category;
-        if (status) query.status = status;
-
-        const serviceProviders = await ServiceProvider.find(query)
-            .populate("owner", "name email")
-            .sort({ createdAt: -1 });
-
+        const serviceProviders = await ServiceProvider.find();
         res.status(200).json({
             success: true,
-            count: serviceProviders.length,
             data: serviceProviders,
         });
     } catch (error) {
@@ -97,16 +86,13 @@ const getAllServiceProviders = async (req, res) => {
 // Get service provider by ID
 const getServiceProviderById = async (req, res) => {
     try {
-        const serviceProvider = await ServiceProvider.findById(req.params.id)
-            .populate("owner", "name email");
-
+        const serviceProvider = await ServiceProvider.findById(req.params.id);
         if (!serviceProvider) {
             return res.status(404).json({
                 success: false,
                 message: "Service provider not found",
             });
         }
-
         res.status(200).json({
             success: true,
             data: serviceProvider,
@@ -139,14 +125,14 @@ const updateServiceProviderStatus = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            message: "Service provider status updated successfully",
+            message: "Status updated successfully",
             data: serviceProvider,
         });
     } catch (error) {
-        console.error("Error updating service provider status:", error);
+        console.error("Error updating status:", error);
         res.status(500).json({
             success: false,
-            message: "Error updating service provider status",
+            message: "Error updating status",
             error: error.message,
         });
     }
@@ -164,10 +150,10 @@ const updateServiceProvider = async (req, res) => {
             });
         }
 
-        // Handle logo upload if new file is provided
+        // Handle image upload if new file is provided
         if (req.file) {
-            const uploadResult = await uploadToCloudinary(req.file, "service-providers");
-            req.body.logo = uploadResult.secure_url;
+            // Use the file path from multer
+            req.body.image = `/uploads/${req.file.filename}`;
         }
 
         // Update fields

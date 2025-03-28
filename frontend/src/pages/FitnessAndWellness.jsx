@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -7,41 +7,45 @@ import {
   Card,
   CardContent,
   CardMedia,
+  CircularProgress,
   useTheme,
 } from "@mui/material";
+import {
+  FitnessCenter as FitnessIcon,
+  LocationOn as LocationIcon,
+  Phone as PhoneIcon,
+  Email as EmailIcon,
+} from "@mui/icons-material";
 import { motion } from "framer-motion";
-import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
+import API from "../api";
 
 const FitnessAndWellness = () => {
   const theme = useTheme();
+  const [serviceProviders, setServiceProviders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const services = [
-    {
-      id: 1,
-      title: "Personal Training",
-      description: "One-on-one fitness training with certified trainers",
-      image: "/images/fitness/personal-training.jpg",
-      price: "$80/hour",
-      duration: "1 hour",
-    },
-    {
-      id: 2,
-      title: "Group Fitness Classes",
-      description: "High-energy group workouts for all fitness levels",
-      image: "/images/fitness/group-class.jpg",
-      price: "$25/class",
-      duration: "45 mins",
-    },
-    {
-      id: 3,
-      title: "Yoga & Meditation",
-      description: "Mind-body wellness through yoga and meditation",
-      image: "/images/fitness/yoga.jpg",
-      price: "$30/class",
-      duration: "1 hour",
-    },
-    // Add more fitness services as needed
-  ];
+  useEffect(() => {
+    const fetchServiceProviders = async () => {
+      try {
+        const response = await API.get(
+          "/serviceProviders?category=Fitness & Wellness"
+        );
+
+        const providers = response.data?.providers || response.data || [];
+        console.log("Fitness & Wellness providers:", providers); // For debugging
+        setServiceProviders(Array.isArray(providers) ? providers : []);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching service providers:", err);
+        setError("Failed to load service providers");
+        setLoading(false);
+        setServiceProviders([]); // Ensure we set an empty array on error
+      }
+    };
+
+    fetchServiceProviders();
+  }, []);
 
   return (
     <Box
@@ -78,7 +82,7 @@ const FitnessAndWellness = () => {
                 bgcolor: theme.palette.primary.main,
               }}
             >
-              <FitnessCenterIcon sx={{ fontSize: 30, color: "white" }} />
+              <FitnessIcon sx={{ fontSize: 30, color: "white" }} />
             </Box>
             <Typography
               variant="h4"
@@ -89,7 +93,7 @@ const FitnessAndWellness = () => {
                 mb: 1,
               }}
             >
-              Fitness & Wellness
+              Fitness & Wellness Services
             </Typography>
             <Typography
               variant="body1"
@@ -100,98 +104,96 @@ const FitnessAndWellness = () => {
                 mb: 4,
               }}
             >
-              Transform your life with professional fitness and wellness
-              services
+              Browse through our trusted fitness and wellness service providers
             </Typography>
           </Box>
 
-          {/* Services Grid */}
-          <Grid container spacing={3}>
-            {services.map((service) => (
-              <Grid item xs={12} md={4} key={service.id}>
-                <Card
-                  sx={{
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    borderRadius: 2,
-                    background:
-                      theme.palette.mode === "dark" ? "#2d2d2d" : "#ffffff",
-                    boxShadow:
-                      theme.palette.mode === "dark"
-                        ? "0 2px 8px rgba(0,0,0,0.3)"
-                        : "0 2px 8px rgba(0,0,0,0.1)",
-                    transition: "transform 0.2s",
-                    "&:hover": {
-                      transform: "translateY(-4px)",
-                    },
-                  }}
-                >
-                  <CardMedia
-                    component="img"
-                    height="160"
-                    image={service.image}
-                    alt={service.title}
-                  />
-                  <CardContent>
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontWeight: 600,
-                        color:
-                          theme.palette.mode === "dark" ? "white" : "#1a1a1a",
-                        mb: 1,
-                      }}
-                    >
-                      {service.title}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        color:
-                          theme.palette.mode === "dark" ? "#b3b3b3" : "#4a4a4a",
-                        mb: 2,
-                      }}
-                    >
-                      {service.description}
-                    </Typography>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        mt: "auto",
-                      }}
-                    >
+          {/* Service Providers Grid */}
+          {loading ? (
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <CircularProgress />
+            </Box>
+          ) : error ? (
+            <Typography color="error" align="center">
+              {error}
+            </Typography>
+          ) : (
+            <Grid container spacing={3}>
+              {serviceProviders.map((provider) => (
+                <Grid item xs={12} md={4} key={provider._id}>
+                  <Card
+                    sx={{
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      borderRadius: 2,
+                      background:
+                        theme.palette.mode === "dark" ? "#2d2d2d" : "#ffffff",
+                      boxShadow:
+                        theme.palette.mode === "dark"
+                          ? "0 2px 8px rgba(0,0,0,0.3)"
+                          : "0 2px 8px rgba(0,0,0,0.1)",
+                      transition: "transform 0.2s",
+                      "&:hover": {
+                        transform: "translateY(-4px)",
+                      },
+                    }}
+                  >
+                    <CardMedia
+                      component="img"
+                      height="200"
+                      image={
+                        provider.logo ||
+                        "https://source.unsplash.com/random/800x600?fitness"
+                      }
+                      alt={provider.businessName}
+                    />
+                    <CardContent>
                       <Typography
-                        variant="body2"
-                        sx={{
-                          color:
-                            theme.palette.mode === "dark"
-                              ? "#b3b3b3"
-                              : "#666666",
-                        }}
+                        gutterBottom
+                        variant="h6"
+                        component="div"
+                        sx={{ fontWeight: 600 }}
                       >
-                        {service.duration}
+                        {provider.businessName}
                       </Typography>
                       <Typography
                         variant="body2"
-                        sx={{
-                          color:
-                            theme.palette.mode === "dark"
-                              ? "#b3b3b3"
-                              : "#666666",
-                          fontWeight: 600,
-                        }}
+                        color="text.secondary"
+                        sx={{ mb: 2 }}
                       >
-                        {service.price}
+                        {provider.description}
                       </Typography>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
+                      <Box sx={{ mt: 2 }}>
+                        <Box
+                          sx={{ display: "flex", alignItems: "center", mb: 1 }}
+                        >
+                          <LocationIcon sx={{ mr: 1, fontSize: 20 }} />
+                          <Typography variant="body2">
+                            {provider.address}
+                          </Typography>
+                        </Box>
+                        <Box
+                          sx={{ display: "flex", alignItems: "center", mb: 1 }}
+                        >
+                          <PhoneIcon sx={{ mr: 1, fontSize: 20 }} />
+                          <Typography variant="body2">
+                            {provider.phone}
+                          </Typography>
+                        </Box>
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                          <EmailIcon sx={{ mr: 1, fontSize: 20 }} />
+                          <Typography variant="body2">
+                            {provider.email}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          )}
         </motion.div>
       </Container>
     </Box>

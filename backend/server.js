@@ -1,22 +1,28 @@
-require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const morgan = require('morgan');
 const createHttpError = require('http-errors');
+const dotenv = require('dotenv');
 const path = require('path');
+const fs = require('fs');
 
 const authRoutes = require('./routes/auth');
-// Commenting out serviceRoutes until it's properly set up
-// const serviceRoutes = require('./routes/service');
 const bookingRoutes = require('./routes/bookings');
 const contactRoutes = require('./routes/contacts');
 const adminRoutes = require('./routes/admin');
 const userRoutes = require('./routes/user');
 const serviceProviderRoutes = require('./routes/serviceProvider');
 
+dotenv.config();
+
 const app = express();
 const port = process.env.PORT || 3001;
+
+// Create uploads directory if it doesn't exist
+if (!fs.existsSync('uploads')) {
+  fs.mkdirSync('uploads');
+}
 
 // Middleware
 app.use(express.json());
@@ -30,6 +36,7 @@ app.use(morgan('dev'));
 
 // Serve static files
 app.use('/images', express.static(path.join(__dirname, '../../frontend/public/images')));
+// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI, {
@@ -45,14 +52,12 @@ app.get('/', (req, res) => {
 });
 
 // API Routes
-app.use('/api/auth', authRoutes);
-// Commenting out serviceRoutes until it's properly set up
-// app.use('/api/services', serviceRoutes);
-app.use('/api/contacts', contactRoutes);
-app.use('/api/bookings', bookingRoutes);
-app.use('/api/admin', adminRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/service-providers', serviceProviderRoutes);
+app.use('/auth', authRoutes);
+app.use('/contacts', contactRoutes);
+app.use('/bookings', bookingRoutes);
+app.use('/admin', adminRoutes);
+app.use('/users', userRoutes);
+app.use('/serviceProviders', serviceProviderRoutes);
 
 // Error handling for not found routes
 app.use((req, res, next) => {

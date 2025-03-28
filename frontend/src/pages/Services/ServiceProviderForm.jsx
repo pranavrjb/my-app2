@@ -24,7 +24,7 @@ import API from "../../api";
 const steps = [
   "Business Information",
   "Contact Information",
-  "Business Images",
+  // "Business Images",
 ];
 
 const ServiceProviderForm = () => {
@@ -47,7 +47,7 @@ const ServiceProviderForm = () => {
     address: "",
     phone: "",
     email: "",
-    logo: null,
+    // logo: null,
   });
 
   const serviceCategories = [
@@ -65,21 +65,21 @@ const ServiceProviderForm = () => {
     }));
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setSelectedFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-        setFormData((prev) => ({
-          ...prev,
-          logo: file,
-        }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  // const handleImageChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     setSelectedFile(file);
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setImagePreview(reader.result);
+  //       setFormData((prev) => ({
+  //         ...prev,
+  //         logo: file,
+  //       }));
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   const validateStep = (step) => {
     switch (step) {
@@ -98,11 +98,11 @@ const ServiceProviderForm = () => {
           formData.email.trim() !== "" &&
           /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
         );
-      case 2:
-        // Validate Business Images
-        return selectedFile !== null;
-      default:
-        return false;
+      // case 2:
+      //   // Validate Business Images
+      //   return selectedFile !== null;
+      // default:
+      //   return false;
     }
   };
 
@@ -136,30 +136,26 @@ const ServiceProviderForm = () => {
     setIsSubmitting(true);
 
     try {
-      const formDataToSend = new FormData();
-      formDataToSend.append("businessData", JSON.stringify(formData));
+      const response = await API.post("/serviceProviders/register", formData);
 
-      if (selectedFile) {
-        formDataToSend.append("logo", selectedFile);
+      if (response.status === 201) {
+        setSnackbar({
+          open: true,
+          message: "Service provider registered successfully!",
+          severity: "success",
+        });
+
+        setTimeout(() => navigate("/"), 2000);
+      } else {
+        throw new Error(response.data?.message || "Registration failed");
       }
-
-      const response = await API.post("/serviceProviderController/register",formDataToSend);
-
-      if (!response.ok) {
-        throw new Error("Registration failed");
-      }
-
-      setSnackbar({
-        open: true,
-        message: "Service provider registered successfully!",
-        severity: "success",
-      });
-
-      setTimeout(() => navigate("/dashboard"), 2000);
     } catch (error) {
+      console.error("Registration error:", error);
       setSnackbar({
         open: true,
-        message: "Registration failed. Please try again.",
+        message:
+          error.response?.data?.message ||
+          "Registration failed. Please try again.",
         severity: "error",
       });
     } finally {
@@ -188,14 +184,14 @@ const ServiceProviderForm = () => {
             handleInputChange={handleInputChange}
           />
         );
-      case 2:
-        return (
-          <BusinessImages
-            formData={formData}
-            handleImageChange={handleImageChange}
-            imagePreview={imagePreview}
-          />
-        );
+      // case 2:
+      //   return (
+      //     <BusinessImages
+      //       formData={formData}
+      //       handleImageChange={handleImageChange}
+      //       imagePreview={imagePreview}
+      //     />
+      //   );
       default:
         return null;
     }
