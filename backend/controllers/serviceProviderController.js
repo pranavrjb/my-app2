@@ -8,12 +8,10 @@ const registerServiceProvider = async (req, res) => {
         const {
             businessName,
             serviceCategory,
-            businessType,
             description,
             address,
             phone,
             email,
-            website,
         } = req.body;
 
         // Validate email format
@@ -33,24 +31,21 @@ const registerServiceProvider = async (req, res) => {
             });
         }
 
-        // Handle logo upload
-        let logoUrl = "";
+        let images = "";
         if (req.file) {
             const uploadResult = await uploadToCloudinary(req.file, "service-providers");
-            logoUrl = uploadResult.secure_url;
+            images = uploadResult.secure_url;
         }
 
         // Create new service provider
         const serviceProvider = new ServiceProvider({
             businessName,
             serviceCategory,
-            businessType,
             description,
             address,
             phone,
             email,
-            website,
-            logo: logoUrl,
+            images,
             owner: req.user._id, // Assuming user info is added by auth middleware
         });
 
@@ -62,10 +57,10 @@ const registerServiceProvider = async (req, res) => {
             data: serviceProvider,
         });
     } catch (error) {
-        console.error("Service provider registration error:", error);
+        console.error("Error registering service provider:", error);
         res.status(500).json({
             success: false,
-            message: "Error registering service provider",
+            message: "Failed to register service provider",
             error: error.message,
         });
     }

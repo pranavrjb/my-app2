@@ -18,7 +18,7 @@ import BookingForm from "./pages/Booking/BookingForm";
 import ManageBookings from "./pages/Booking/ManageBookings";
 import TermsOfService from "./pages/TermsOfService";
 import ServiceProviderDetails from "./pages/Services/ServiceProviderDetails";
-import ServiceProviderForm from "./pages/ServiceProviderForm";
+import ServiceProviderForm from "./pages/Services/ServiceProviderForm";
 import SearchServiceProviders from "./pages/Services/SearchServiceProviders";
 import HelpCenter from "./pages/HelpCenter";
 import MedicalServices from "./pages/MedicalServices";

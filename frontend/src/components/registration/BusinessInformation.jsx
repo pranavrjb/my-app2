@@ -75,44 +75,6 @@ const BusinessInformation = ({
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={12} md={6}>
-          <FormControl fullWidth required>
-            <InputLabel>Business Type</InputLabel>
-            <Select
-              name="businessType"
-              value={formData.businessType}
-              onChange={handleInputChange}
-              label="Business Type"
-            >
-              {businessTypes.map((type) => (
-                <MenuItem key={type} value={type}>
-                  {type}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <TextField
-            fullWidth
-            label="Website"
-            name="website"
-            value={formData.website}
-            onChange={handleInputChange}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <BusinessIcon
-                    sx={{
-                      color:
-                        theme.palette.mode === "dark" ? "#b3b3b3" : "#666666",
-                    }}
-                  />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </Grid>
         <Grid item xs={12}>
           <TextField
             fullWidth

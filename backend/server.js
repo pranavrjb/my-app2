@@ -13,7 +13,7 @@ const bookingRoutes = require('./routes/bookings');
 const contactRoutes = require('./routes/contacts');
 const adminRoutes = require('./routes/admin');
 const userRoutes = require('./routes/user');
-const serviceProviderRoutes = require('./routes/serviceProviderRoutes');
+const serviceProviderRoutes = require('./routes/serviceProvider');
 
 const app = express();
 const port = process.env.PORT || 3001;
