@@ -8,7 +8,14 @@ const getAllUsers = async (req, res) => {
         res.status(500).json({ message: 'Error fetching users' });
     }
 };
-
+const getUserById=async(req,res)=>{
+    try {
+        const users=await User.findById({_id:req.params.id});
+        res.json(users);
+    } catch (error) {
+        res.status(501).json({message:"Error fetching user by id"});
+    }
+}
 const deleteUser = async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
@@ -37,4 +44,4 @@ const updateUserRole = async (req, res) => {
     }
 };
 
-    module.exports = { getAllUsers, deleteUser, updateUserRole };
+    module.exports = { getAllUsers, deleteUser, updateUserRole,getUserById };   
