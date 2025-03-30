@@ -2,48 +2,31 @@ import React, { useState, useEffect } from "react";
 import {
   Box,
   Typography,
-  Paper,
   Container,
   Grid,
   Card,
   CardContent,
   CardMedia,
-  Button,
-  TextField,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   IconButton,
   Chip,
   useTheme,
-  InputAdornment,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Select,
   CircularProgress,
 } from "@mui/material";
 import {
-  Add as AddIcon,
   Edit as EditIcon,
   Delete as DeleteIcon,
   LocalHospital as HospitalIcon,
   AccessTime as TimeIcon,
   AttachMoney as MoneyIcon,
-  Description as DescriptionIcon,
-  Category as CategoryIcon,
   Phone as PhoneIcon,
   Email as EmailIcon,
   LocationOn as LocationIcon,
 } from "@mui/icons-material";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 import API from "../api";
 
 const MedicalServices = () => {
   const theme = useTheme();
-  const [openDialog, setOpenDialog] = useState(false);
   const [services, setServices] = useState([]);
   const [serviceProviders, setServiceProviders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -58,18 +41,6 @@ const MedicalServices = () => {
     image: "",
   });
 
-  const categories = [
-    "Primary Care",
-    "Specialist Care",
-    "Dental Care",
-    "Mental Health",
-    "Rehabilitation",
-    "Laboratory Services",
-    "Imaging Services",
-    "Emergency Care",
-  ];
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchServiceProviders = async () => {
@@ -89,49 +60,8 @@ const MedicalServices = () => {
         setServiceProviders([]); // Ensure we set an empty array on error
       }
     };
-
     fetchServiceProviders();
   }, []);
-
-  const handleOpenDialog = () => {
-    setOpenDialog(true);
-  };
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-    setFormData({
-      name: "",
-      category: "",
-      description: "",
-      duration: "",
-      price: "",
-      image: "",
-    });
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newService = {
-      id: services.length + 1,
-      ...formData,
-      price: parseFloat(formData.price),
-    };
-    setServices((prev) => [...prev, newService]);
-    handleCloseDialog();
-    navigate("/dashboard");
-  };
-
-  const handleDelete = (id) => {
-    setServices((prev) => prev.filter((service) => service.id !== id));
-  };
 
   return (
     <Box
@@ -192,34 +122,8 @@ const MedicalServices = () => {
             >
               Browse through our trusted medical service providers
             </Typography>
-            <Button
-              variant="contained"
-              startIcon={<AddIcon />}
-              onClick={handleOpenDialog}
-              sx={{
-                borderRadius: 2,
-                textTransform: "none",
-                px: 4,
-                py: 1,
-                boxShadow:
-                  theme.palette.mode === "dark"
-                    ? "0 4px 14px rgba(0,0,0,0.3)"
-                    : "0 4px 14px rgba(0,0,0,0.1)",
-                "&:hover": {
-                  transform: "translateY(-2px)",
-                  boxShadow:
-                    theme.palette.mode === "dark"
-                      ? "0 6px 20px rgba(0,0,0,0.4)"
-                      : "0 6px 20px rgba(0,0,0,0.15)",
-                },
-                transition: "all 0.3s ease",
-              }}
-            >
-              Add New Service
-            </Button>
           </Box>
 
-          {/* Service Providers Grid */}
           {loading ? (
             <Box sx={{ display: "flex", justifyContent: "center" }}>
               <CircularProgress />
@@ -430,18 +334,8 @@ const MedicalServices = () => {
                           {service.duration}
                         </Typography>
                       </Box>
-                      <Box
-                        sx={{ display: "flex", alignItems: "center", gap: 1 }}
-                      >
-                        <MoneyIcon
-                          sx={{
-                            fontSize: 16,
-                            color:
-                              theme.palette.mode === "dark"
-                                ? "#b3b3b3"
-                                : "#666666",
-                          }}
-                        />
+                      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }} >
+                        <MoneyIcon sx={{fontSize: 16,color:theme.palette.mode === "dark"? "#b3b3b3" : "#666666"}}/>
                         <Typography
                           variant="body2"
                           sx={{
@@ -449,8 +343,7 @@ const MedicalServices = () => {
                               theme.palette.mode === "dark"
                                 ? "#b3b3b3"
                                 : "#666666",
-                          }}
-                        >
+                          }}>
                           ${service.price}
                         </Typography>
                       </Box>
@@ -460,173 +353,6 @@ const MedicalServices = () => {
               </Grid>
             ))}
           </Grid>
-
-          {/* Add Service Dialog */}
-          <Dialog
-            open={openDialog}
-            onClose={handleCloseDialog}
-            maxWidth="sm"
-            fullWidth
-          >
-            <DialogTitle>Add New Medical Service</DialogTitle>
-            <DialogContent>
-              <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
-                <Grid container spacing={3}>
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      label="Service Name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      required
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <HospitalIcon
-                              sx={{
-                                color:
-                                  theme.palette.mode === "dark"
-                                    ? "#b3b3b3"
-                                    : "#666666",
-                              }}
-                            />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <FormControl fullWidth required>
-                      <InputLabel>Category</InputLabel>
-                      <Select
-                        name="category"
-                        value={formData.category}
-                        onChange={handleInputChange}
-                        label="Category"
-                        startAdornment={
-                          <InputAdornment position="start">
-                            <CategoryIcon
-                              sx={{
-                                color:
-                                  theme.palette.mode === "dark"
-                                    ? "#b3b3b3"
-                                    : "#666666",
-                              }}
-                            />
-                          </InputAdornment>
-                        }
-                      >
-                        {categories.map((category) => (
-                          <MenuItem key={category} value={category}>
-                            {category}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      label="Description"
-                      name="description"
-                      value={formData.description}
-                      onChange={handleInputChange}
-                      multiline
-                      rows={3}
-                      required
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <DescriptionIcon
-                              sx={{
-                                color:
-                                  theme.palette.mode === "dark"
-                                    ? "#b3b3b3"
-                                    : "#666666",
-                              }}
-                            />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      fullWidth
-                      label="Duration"
-                      name="duration"
-                      value={formData.duration}
-                      onChange={handleInputChange}
-                      required
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <TimeIcon
-                              sx={{
-                                color:
-                                  theme.palette.mode === "dark"
-                                    ? "#b3b3b3"
-                                    : "#666666",
-                              }}
-                            />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      fullWidth
-                      label="Price"
-                      name="price"
-                      type="number"
-                      value={formData.price}
-                      onChange={handleInputChange}
-                      required
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <MoneyIcon
-                              sx={{
-                                color:
-                                  theme.palette.mode === "dark"
-                                    ? "#b3b3b3"
-                                    : "#666666",
-                              }}
-                            />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      label="Image URL"
-                      name="image"
-                      value={formData.image}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </Grid>
-                </Grid>
-              </Box>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleCloseDialog}>Cancel</Button>
-              <Button
-                variant="contained"
-                onClick={handleSubmit}
-                sx={{
-                  borderRadius: 2,
-                  textTransform: "none",
-                }}
-              >
-                Add Service
-              </Button>
-            </DialogActions>
-          </Dialog>
         </motion.div>
       </Container>
     </Box>

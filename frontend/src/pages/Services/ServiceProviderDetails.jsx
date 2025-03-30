@@ -30,7 +30,7 @@ const ServiceProviderDetails = () => {
     const fetchServiceProvider = async () => {
       try {
         setLoading(true);
-        const response = await API.get(`/service/${id}`);
+        const response = await API.get(`/serviceProviders/${id}`);
         if (response.data) {
           setServiceProvider(response.data);
         } else {

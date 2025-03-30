@@ -41,7 +41,15 @@ const registerServiceProvider = async (req, res) => {
 
 const getAllServiceProviders = async (req, res) => {
     try {
-        const serviceProviders = await ServiceProvider.find();
+        const { category } = req.query;
+        let query = { status: "approved" }; // Only return approved providers
+
+        // If category is specified, filter by it
+        if (category) {
+            query.serviceCategory = category;
+        }
+
+        const serviceProviders = await ServiceProvider.find(query);
         res.status(200).json(serviceProviders);
     } catch (error) {
         res.status(500).json({ message: "Error fetching service providers", error: error.message })

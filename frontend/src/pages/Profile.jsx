@@ -100,7 +100,7 @@ const Profile = () => {
             </Avatar>
             <Box sx={{ flex: 1 }}>
               <Typography variant="h4" gutterBottom>
-                Welcome, {user?.name || "Guest"}!
+                Welcome, {user?.name.toUpperCase() || "GUEST"}!
               </Typography>
               <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <Chip
@@ -122,14 +122,10 @@ const Profile = () => {
 
           <Divider sx={{ my: 3 }} />
 
-          {/* Profile Information */}
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
               <Card variant="outlined">
                 <CardContent>
-                  <Typography variant="h6" gutterBottom color="primary">
-                    Personal Information
-                  </Typography>
                   <List>
                     <ListItem>
                       <ListItemIcon>
@@ -140,24 +136,6 @@ const Profile = () => {
                         secondary={user?.email || "N/A"}
                       />
                     </ListItem>
-                    <ListItem>
-                      <ListItemIcon>
-                        <PhoneIcon color="action" />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary="Phone"
-                        secondary={user?.phone || "Add phone number"}
-                      />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemIcon>
-                        <LocationIcon color="action" />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary="Location"
-                        secondary={user?.location || "Add location"}
-                      />
-                    </ListItem>
                   </List>
                 </CardContent>
               </Card>
@@ -166,9 +144,6 @@ const Profile = () => {
             <Grid item xs={12} md={6}>
               <Card variant="outlined">
                 <CardContent>
-                  <Typography variant="h6" gutterBottom color="primary">
-                    Account Details
-                  </Typography>
                   <List>
                     <ListItem>
                       <ListItemIcon>
@@ -177,24 +152,6 @@ const Profile = () => {
                       <ListItemText
                         primary="Role"
                         secondary={user?.role?.toUpperCase() || "N/A"}
-                      />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemIcon>
-                        <CalendarIcon color="action" />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary="Member Since"
-                        secondary={new Date().toLocaleDateString()}
-                      />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemIcon>
-                        <AccessTimeIcon color="action" />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary="Last Login"
-                        secondary={new Date().toLocaleString()}
                       />
                     </ListItem>
                   </List>
@@ -258,47 +215,6 @@ const Profile = () => {
               </Card>
             </Grid>
           </Grid>
-
-          {/* User Object Display - Commented Out */}
-          {/* {user && (
-            <Box sx={{ mt: 4 }}>
-              <Card variant="outlined">
-                <CardContent>
-                  <Typography variant="h6" gutterBottom color="primary">
-                    User Details
-                  </Typography>
-                  <Box
-                    sx={{
-                      mt: 2,
-                      p: 3,
-                      bgcolor: "#f8f9fa",
-                      borderRadius: 1,
-                      border: "1px solid",
-                      borderColor: "divider",
-                      maxHeight: "400px",
-                      overflow: "auto",
-                      "&:hover": {
-                        bgcolor: "#f3f4f6",
-                      },
-                    }}
-                  >
-                    <pre
-                      style={{
-                        whiteSpace: "pre-wrap",
-                        wordBreak: "break-word",
-                        margin: 0,
-                        fontFamily: "'Roboto Mono', monospace",
-                        fontSize: "14px",
-                        color: "#37474f",
-                      }}
-                    >
-                      {JSON.stringify(user, null, 2)}
-                    </pre>
-                  </Box>
-                </CardContent>
-              </Card>
-            </Box>
-          )} */}
         </Paper>
       </Box>
     </Container>

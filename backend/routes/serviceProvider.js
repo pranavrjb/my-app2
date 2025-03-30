@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-const {protect,isAdmin,isAdminOrServiceProvider} = require("../middleware/auth");
+const { protect, isAdmin, isAdminOrServiceProvider } = require("../middleware/auth");
 const {
     registerServiceProvider,
     getAllServiceProviders,
@@ -42,11 +42,11 @@ router.get("/:id", getServiceProviderById);
 
 // Protected routes
 router.use(protect);
-router.post( "/register",registerServiceProvider);
-router.put("/:id",isAdminOrServiceProvider,updateServiceProvider);
-router.delete("/:id",isAdminOrServiceProvider,deleteServiceProvider);
+router.post("/register", registerServiceProvider);
+router.put("/:id", isAdminOrServiceProvider, updateServiceProvider);
+router.delete("/:id", isAdminOrServiceProvider, deleteServiceProvider);
 
 // // Admin only routes
-router.patch( "/:id/status",isAdmin,updateServiceProviderStatus);
+router.patch("/:id/status", isAdmin, updateServiceProviderStatus);
 
 module.exports = router; 
