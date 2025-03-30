@@ -24,6 +24,7 @@ import { UserContext } from "../context/UserContext";
 import API from "../api";
 import { motion } from "framer-motion";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+import {jwtDecode} from "jwt-decode";
 
 const Login = () => {
   const theme = useTheme();
@@ -56,6 +57,12 @@ const Login = () => {
       const { data } = await API.post("/auth/login", formData);
       window.sessionStorage.setItem("userToken", data.token);
       login(data.token);
+
+      // Log token and user role to console
+      const decodedToken = jwtDecode(data.token);
+      console.log("Login Token:", data.token);
+      console.log("User Role:", decodedToken.role);
+
       setMessage("Welcome, You are now logged in!");
       setSeverity("success");
       setOpen(true);

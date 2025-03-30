@@ -1,4 +1,5 @@
 const User = require('../models/User.js');
+const { roles } = require('../utils/constants.js');
 
 const getAllUsers = async (req, res) => {
     try {
@@ -8,14 +9,19 @@ const getAllUsers = async (req, res) => {
         res.status(500).json({ message: 'Error fetching users' });
     }
 };
-const getUserById=async(req,res)=>{
+
+const getUserById = async (req, res) => {
     try {
-        const users=await User.findById({_id:req.params.id});
-        res.json(users);
+        const user = await User.findById(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.json(user);
     } catch (error) {
-        res.status(501).json({message:"Error fetching user by id"});
+        res.status(500).json({ message: 'Error fetching user' });
     }
-}
+};
+
 const deleteUser = async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
@@ -32,16 +38,35 @@ const deleteUser = async (req, res) => {
 const updateUserRole = async (req, res) => {
     const { role } = req.body;
     try {
-        const user = await User.findById(req.params.id);
+        // Validate role against allowed values
+        const validRoles = Object.values(roles);
+        if (!validRoles.includes(role)) {
+            return res.status(400).json({
+                message: 'Invalid role. Allowed roles are: ' + validRoles.join(', ')
+            });
+        }
+
+        const user = await User.findByIdAndUpdate(
+            req.params.id,
+            { role },
+            { new: true, runValidators: true }
+        );
+
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        user.role = role;
-        await user.save();
-        res.json({ message: 'User role updated' });
+
+        res.json({
+            message: 'User role updated successfully',
+            user
+        });
     } catch (error) {
-        res.status(500).json({ message: 'Failed to update role' });
+        console.error('Role update error:', error);
+        res.status(500).json({
+            message: 'Failed to update role',
+            error: error.message
+        });
     }
 };
 
-    module.exports = { getAllUsers, deleteUser, updateUserRole,getUserById };   
+module.exports = { getAllUsers, deleteUser, updateUserRole, getUserById };   

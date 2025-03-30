@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const createHttpError = require('http-errors');
+const { roles } = require('../utils/constants');
 
 // Protect routes
 const protect = async (req, res, next) => {
@@ -54,7 +55,7 @@ const authorize = (...roles) => {
 
 // Check if user is admin
 const isAdmin = (req, res, next) => {
-    if (!req.user || req.user.role !== 'admin') {
+    if (!req.user || req.user.role !== roles.admin) {
         return next(createHttpError(403, 'Access restricted to admin users'));
     }
     next();
@@ -62,7 +63,7 @@ const isAdmin = (req, res, next) => {
 
 // Check if user is service provider
 const isServiceProvider = (req, res, next) => {
-    if (!req.user || req.user.role !== 'serviceProvider') {
+    if (!req.user || req.user.role !== roles.serviceProvider) {
         return next(createHttpError(403, 'Access restricted to service providers'));
     }
     next();
@@ -70,7 +71,7 @@ const isServiceProvider = (req, res, next) => {
 
 // Check if user is admin or service provider
 const isAdminOrServiceProvider = (req, res, next) => {
-    if (!req.user || (req.user.role !== 'admin' && req.user.role !== 'serviceProvider')) {
+    if (!req.user || (req.user.role !== roles.admin && req.user.role !== roles.serviceProvider)) {
         return next(createHttpError(403, 'Access restricted to admins and service providers'));
     }
     next();

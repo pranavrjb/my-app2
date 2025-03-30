@@ -39,7 +39,7 @@ router.get('/:id', async (req, res) => {
 //get all bookings for the admin
 router.get('/', protect, async (req, res) => {
     try {
-        const bookings = await Booking.find().populate('providerId').populate('clientName', 'clientEmail');
+        const bookings = await Booking.find().populate('providerId clientName clientEmail');
         res.status(200).json(bookings);
     } catch (error) {
         res.status(500).json({ message: 'Something went wrong!', error });

@@ -164,7 +164,7 @@ const ManageUsers = () => {
   const updateRole = async (newRole) => {
     if (selectedUser) {
       try {
-        const response = await API.patch(`/users/${selectedUser._id}/role`, {
+        const response = await API.put(`/users/${selectedUser._id}/role`, {
           role: newRole,
         });
 
