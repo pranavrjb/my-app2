@@ -251,18 +251,8 @@ const Footer = () => {
             gap: 1,
           }}
         >
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body1" color="text.secondary">
             © {new Date().getFullYear()} MedPulse. All rights reserved.
-          </Typography>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{ display: isMobile ? "none" : "block" }}
-          >
-            |
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Made by asdf.
           </Typography>
         </Box>
       </Container>
