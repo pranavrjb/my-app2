@@ -28,9 +28,9 @@ import {
   Phone as PhoneIcon,
   LocationOn as LocationIcon,
   MedicalServices as MedicalIcon,
-  Spa as SpaIcon,
+  ContentCut as ContentCutIcon,
   Psychology as PsychologyIcon,
-  Business as BusinessIcon,
+  FitnessCenter as FitnessCenterIcon,
 } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
 import API from "../../api";
@@ -39,14 +39,14 @@ import { useNavigate } from "react-router-dom";
 const steps = ["Select Service", "Choose Provider", "Book Appointment"];
 
 const serviceTypes = [
-  { value: "MEDICAL", label: "Medical Service", icon: <MedicalIcon /> },
-  { value: "WELLNESS", label: "Wellness Service", icon: <SpaIcon /> },
+  { value: "medicalservices", label: "Medical Service", icon: <MedicalIcon /> },
+  { value: "FITNESS", label: "Fitness & Wellness Service", icon: <FitnessCenterIcon /> },
   {
-    value: "MENTAL_HEALTH",
-    label: "Mental Health Service",
-    icon: <PsychologyIcon />,
+    value: "BEAUTY",
+    label: "Beauty Service",
+    icon: <ContentCutIcon />,
   },
-  { value: "CONSULTING", label: "Consulting Service", icon: <BusinessIcon /> },
+  { value: "CONSULTANT", label: "Consulting Service", icon: <PsychologyIcon /> },
 ];
 
 const BookingForm = () => {
@@ -79,7 +79,7 @@ const BookingForm = () => {
   const fetchProviders = async () => {
     try {
       setLoading(true);
-      const res = await API.get(`/service/providers/${selectedServiceType}`);
+      const res = await API.get(`/serviceProviders/${selectedServiceType}`);
       setProviders(res.data);
     } catch (error) {
       console.error("Error fetching providers:", error);
