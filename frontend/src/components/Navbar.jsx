@@ -87,7 +87,7 @@ const Navbar = () => {
       <List>
         {menuItems.map((item) => (
           <ListItem
-              
+
             key={item.text}
             onClick={() => {
               if (item.onClick) {
@@ -392,8 +392,8 @@ const Navbar = () => {
                 Login
               </Button>
             )}
+              <NotificationBell />
             <Toggle />
-            <NotificationBell />
           </Box>
 
           {/* Placeholder for alignment */}
