@@ -13,6 +13,7 @@ const contactRoutes = require('./routes/contacts');
 const adminRoutes = require('./routes/admin');
 const userRoutes = require('./routes/user');
 const serviceProviderRoutes = require('./routes/serviceProvider');
+const notificationRoutes = require('./routes/notifications');
 
 dotenv.config();
 
@@ -58,6 +59,7 @@ app.use('/bookings', bookingRoutes);
 app.use('/admin', adminRoutes);
 app.use('/users', userRoutes);
 app.use('/serviceProviders', serviceProviderRoutes);
+app.use('/notifications', notificationRoutes);
 
 // Error handling for not found routes
 app.use((req, res, next) => {

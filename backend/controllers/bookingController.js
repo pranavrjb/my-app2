@@ -1,5 +1,7 @@
 const Booking = require('../models/Booking');
 const ServiceProvider = require('../models/ServiceProvider');
+const { createNotification } = require('./notificationController');
+const User = require('../models/User');
 
 // Create a new booking
 const createBooking = async (req, res) => {
@@ -60,6 +62,24 @@ const createBooking = async (req, res) => {
 
         await booking.save();
 
+        // Create notifications for both client and service provider
+        const client = await User.findOne({ email: clientEmail });
+        if (client) {
+            await createNotification(
+                client._id,
+                'BOOKING_CREATED',
+                booking._id,
+                `Your booking for ${serviceType} on ${date} at ${slot} has been created successfully.`
+            );
+        }
+
+        await createNotification(
+            provider.owner,
+            'BOOKING_CREATED',
+            booking._id,
+            `New booking received for ${serviceType} on ${date} at ${slot}.`
+        );
+
         res.status(201).json({
             message: "Booking created successfully",
             booking
@@ -118,13 +138,31 @@ const updateBookingStatus = async (req, res) => {
             req.params.id,
             { status },
             { new: true, runValidators: true }
-        );
+        ).populate('providerId', 'businessName serviceCategory owner');
 
         if (!booking) {
             return res.status(404).json({
                 message: "Booking not found"
             });
         }
+
+        // Create notification based on status change
+        const client = await User.findOne({ email: booking.clientEmail });
+        if (client) {
+            await createNotification(
+                client._id,
+                `BOOKING_${status.toUpperCase()}`,
+                booking._id,
+                `Your booking for ${booking.serviceType} on ${booking.date} at ${booking.slot} has been ${status}.`
+            );
+        }
+
+        await createNotification(
+            booking.providerId.owner,
+            `BOOKING_${status.toUpperCase()}`,
+            booking._id,
+            `Booking for ${booking.serviceType} on ${booking.date} at ${booking.slot} has been ${status}.`
+        );
 
         res.status(200).json({
             message: "Booking status updated successfully",

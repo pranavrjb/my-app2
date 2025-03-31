@@ -18,15 +18,20 @@ import {
   Fade,
   Avatar,
   Divider,
+  useMediaQuery,
+  ListItemIcon,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import SettingsIcon from "@mui/icons-material/Settings";
 import { UserContext } from "../context/UserContext";
 import { useTheme } from "@mui/material/styles";
 import Toggle from "../context/DarkMode/Toggle";
+import NotificationBell from "./NotificationBell";
 
 const Navbar = () => {
   const { user, logout } = useContext(UserContext);
@@ -38,6 +43,7 @@ const Navbar = () => {
     disableHysteresis: true,
     threshold: 0,
   });
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -62,6 +68,43 @@ const Navbar = () => {
   };
 
   const isAdmin = user && user.role === "ADMIN";
+
+  const menuItems = [
+    { text: "Profile", icon: <AccountCircleIcon />, path: "/profile" },
+    { text: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
+    { text: "Settings", icon: <SettingsIcon />, path: "/settings" },
+    { text: "Logout", icon: <LogoutIcon />, onClick: handleLogout },
+  ];
+
+  const drawer = (
+    <Box>
+      <Toolbar>
+        <Typography variant="h6" noWrap>
+          Menu
+        </Typography>
+      </Toolbar>
+      <Divider />
+      <List>
+        {menuItems.map((item) => (
+          <ListItem
+              
+            key={item.text}
+            onClick={() => {
+              if (item.onClick) {
+                item.onClick();
+              } else {
+                navigate(item.path);
+              }
+              handleDrawerClose();
+            }}
+          >
+            <ListItemIcon>{item.icon}</ListItemIcon>
+            <ListItemText primary={item.text} />
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
 
   return (
     <Slide appear={false} direction="down" in={!trigger}>
@@ -307,34 +350,22 @@ const Navbar = () => {
                       </Typography>
                     </MenuItem>
                     <Divider />
-                    <MenuItem
-                      component={Link}
-                      to="/profile"
-                      sx={{
-                        py: 1.5,
-                        color:
-                          theme.palette.mode === "dark" ? "white" : "#1a1a1a",
-                        "&:hover": {
-                          bgcolor: theme.palette.action.hover,
-                        },
-                      }}
-                    >
-                      Profile
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleLogout}
-                      sx={{
-                        py: 1.5,
-                        color:
-                          theme.palette.mode === "dark" ? "white" : "#1a1a1a",
-                        "&:hover": {
-                          bgcolor: theme.palette.action.hover,
-                        },
-                      }}
-                    >
-                      <LogoutIcon sx={{ mr: 1 }} />
-                      Log out
-                    </MenuItem>
+                    {menuItems.map((item) => (
+                      <MenuItem
+                        key={item.text}
+                        onClick={() => {
+                          if (item.onClick) {
+                            item.onClick();
+                          } else {
+                            navigate(item.path);
+                          }
+                          handleMenuClose();
+                        }}
+                      >
+                        <ListItemIcon>{item.icon}</ListItemIcon>
+                        {item.text}
+                      </MenuItem>
+                    ))}
                   </Menu>
                 </Box>
               </>
@@ -362,6 +393,7 @@ const Navbar = () => {
               </Button>
             )}
             <Toggle />
+            <NotificationBell />
           </Box>
 
           {/* Placeholder for alignment */}
@@ -381,178 +413,7 @@ const Navbar = () => {
             },
           }}
         >
-          <Box
-            sx={{
-              width: "100%",
-              p: 2,
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              variant="h6"
-              sx={{
-                fontWeight: 600,
-                color: theme.palette.mode === "dark" ? "white" : "#1a1a1a",
-              }}
-            >
-              Menu
-            </Typography>
-            <IconButton
-              onClick={handleDrawerClose}
-              sx={{
-                color: theme.palette.mode === "dark" ? "white" : "#1a1a1a",
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
-          </Box>
-          <Divider />
-          <List sx={{ px: 2 }}>
-            <ListItem
-              component={Link}
-              to="/contact"
-              sx={{
-                borderRadius: 2,
-                mb: 1,
-                color: theme.palette.mode === "dark" ? "white" : "#1a1a1a",
-                "&:hover": {
-                  backgroundColor: theme.palette.action.hover,
-                },
-              }}
-            >
-              <ListItemText primary="Contact Us" />
-            </ListItem>
-            {user ? (
-              <>
-                {isAdmin && (
-                  <>
-                    <ListItem
-                      component={Link}
-                      to="/admin"
-                      sx={{
-                        borderRadius: 2,
-                        mb: 1,
-                        color:
-                          theme.palette.mode === "dark" ? "white" : "#1a1a1a",
-                        "&:hover": {
-                          backgroundColor: theme.palette.action.hover,
-                        },
-                      }}
-                    >
-                      <ListItemText primary="Admin" />
-                    </ListItem>
-                    <ListItem
-                      component={Link}
-                      to="/manageusers"
-                      sx={{
-                        borderRadius: 2,
-                        mb: 1,
-                        color:
-                          theme.palette.mode === "dark" ? "white" : "#1a1a1a",
-                        "&:hover": {
-                          backgroundColor: theme.palette.action.hover,
-                        },
-                      }}
-                    >
-                      <ListItemText primary="Manage User" />
-                    </ListItem>
-                    <ListItem
-                      component={Link}
-                      to="/managedoctors"
-                      sx={{
-                        borderRadius: 2,
-                        mb: 1,
-                        color:
-                          theme.palette.mode === "dark" ? "white" : "#1a1a1a",
-                        "&:hover": {
-                          backgroundColor: theme.palette.action.hover,
-                        },
-                      }}
-                    >
-                      <ListItemText primary="Manage Doctor" />
-                    </ListItem>
-                    <ListItem
-                      component={Link}
-                      to="/doctor"
-                      sx={{
-                        borderRadius: 2,
-                        mb: 1,
-                        color:
-                          theme.palette.mode === "dark" ? "white" : "#1a1a1a",
-                        "&:hover": {
-                          backgroundColor: theme.palette.action.hover,
-                        },
-                      }}
-                    >
-                      <ListItemText primary="Add Doctor" />
-                    </ListItem>
-                  </>
-                )}
-                <ListItem
-                  component={Link}
-                  to="/bookings"
-                  sx={{
-                    borderRadius: 2,
-                    mb: 1,
-                    color: theme.palette.mode === "dark" ? "white" : "#1a1a1a",
-                    "&:hover": {
-                      backgroundColor: theme.palette.action.hover,
-                    },
-                  }}
-                >
-                  <ListItemText primary="Start Booking" />
-                </ListItem>
-                <ListItem
-                  component={Link}
-                  to="/profile"
-                  sx={{
-                    borderRadius: 2,
-                    mb: 1,
-                    color: theme.palette.mode === "dark" ? "white" : "#1a1a1a",
-                    "&:hover": {
-                      backgroundColor: theme.palette.action.hover,
-                    },
-                  }}
-                >
-                  <ListItemText primary="Profile" />
-                </ListItem>
-                <ListItem
-                  onClick={handleLogout}
-                  sx={{
-                    borderRadius: 2,
-                    mb: 1,
-                    color: theme.palette.mode === "dark" ? "white" : "#1a1a1a",
-                    "&:hover": {
-                      backgroundColor: theme.palette.action.hover,
-                    },
-                  }}
-                >
-                  <LogoutIcon sx={{ mr: 1 }} />
-                  <ListItemText primary="Log out" />
-                </ListItem>
-              </>
-            ) : (
-              <ListItem
-                component={Link}
-                to="/login"
-                sx={{
-                  borderRadius: 2,
-                  mb: 1,
-                  color: theme.palette.mode === "dark" ? "white" : "#1a1a1a",
-                  "&:hover": {
-                    backgroundColor: theme.palette.action.hover,
-                  },
-                }}
-              >
-                <ListItemText primary="Login" />
-              </ListItem>
-            )}
-            <ListItem>
-              <Toggle />
-            </ListItem>
-          </List>
+          {drawer}
         </Drawer>
       </AppBar>
     </Slide>

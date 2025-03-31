@@ -8,9 +8,9 @@ const Toggle = () => {
     const { mode, toggleTheme } = useThemeContext();
 
     return (
-        <IconButton onClick={toggleTheme} color="default" >
-            {mode === 'light' ? <BedtimeIcon /> : <LightModeIcon />}
-        </IconButton>
+      <IconButton onClick={toggleTheme} color="default">
+        {mode === "light" ? <BedtimeIcon /> : <LightModeIcon />}
+      </IconButton>
     );
 };
 

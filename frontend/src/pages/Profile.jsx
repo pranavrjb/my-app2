@@ -31,6 +31,7 @@ import {
   AccessTime as AccessTimeIcon,
 } from "@mui/icons-material";
 import { jwtDecode } from "jwt-decode";
+import TestNotification from "../components/TestNotification";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -91,6 +92,7 @@ const Profile = () => {
     <Container maxWidth="md">
       <Box sx={{ minHeight: "100vh", py: 4 }}>
         <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
+          <TestNotification />
           {/* Profile Header */}
           <Box sx={{ display: "flex", alignItems: "center", mb: 4 }}>
             <Avatar
